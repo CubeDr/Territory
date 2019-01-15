@@ -116,7 +116,7 @@ class WorldScene extends Phaser.Scene {
         }
     }
 
-    pointerDownHandler(pointer, gameObject) {
+    pointerDownHandler(pointer) {
         // out of camera
         if(pointer.x >= CAMERA_WIDTH || pointer.y <= IMAGE_HEIGHT) return;
 
