@@ -39,9 +39,10 @@ class WorldScene extends Phaser.Scene {
         this.input.on('pointerup', this.pointerUpHandler, this);
         this.input.on('pointermove', this.pointerMoveHandler, this);
 
-        this.createDialogs();
         this.enemies = [];
         this._placeRandomEnemies(100);
+
+        this.createDialogs();
     }
 
     update(time, dt) {
