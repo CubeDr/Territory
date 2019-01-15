@@ -31,8 +31,8 @@ class WorldScene extends Phaser.Scene {
         this.centerCamera(0, 0);
 
         player.territories.forEach((t) => {
-            this.map[t.y][t.x] = this.createTile(t.x, t.y, 'castle');
-            this.map[t.y][t.x].territory = t;
+            this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'castle');
+            this.map[t.y][t.x].over.territory = t;
         });
 
         this.input.on('pointerdown', this.pointerDownHandler, this);
@@ -78,11 +78,11 @@ class WorldScene extends Phaser.Scene {
         do {
             x = Math.floor(Math.random() * WORLD_WIDTH) - Math.floor(WORLD_WIDTH/2);
             y = Math.floor(Math.random() * WORLD_HEIGHT) - Math.floor(WORLD_HEIGHT/2);
-        } while(this.map[y][x].key !== 'grass');
+        } while(this.map[y][x].over != null);
 
         let e = this.createTile(x, y, 'bandit', {level: 1});
         this.add.existing(e);
-        this.map[y][x] = e;
+        this.map[y][x].over = e;
         this.enemies.push(e);
     }
 
