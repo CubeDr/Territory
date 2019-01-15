@@ -98,7 +98,7 @@ class WorldScene extends Phaser.Scene {
             this.selectBox.destroy();
         if(this.selected === gameObject) {
             // unselect
-            if(this.selected.territory) this.territoryDialog.setVisible(false);
+            this.closeAllDialog();
             this.selected = null;
         } else {
             // select
