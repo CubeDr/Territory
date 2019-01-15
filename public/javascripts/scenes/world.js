@@ -40,6 +40,8 @@ class WorldScene extends Phaser.Scene {
         this.input.on('pointermove', this.pointerMoveHandler, this);
 
         this.createDialogs();
+        this.enemies = [];
+        this._placeRandomEnemies(100);
     }
 
     update(time, dt) {
@@ -50,10 +52,12 @@ class WorldScene extends Phaser.Scene {
         this.scene.get('info').showPlayer(this.player);
     }
 
-    createTile(x, y, key) {
+    createTile(x, y, key, config) {
         let tile = this.add.image(x*100, y*100, key);
         tile.mapX = x;
         tile.mapY = y;
+        tile.key = key;
+        tile.config = config;
         tile.setInteractive();
         return tile;
     }
@@ -61,6 +65,25 @@ class WorldScene extends Phaser.Scene {
     createDialogs() {
         this.territoryDialog = new TerritoryEnterDialog(this);
         this.add.existing(this.territoryDialog);
+    }
+
+    _placeRandomEnemies(count) {
+        while(count-- > 0) this._placeRandomEnemy();
+    }
+
+    _placeRandomEnemy() {
+        let x;
+        let y;
+
+        do {
+            x = Math.floor(Math.random() * WORLD_WIDTH) - Math.floor(WORLD_WIDTH/2);
+            y = Math.floor(Math.random() * WORLD_HEIGHT) - Math.floor(WORLD_HEIGHT/2);
+        } while(this.map[y][x].key !== 'grass');
+
+        let e = this.createTile(x, y, 'bandit', {level: 1});
+        this.add.existing(e);
+        this.map[y][x] = e;
+        this.enemies.push(e);
     }
 
     updateDialogs() {
