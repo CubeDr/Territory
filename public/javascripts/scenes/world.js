@@ -65,6 +65,9 @@ class WorldScene extends Phaser.Scene {
     createDialogs() {
         this.territoryDialog = new TerritoryEnterDialog(this);
         this.add.existing(this.territoryDialog);
+
+        this.banditDialog = new BanditAttackDialog(this);
+        this.add.existing(this.banditDialog);
     }
 
     _placeRandomEnemies(count) {
@@ -80,7 +83,7 @@ class WorldScene extends Phaser.Scene {
             y = Math.floor(Math.random() * WORLD_HEIGHT) - Math.floor(WORLD_HEIGHT/2);
         } while(this.map[y][x].over != null);
 
-        let e = this.createTile(x, y, 'bandit', {level: 1});
+        let e = this.createTile(x, y, 'bandit', {quantity: 100, quality: 50});
         this.add.existing(e);
         this.map[y][x].over = e;
         this.enemies.push(e);
@@ -109,6 +112,10 @@ class WorldScene extends Phaser.Scene {
                 case 'territory':
                     this.closeAllDialog();
                     this.openTerritoryDialog(gameObject);
+                    break;
+                case 'bandit':
+                    this.closeAllDialog();
+                    this.openBanditDialog(gameObject);
                     break;
                 default:
                     this.closeAllDialog();
@@ -165,12 +172,19 @@ class WorldScene extends Phaser.Scene {
 
     closeAllDialog() {
         this.territoryDialog.setVisible(false);
+        this.banditDialog.setVisible(false);
     }
 
     openTerritoryDialog(gameObject) {
         this.territoryDialog.territory = gameObject.territory;
         this.setDialogPositionRelativeTo(this.territoryDialog, gameObject);
         this.territoryDialog.setVisible(true);
+    }
+
+    openBanditDialog(gameObject) {
+        this.banditDialog.setBandit(gameObject.config);
+        this.setDialogPositionRelativeTo(this.banditDialog, gameObject);
+        this.banditDialog.setVisible(true);
     }
 
     setDialogPositionRelativeTo(dialog, object) {
