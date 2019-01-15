@@ -11,7 +11,7 @@ class WorldScene extends Phaser.Scene {
         this.load.image('grass', 'assets/grass.jpg');
         this.load.image('post', 'assets/post.png');
         this.load.image('rectangle', 'assets/rectangle.png');
-        this.load.image('castle', 'assets/world/castle.png');
+        this.load.image('territory', 'assets/world/territory.png');
         this.load.image('bandit', 'assets/world/bandit.png');
 
         this.load.image('quality', 'assets/ui/resources/quality.png');
@@ -31,7 +31,7 @@ class WorldScene extends Phaser.Scene {
         this.centerCamera(0, 0);
 
         player.territories.forEach((t) => {
-            this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'castle');
+            this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
             this.map[t.y][t.x].over.territory = t;
         });
 
@@ -107,6 +107,8 @@ class WorldScene extends Phaser.Scene {
 
             if(gameObject.territory) this.openTerritoryDialog(gameObject);
             else this.territoryDialog.setVisible(false);
+
+
         }
     }
 
