@@ -105,10 +105,14 @@ class WorldScene extends Phaser.Scene {
                 IMAGE_WIDTH, IMAGE_HEIGHT);
             this.selected = gameObject;
 
-            if(gameObject.territory) this.openTerritoryDialog(gameObject);
-            else this.territoryDialog.setVisible(false);
-
-
+            switch (gameObject.key) {
+                case 'territory':
+                    this.closeAllDialog();
+                    this.openTerritoryDialog(gameObject);
+                    break;
+                default:
+                    this.closeAllDialog();
+            }
         }
     }
 
@@ -157,6 +161,10 @@ class WorldScene extends Phaser.Scene {
 
             this.centerCamera(newX, newY);
         }
+    }
+
+    closeAllDialog() {
+        this.territoryDialog.setVisible(false);
     }
 
     openTerritoryDialog(gameObject) {
