@@ -7,6 +7,7 @@ class Player {
     attachListeners(eventBus) {
         this.eventBus = eventBus.on('deltaMoneyDecreaseRate', (data) => {
             this._moneyDecreaseRate += data.delta;
+            this.eventBus.emit('changeMoneyDecreaseRate', this._moneyDecreaseRate);
         }).on('deltaQuantityMax', (data) => {
 
         }).on('deltaPopulationMax', (data) => {
@@ -28,10 +29,20 @@ class Player {
 
         // update population
         if(this._food > 0) {
-            let popDelta = this._populationIncreaseRate * dt;
-            this._population += popDelta;
-            this._population = clipToRange(this._population, 0, this.populationMax);
+            let newPopulation = this._population + this._populationIncreaseRate * dt;
+            newPopulation = clipToRange(newPopulation, 0, this.populationMax);
+            if(newPopulation !== this._population)
+                this.eventBus.emit('changePopulation', newPopulation);
+            let delta = newPopulation - this._population;
+            this._population = newPopulation;
+
+            this._moneyIncreaseRate += delta * DEFAULT_MONEY_INCREASE_FACTOR;
+            this.eventBus.emit('changeMoneyIncreaseRate', this._moneyIncreaseRate);
+
+            this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
+            this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
         }
+
         // update food
         this._food += (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
         this._food = clipToRange(this._food, 0, this.foodMax);

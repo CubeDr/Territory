@@ -72,6 +72,14 @@ class InfoScene extends Phaser.Scene {
 
             if(data.type === 'territory') self._showTerritory(data.data);
             else if(data.type === 'player') self._showPlayer(data.data);
+        }).on('changeMoneyIncreaseRate', (newRate) => {
+            this.moneyIncreaseText.setText('▲' + parseInt(newRate));
+        }).on('changeMoneyDecreaseRate', (newRate) => {
+            this.moneyDecreaseText.setText('▼' + parseInt(newRate));
+        }).on('changeFoodIncreaseRate', (newRate) => {
+            this.foodIncreaseText.setText('▲' + parseInt(newRate));
+        }).on('changeFoodDecreaseRate', (newRate) => {
+            this.foodDecreaseText.setText('▼' + parseInt(newRate));
         }).emit('sceneLoaded', 'info');
     }
 
