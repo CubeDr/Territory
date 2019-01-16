@@ -56,6 +56,12 @@ class InfoScene extends Phaser.Scene {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
             self.qualityText.setText(parseInt(territory.quality));
+        }).on('changeQuantityMax', (territory) => {
+            if(self.show !== 'territory') return;
+            if(this.data !== territory) return;
+            InfoScene._setValueMaxText(self.quantityText,
+                territory.army.quantity,
+                territory.armyQuantityMax);
         }).on('changePopulationMax', (max) => {
             let p = 0;
             if(this.show === 'territory') p = self.data.player.population;

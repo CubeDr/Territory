@@ -47,10 +47,7 @@ class Territory {
                 });
                 // armyQuantityMax
                 this._armyQuantityMax += 10;
-                engine.emit('deltaQuantityMax', {
-                    territory: self,
-                    delta: 10
-                });
+                engine.emit('changeQuantityMax', this);
                 break;
             case Building.TRAIN.type:
                 // moneyDecreaseRate
