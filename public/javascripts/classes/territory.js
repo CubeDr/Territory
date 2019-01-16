@@ -110,10 +110,10 @@ class Territory {
                     delta: Building.LANDMARK.maintain
                 });
                 // populationIncreaseRate
-                this._populationIncreaseRate += 10;
+                this._populationIncreaseRate += 1;
                 engine.emit('deltaPopulationIncreaseRate', {
                     territory: self,
-                    delta: 10
+                    delta: 1
                 });
                 break;
             case Building.MUSEUM.type:
