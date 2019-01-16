@@ -68,7 +68,7 @@ class Player {
         while(this._dt >= 1) {
             this._dt -= 1;
             this.territories.forEach((t) => {
-                let transferred = t.transferArmy();
+                let transferred = t.transferArmy(engine);
                 if(transferred) {
                     eventBus.emit('quantityChange', t)
                           .emit('qualityChange', t);

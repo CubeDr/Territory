@@ -51,11 +51,11 @@ class InfoScene extends Phaser.Scene {
         }).on('changeQuantity', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
-            InfoScene._setValueMaxText(self.quantityText, territory.quantity, territory.armyQuantityMax);
+            InfoScene._setValueMaxText(self.quantityText, territory.army.quantity, territory.armyQuantityMax);
         }).on('changeQuality', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
-            self.qualityText.setText(parseInt(territory.quality));
+            self.qualityText.setText(parseInt(territory.army.quality));
         }).on('changeQuantityMax', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;

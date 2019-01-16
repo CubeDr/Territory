@@ -152,7 +152,7 @@ class Territory {
         return this._populationIncreaseRate;
     }
 
-    transferArmy() {
+    transferArmy(eventBus) {
         let factor = 0;
         this.map.forEach( (row) => {
             row.forEach((b) => {
@@ -169,6 +169,9 @@ class Territory {
             this._army.quality = this._army.quality * this._army.quantity + DEFAULT_ARMY_NEW_QUALITY * t;
             this._army.quantity += t;
             this._army.quality /= this._army.quantity;
+
+            eventBus.emit('changeQuantity', this);
+            eventBus.emit('changeQuality', this);
 
             return true;
         }
