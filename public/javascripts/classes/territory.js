@@ -83,7 +83,10 @@ class Territory {
             this._army.quality = this._army.quality * this._army.quantity + DEFAULT_ARMY_NEW_QUALITY * t;
             this._army.quantity += t;
             this._army.quality /= this._army.quantity;
+
+            return true;
         }
+        return false;
     }
 
     static __foodMaxFrom(map) {

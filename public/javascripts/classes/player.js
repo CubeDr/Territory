@@ -4,7 +4,7 @@ class Player {
         this.__loadPlayer();
     }
 
-    update(dt) {
+    update(dt, engine) {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
         this._money = clipToRange(this._money, 0);
@@ -23,11 +23,17 @@ class Player {
         this._recalculateDeltas();
     }
 
-    _updateSec(dt) {
+    _updateSec(dt, engine) {
         this._dt += dt;
         while(this._dt >= 1) {
             this._dt -= 1;
-            this.territories.forEach((t) => { t.transferArmy(); });
+            this.territories.forEach((t) => {
+                let transferred = t.transferArmy();
+                if(transferred) {
+                    engine.emit('quantityChange', t)
+                          .emit('qualityChange', t);
+                }
+            });
         }
     }
 

@@ -33,28 +33,56 @@ class InfoScene extends Phaser.Scene {
         this.foodIncreaseText = this.add.text(258, 70, '▲0', {color: 'green'}).setOrigin(1, 0.5);
         this.foodDecreaseText = this.add.text(262, 70, '▼0', {color: 'red'}).setOrigin(0, 0.5);
         this.populationIncreaseText = this.add.text(410, 70, '▲0', {color: 'green'}).setOrigin(0, 0.5);
+
+        let self = this;
+        this.scene.get('engine').on('moneyChange', (newCoin) => {
+            self.moneyText.setText(parseInt(newCoin));
+        }).on('foodChange', (newFood) => {
+            self.foodText.setText(parseInt(newFood));
+        }).on('populationChange', (newPopulation) => {
+            self.populationText.setText(parseInt(newPopulation));
+        }).on('quantityChange', (territory) => {
+            if(self.show !== 'territory') return;
+            if(this.data !== data.territory) return;
+            self.quantityText.setText(parseInt(territory.quantity));
+        }).on('qualityChange', (territory) => {
+            if(self.show !== 'territory') return;
+            if(this.data !== data.territory) return;
+            self.qualityText.setText(parseInt(territory.quality));
+        }).on('showInfo', (data) => {
+            console.log('event received');
+            self.show = data.type;
+            self.data = data.data;
+
+            if(data.type === 'territory') self._showTerritory(data.data);
+            else if(data.type === 'player') self._showPlayer(data.data);
+        }).emit('sceneLoaded', 'info');
     }
 
     update(time, dt) {
-        this.player.update(dt/1000);
+        this.player.update(dt/1000, this.scene.get('engine'));
     }
 
-    showTerritory(territory) {
-        this.setTerritoryInfoVisibility(true);
+    _showTerritory(territory) {
+        this.show = 'territory';
+        this.data = territory;
+        this._setTerritoryInfoVisibility(true);
 
-        this.showCommonResource(territory.player);
+        this._showCommonResource(territory.player);
 
         this.quantityText.setText(parseInt(territory.army.quantity) + " / " + territory.armyQuantityMax);
         this.qualityText.setText(parseInt(territory.army.quality));
     }
 
-    showPlayer(player) {
-        this.setTerritoryInfoVisibility(false);
+    _showPlayer(player) {
+        this.show = 'player';
+        this.data = player;
+        this._setTerritoryInfoVisibility(false);
 
-        this.showCommonResource(player);
+        this._showCommonResource(player);
     }
 
-    showCommonResource(player) {
+    _showCommonResource(player) {
         this.moneyText.setText(parseInt(player.money));
         this.foodText.setText(parseInt(player.food) + " / " + player.foodMax);
         this.populationText.setText(parseInt(player.population) + " / " + player.populationMax);
@@ -66,7 +94,7 @@ class InfoScene extends Phaser.Scene {
         this.populationIncreaseText.setText('▲' + this.player.populationIncreaseRate);
     }
 
-    setTerritoryInfoVisibility(visible) {
+    _setTerritoryInfoVisibility(visible) {
         this.quantityIcon.setVisible(visible);
         this.quantityText.setVisible(visible);
         this.qualityIcon.setVisible(visible);

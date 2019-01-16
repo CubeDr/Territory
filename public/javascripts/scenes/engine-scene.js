@@ -16,6 +16,7 @@ class Engine extends Phaser.Scene {
 
     /* ===== PubSub Pattern methods ===== */
     on(eventName, callback) {
+        console.log('register ' + eventName);
         if(this._events[eventName] == null)
             this._events[eventName] = [];
         this._events[eventName].push(callback);
@@ -23,6 +24,7 @@ class Engine extends Phaser.Scene {
     }
 
     emit(eventName, data) {
+        console.log('emit ' + eventName);
         if(this._events[eventName])
             this._events[eventName].forEach((callback) => callback(data));
         return this;

@@ -28,6 +28,8 @@ function preload() {
     if(!this.scene.isActive('info'))
         this.scene.launch('info', territory.player);
 
+    this.engine = this.scene.get('engine');
+
     this.load.image('grass', 'assets/grass.jpg');
     this.load.image(Building.BARRACK.type, 'assets/barrack.jpg');
     this.load.image(Building.POST.type, 'assets/post.png');
@@ -45,7 +47,6 @@ function preload() {
 }
 
 function create() {
-
     // create empty map tiles
     createMap(this);
 
@@ -54,12 +55,19 @@ function create() {
 
     // attach event listeners
     attachListeners(this);
+
+    this.engine.on('sceneLoaded', (key) => {
+        if(key === 'info') this.engine.emit('showInfo', {
+            data: territory,
+            type: 'territory'
+        });
+    }).emit('sceneLoaded', 'territory');
+
 }
 
 function update(up, delta) {
     updateEnoughMoney();
     updatePlacable();
-    this.scene.get('info').showTerritory(territory);
     territory._updateAttributes();
 }
 
