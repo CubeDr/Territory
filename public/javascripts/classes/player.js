@@ -61,20 +61,25 @@ class Player {
         }
     }
 
-    // _recalculateDeltas() {
-    //     this._moneyIncreaseRate = 0;
-    //     this._moneyDecreaseRate = 0;
-    //     this._foodIncreaseRate = 0;
-    //     this._foodDecreaseRate = 0;
-    //     this._populationIncreaseRate = 0;
-    //     this.territories.forEach((t) => {
-    //         this._moneyIncreaseRate += t.moneyIncreaseRate;
-    //         this._moneyDecreaseRate += t.moneyDecreaseRate;
-    //         this._foodIncreaseRate += t.foodIncreaseRate;
-    //         this._foodDecreaseRate += t.foodDecreaseRate;
-    //         this._populationIncreaseRate += t.populationIncreaseRate;
-    //     });
-    // }
+    _initializeAttributes() {
+        this._moneyIncreaseRate = 0;
+        this._moneyDecreaseRate = 0;
+        this._foodIncreaseRate = 0;
+        this._foodDecreaseRate = 0;
+        this._foodMax = 0;
+        this._populationIncreaseRate = 0;
+        this._populationMax = 0;
+
+        this.territories.forEach((t) => {
+            this._moneyIncreaseRate += t.moneyIncreaseRate;
+            this._moneyDecreaseRate += t.moneyDecreaseRate;
+            this._foodIncreaseRate += t.foodIncreaseRate;
+            this._foodDecreaseRate += t.foodDecreaseRate;
+            this._foodMax += t.foodMax;
+            this._populationIncreaseRate += t.populationIncreaseRate;
+            this._populationMax += t.populationMax;
+        });
+    }
 
     get populationMax() {
         return this._populationMax;
@@ -101,17 +106,10 @@ class Player {
         this._dt = 0;
         this.__loadTerritories();
 
-        this._moneyIncreaseRate = 0;
-        this._moneyDecreaseRate = 0;
-        this._foodIncreaseRate = 0;
-        this._foodDecreaseRate = 0;
-        this._foodMax = 0;
-        this._populationIncreaseRate = 0;
-        this._populationMax = 0;
+        this._initializeAttributes();
     }
 
     __loadTerritories() {
         this.territories = [ new Territory(this) ];
-        // this._recalculateDeltas();
     }
 }
