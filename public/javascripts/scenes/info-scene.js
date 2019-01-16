@@ -1,6 +1,6 @@
 class InfoScene extends Phaser.Scene {
     constructor() {
-        super({key: 'info', active: true});
+        super({key: 'info'});
     }
 
     init(player) {

@@ -8,6 +8,9 @@ class WorldScene extends Phaser.Scene {
     }
 
     preload() {
+        this.scene.launch('worldUi', this.player);
+        if(!this.scene.isActive('info')) this.scene.launch('info', this.player);
+
         this.load.image('grass', 'assets/grass.jpg');
         this.load.image('post', 'assets/post.png');
         this.load.image('rectangle', 'assets/rectangle.png');
@@ -46,8 +49,6 @@ class WorldScene extends Phaser.Scene {
         this._placeRandomEnemies(100);
 
         this.createDialogs();
-
-        this.scene.launch('worldUi', this.player);
     }
 
     update(time, dt) {

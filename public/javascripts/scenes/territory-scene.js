@@ -25,6 +25,9 @@ function init(territoryData) {
 }
 
 function preload() {
+    if(!this.scene.isActive('info'))
+        this.scene.launch('info', territory.player);
+
     this.load.image('grass', 'assets/grass.jpg');
     this.load.image(Building.BARRACK.type, 'assets/barrack.jpg');
     this.load.image(Building.POST.type, 'assets/post.png');
@@ -42,6 +45,7 @@ function preload() {
 }
 
 function create() {
+
     // create empty map tiles
     createMap(this);
 
