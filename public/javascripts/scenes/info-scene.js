@@ -35,7 +35,8 @@ class InfoScene extends Phaser.Scene {
         this.populationIncreaseText = this.add.text(410, 70, '▲0', {color: 'green'}).setOrigin(0, 0.5);
 
         let self = this;
-        this.scene.get('engine').on('changeMoney', (newCoin) => {
+        this.scene.get('engine')
+          .on('changeMoney', (newCoin) => {
             self.moneyText.setText(parseInt(newCoin));
         }).on('changeFood', (newFood) => {
             let max = 0;

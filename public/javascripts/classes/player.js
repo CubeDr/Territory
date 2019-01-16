@@ -24,6 +24,8 @@ class Player {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
         this._money = clipToRange(this._money, 0);
+        this.eventBus.emit('changeMoney', this._money);
+
         // update population
         if(this._food > 0) {
             let popDelta = this._populationIncreaseRate * dt;
