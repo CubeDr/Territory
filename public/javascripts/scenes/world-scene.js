@@ -96,7 +96,7 @@ class WorldScene extends Phaser.Scene {
         this.territoryDialog.update();
     }
 
-    click(gameObject) {
+    click(gameObject, center=false) {
         if(this.selectBox)
             this.selectBox.destroy();
         if(this.selected === gameObject) {
@@ -105,6 +105,9 @@ class WorldScene extends Phaser.Scene {
             this.selected = null;
         } else {
             // select
+            if(center)
+                this.cameras.main.pan(gameObject.x, gameObject.y, 80);
+
             this.selectBox = this.add.graphics();
             this.selectBox.lineStyle(10, 0x8a2be2);
             this.selectBox.strokeRect(gameObject.x - IMAGE_WIDTH/2, gameObject.y - IMAGE_HEIGHT/2,
