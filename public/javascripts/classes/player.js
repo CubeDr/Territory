@@ -6,15 +6,17 @@ class Player {
 
     attachListeners(eventBus) {
         this.eventBus = eventBus.on('deltaMoneyDecreaseRate', (data) => {
-
+            this._moneyDecreaseRate += data.delta;
         }).on('deltaQuantityMax', (data) => {
 
         }).on('deltaPopulationMax', (data) => {
-
+            this._populationMax += data.delta;
+            eventBus.emit('changePopulationMax', this._populationMax);
         }).on('deltaFoodMax', (data) => {
-
+            this._foodMax += data.delta;
+            eventBus.emit('changeFoodMax', this._foodMax);
         }).on('deltaPopulationIncreaseRate', (data) => {
-
+            this._populationIncreaseRate += data.delta;
         });
     }
 
@@ -34,7 +36,7 @@ class Player {
         // update army
         this._updateSec(dt, this.eventBus);
 
-        this._recalculateDeltas();
+        // this._recalculateDeltas();
     }
 
     _updateSec(dt, engine) {
@@ -52,27 +54,27 @@ class Player {
         }
     }
 
-    _recalculateDeltas() {
-        this._moneyIncreaseRate = 0;
-        this._moneyDecreaseRate = 0;
-        this._foodIncreaseRate = 0;
-        this._foodDecreaseRate = 0;
-        this._populationIncreaseRate = 0;
-        this.territories.forEach((t) => {
-            this._moneyIncreaseRate += t.moneyIncreaseRate;
-            this._moneyDecreaseRate += t.moneyDecreaseRate;
-            this._foodIncreaseRate += t.foodIncreaseRate;
-            this._foodDecreaseRate += t.foodDecreaseRate;
-            this._populationIncreaseRate += t.populationIncreaseRate;
-        });
-    }
+    // _recalculateDeltas() {
+    //     this._moneyIncreaseRate = 0;
+    //     this._moneyDecreaseRate = 0;
+    //     this._foodIncreaseRate = 0;
+    //     this._foodDecreaseRate = 0;
+    //     this._populationIncreaseRate = 0;
+    //     this.territories.forEach((t) => {
+    //         this._moneyIncreaseRate += t.moneyIncreaseRate;
+    //         this._moneyDecreaseRate += t.moneyDecreaseRate;
+    //         this._foodIncreaseRate += t.foodIncreaseRate;
+    //         this._foodDecreaseRate += t.foodDecreaseRate;
+    //         this._populationIncreaseRate += t.populationIncreaseRate;
+    //     });
+    // }
 
     get populationMax() {
-        return this.territories.map((t) => t.populationMax).reduce((a, b) => a+b, 0)
+        return this._populationMax;
     }
 
     get foodMax() {
-        return this.territories.map((t) => t.foodMax).reduce((a, b) => a+b, 0)
+        return this._foodMax;
     }
 
     get money() { return this._money; }
@@ -89,14 +91,20 @@ class Player {
         this._money = 1000;
         this._food = 0;
         this._population = 100;
-
         this._dt = 0;
-
         this.__loadTerritories();
+
+        this._moneyIncreaseRate = 0;
+        this._moneyDecreaseRate = 0;
+        this._foodIncreaseRate = 0;
+        this._foodDecreaseRate = 0;
+        this._foodMax = 0;
+        this._populationIncreaseRate = 0;
+        this._populationMax = 0;
     }
 
     __loadTerritories() {
         this.territories = [ new Territory(this) ];
-        this._recalculateDeltas();
+        // this._recalculateDeltas();
     }
 }
