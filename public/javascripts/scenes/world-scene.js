@@ -49,14 +49,18 @@ class WorldScene extends Phaser.Scene {
         this._placeRandomEnemies(100);
 
         this.createDialogs();
+
+        this.engine = this.scene.get('engine');
+        this.engine.emit('showInfo', {
+            type: 'player',
+            data: this.player
+        });
     }
 
     update(time, dt) {
         this.player.update(dt/1000);
 
         this.updateDialogs();
-
-        this.scene.get('info').showPlayer(this.player);
     }
 
     createTile(x, y, key, config) {
