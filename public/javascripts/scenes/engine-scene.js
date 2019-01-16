@@ -19,11 +19,13 @@ class Engine extends Phaser.Scene {
         if(this._events[eventName] == null)
             this._events[eventName] = [];
         this._events[eventName].push(callback);
+        return this;
     }
 
     emit(eventName, data) {
         if(this._events[eventName])
             this._events[eventName].forEach((callback) => callback(data));
+        return this;
     }
     /* =================================== */
 }
