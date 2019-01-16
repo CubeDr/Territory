@@ -56,12 +56,20 @@ function create() {
     // attach event listeners
     attachListeners(this);
 
-    this.engine.on('sceneLoaded', (key) => {
-        if(key === 'info') this.engine.emit('showInfo', {
+    if(this.scene.isActive('info')) {
+        this.engine.emit('showInfo', {
             data: territory,
             type: 'territory'
         });
-    }).emit('sceneLoaded', 'territory');
+    } else {
+        this.engine.on('sceneLoaded', (key) => {
+            if(key === 'info') this.engine.emit('showInfo', {
+                data: territory,
+                type: 'territory'
+            });
+        });
+    }
+    this.engine.emit('sceneLoaded', 'territory');
 
 }
 
