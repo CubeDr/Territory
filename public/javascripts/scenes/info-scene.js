@@ -105,7 +105,7 @@ class InfoScene extends Phaser.Scene {
         InfoScene._setValueMaxText(this.foodText,
             player.food,
             player.foodMax);
-        InfoScene._setValueMaxText(this.foodText,
+        InfoScene._setValueMaxText(this.populationText,
             player.population,
             player.populationMax);
 
