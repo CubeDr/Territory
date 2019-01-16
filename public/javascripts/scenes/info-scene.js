@@ -35,17 +35,17 @@ class InfoScene extends Phaser.Scene {
         this.populationIncreaseText = this.add.text(410, 70, '▲0', {color: 'green'}).setOrigin(0, 0.5);
 
         let self = this;
-        this.scene.get('engine').on('moneyChange', (newCoin) => {
+        this.scene.get('engine').on('changeMoney', (newCoin) => {
             self.moneyText.setText(parseInt(newCoin));
-        }).on('foodChange', (newFood) => {
+        }).on('changeFood', (newFood) => {
             self.foodText.setText(parseInt(newFood));
-        }).on('populationChange', (newPopulation) => {
+        }).on('changePopulation', (newPopulation) => {
             self.populationText.setText(parseInt(newPopulation));
-        }).on('quantityChange', (territory) => {
+        }).on('changeQuantity', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
             self.quantityText.setText(parseInt(territory.quantity));
-        }).on('qualityChange', (territory) => {
+        }).on('changeQuality', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
             self.qualityText.setText(parseInt(territory.quality));
