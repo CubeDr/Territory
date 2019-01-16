@@ -2,7 +2,7 @@ var config = {
     type: Phaser.AUTO,
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
-    scene: [ TerritoryScene, WorldScene ],
+    scene: [ TerritoryScene, WorldScene, WorldUIScene ],
     parent: '#gameCanvas'
 };
 

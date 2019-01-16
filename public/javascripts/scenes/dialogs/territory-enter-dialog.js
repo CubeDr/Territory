@@ -34,7 +34,10 @@ class TerritoryEnterDialog extends Phaser.GameObjects.Container {
         this.qualityText = qualityText;
 
         let enterButton = new TextButton(scene, 0, 0, '입장', {
-            onClick: () => scene.scene.start('territory', this.territory)
+            onClick: () => {
+                scene.scene.stop('worldUi');
+                scene.scene.start('territory', this.territory)
+            }
         });
         this.add(enterButton);
         enterButton.setOrigin(0.5);

@@ -43,6 +43,8 @@ class WorldScene extends Phaser.Scene {
         this._placeRandomEnemies(100);
 
         this.createDialogs();
+
+        this.scene.launch('worldUi', this.player);
     }
 
     update(time, dt) {
