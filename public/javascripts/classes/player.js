@@ -39,6 +39,11 @@ class Player {
         // this._recalculateDeltas();
     }
 
+    deltaMoney(moneyDelta) {
+        this._money += moneyDelta;
+        this.eventBus.emit('changeMoney', this._money);
+    }
+
     _updateSec(dt, engine) {
         let eventBus = this.eventBus;
         this._dt += dt;
