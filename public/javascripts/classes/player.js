@@ -4,7 +4,21 @@ class Player {
         this.__loadPlayer();
     }
 
-    update(dt, engine) {
+    attachListeners(eventBus) {
+        this.eventBus = eventBus.on('deltaMoneyDecreaseRate', (data) => {
+
+        }).on('deltaQuantityMax', (data) => {
+
+        }).on('deltaPopulationMax', (data) => {
+
+        }).on('deltaFoodMax', (data) => {
+
+        }).on('deltaPopulationIncreaseRate', (data) => {
+
+        });
+    }
+
+    update(dt) {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
         this._money = clipToRange(this._money, 0);
@@ -18,19 +32,20 @@ class Player {
         this._food += (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
         this._food = clipToRange(this._food, 0, this.foodMax);
         // update army
-        this._updateSec(dt, engine);
+        this._updateSec(dt, this.eventBus);
 
         this._recalculateDeltas();
     }
 
     _updateSec(dt, engine) {
+        let eventBus = this.eventBus;
         this._dt += dt;
         while(this._dt >= 1) {
             this._dt -= 1;
             this.territories.forEach((t) => {
                 let transferred = t.transferArmy();
                 if(transferred) {
-                    engine.emit('quantityChange', t)
+                    eventBus.emit('quantityChange', t)
                           .emit('qualityChange', t);
                 }
             });
