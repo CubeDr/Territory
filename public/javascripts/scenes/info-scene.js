@@ -49,6 +49,16 @@ class InfoScene extends Phaser.Scene {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
             self.qualityText.setText(parseInt(territory.quality));
+        }).on('changePopulationMax', (max) => {
+            let p = 0;
+            if(this.show === 'territory') p = self.data.player.population;
+            else if(this.show === 'player') p = self.data.population;
+            InfoScene._setValueMaxText(self.populationText, p, max);
+        }).on('changeFoodMax', (max) => {
+            let f = 0;
+            if(this.show === 'territory') f = self.data.player.food;
+            else if(this.show === 'player') f = self.data.food;
+            InfoScene._setValueMaxText(self.foodText, f, max);
         }).on('showInfo', (data) => {
             console.log('event received');
             self.show = data.type;
@@ -99,5 +109,9 @@ class InfoScene extends Phaser.Scene {
         this.quantityText.setVisible(visible);
         this.qualityIcon.setVisible(visible);
         this.qualityText.setVisible(visible);
+    }
+
+    static _setValueMaxText(textView, value, max) {
+        textView.setText(parseInt(value) + " / " + parseInt(max));
     }
 }
