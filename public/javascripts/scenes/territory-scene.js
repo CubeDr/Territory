@@ -111,7 +111,7 @@ function moveEditing(gameObject) {
 function confirmEditing() {
     if(!edit.object) return;
     if(!edit.placable) return;
-    territory.build(edit.object.mapX, edit.object.mapY, edit.object.type);
+    territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
     edit.object.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
     territory._player.money -= edit.cost;
     edit.over.destroy();

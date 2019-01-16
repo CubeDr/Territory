@@ -16,38 +16,127 @@ class Territory {
         this.gameObject = null;
     }
 
-    build(x, y, what) {
+    build(x, y, what, engine) {
         this._map[y][x] = what;
-    }
-
-    _updatePopulationRelatedAttributes() {
-        this._player._moneyIncreaseRate -= this._moneyIncreaseRate;
-        this._moneyIncreaseRate = Territory.__moneyIncreaseRateFrom(this.player.population);
-        this._player._moneyIncreaseRate += this._moneyIncreaseRate;
-
-        this._player._foodDecreaseRate -= this._foodDecreaseRate;
-        this._foodDecreaseRate = Territory.__foodDecreaseRateFrom(this.player.population, this.army);
-        this._player._foodDecreaseRate += this._foodDecreaseRate;
-
-        this._player._populationIncreaseRate -= this._populationIncreaseRate;
-        this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this.map);
-        this._player._populationIncreaseRate += this._populationIncreaseRate;
+        /* Update Attributes
+         * 1. foodMax
+         * 2. populationMax
+         * 3. armyQuantityMax
+         * 4. moneyDecreaseRate
+         * 5. foodIncreaseRate
+         * 6. moneyIncreaseRate
+         * 7. foodDecreaseRate
+         * 8. populationIncreaseRate
+         */
+        let self = this;
+        switch(what) {
+            case Building.BARRACK.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.BARRACK.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.BARRACK.maintain
+                });
+                break;
+            case Building.POST.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.POST.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.POST.maintain
+                });
+                // armyQuantityMax
+                this._armyQuantityMax += 10;
+                engine.emit('deltaQuantityMax', {
+                    territory: self,
+                    delta: 10
+                });
+                break;
+            case Building.TRAIN.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.TRAIN.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.TRAIN.maintain
+                });
+                break;
+            case Building.HOUSE.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.HOUSE.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.HOUSE.maintain
+                });
+                // populationMax
+                this._populationMax += 10;
+                engine.emit('deltaPopulationMax', {
+                    territory: self,
+                    delta: 10
+                });
+                break;
+            case Building.PRODUCT.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.PRODUCT.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.PRODUCT.maintain
+                });
+                // foodIncreaseRate
+                this._foodIncreaseRate += 25;
+                engine.emit('deltaFoodIncreaseRate', {
+                    territory: self,
+                    delta: 25
+                });
+                break;
+            case Building.SAVE.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.SAVE.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.SAVE.maintain
+                });
+                // foodMax
+                this._foodMax += 100;
+                engine.emit('deltaFoodMax', {
+                    territory: self,
+                    delta: 100
+                });
+                break;
+            case Building.LANDMARK.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.LANDMARK.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.LANDMARK.maintain
+                });
+                // populationIncreaseRate
+                this._populationIncreaseRate += 10;
+                engine.emit('deltaPopulationIncreaseRate', {
+                    territory: self,
+                    delta: 10
+                });
+                break;
+            case Building.MUSEUM.type:
+                // moneyDecreaseRate
+                this._moneyDecreaseRate += Building.MUSEUM.maintain;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: Building.MUSEUM.maintain
+                });
+                break;
+        }
     }
 
     _updateAttributes() {
         this._foodMax = Territory.__foodMaxFrom(this.map);
         this._populationMax = Territory.__populationMaxFrom(this.map);
         this._armyQuantityMax = Territory.__armyQuantityMaxFrom(this.map);
-
-        this._player._moneyDecreaseRate -= this._moneyDecreaseRate;
         this._moneyDecreaseRate = Territory.__moneyDecreaseRateFrom(this.map);
-        this._player._moneyDecreaseRate += this._moneyDecreaseRate;
-
-        this._player._foodIncreaseRate -= this._foodIncreaseRate;
         this._foodIncreaseRate = Territory.__foodIncreaseRateFrom(this.map);
-        this._player._foodIncreaseRate += this._foodIncreaseRate;
+        this._moneyIncreaseRate = Territory.__moneyIncreaseRateFrom(this.player.population);
+        this._foodDecreaseRate = Territory.__foodDecreaseRateFrom(this.player.population, this.army);
+        this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this.map);
 
-        this._updatePopulationRelatedAttributes();
     }
 
     get x() { return this._x; }

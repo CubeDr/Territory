@@ -43,11 +43,11 @@ class InfoScene extends Phaser.Scene {
             self.populationText.setText(parseInt(newPopulation));
         }).on('quantityChange', (territory) => {
             if(self.show !== 'territory') return;
-            if(this.data !== data.territory) return;
+            if(this.data !== territory) return;
             self.quantityText.setText(parseInt(territory.quantity));
         }).on('qualityChange', (territory) => {
             if(self.show !== 'territory') return;
-            if(this.data !== data.territory) return;
+            if(this.data !== territory) return;
             self.qualityText.setText(parseInt(territory.quality));
         }).on('showInfo', (data) => {
             console.log('event received');

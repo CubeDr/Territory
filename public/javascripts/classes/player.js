@@ -18,7 +18,7 @@ class Player {
         this._food += (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
         this._food = clipToRange(this._food, 0, this.foodMax);
         // update army
-        this._updateSec(dt);
+        this._updateSec(dt, engine);
 
         this._recalculateDeltas();
     }
