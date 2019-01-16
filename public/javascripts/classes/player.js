@@ -46,7 +46,7 @@ class Player {
         }
 
         // update food
-        let newFood = this._food + (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
+        let newFood = this._food + (this._foodIncreaseRate - parseInt(this._foodDecreaseRate)) * dt;
         newFood = clipToRange(newFood, 0, this.foodMax);
         if(newFood !== this._food)
             this.eventBus.emit('changeFood', newFood);
