@@ -8,8 +8,6 @@ class Player {
         this.eventBus = eventBus.on('deltaMoneyDecreaseRate', (data) => {
             this._moneyDecreaseRate += data.delta;
             this.eventBus.emit('changeMoneyDecreaseRate', this._moneyDecreaseRate);
-        }).on('deltaQuantityMax', (data) => {
-
         }).on('deltaPopulationMax', (data) => {
             this._populationMax += data.delta;
             eventBus.emit('changePopulationMax', this._populationMax);
@@ -18,7 +16,11 @@ class Player {
             eventBus.emit('changeFoodMax', this._foodMax);
         }).on('deltaPopulationIncreaseRate', (data) => {
             this._populationIncreaseRate += data.delta;
-        });
+            eventBus.emit('changePopulationIncreaseRate', this._populationIncreaseRate);
+        }).on('deltaFoodIncreaseRate', (data) => {
+            this._foodIncreaseRate += data.delta;
+            eventBus.emit('changeFoodIncreaseRate', this._foodIncreaseRate);
+        })
     }
 
     update(dt) {

@@ -80,6 +80,8 @@ class InfoScene extends Phaser.Scene {
             this.foodIncreaseText.setText('▲' + parseInt(newRate));
         }).on('changeFoodDecreaseRate', (newRate) => {
             this.foodDecreaseText.setText('▼' + parseInt(newRate));
+        }).on('changePopulationIncreaseRate', (newRate) => {
+            this.populationIncreaseText.setText('▲' + newRate);
         }).emit('sceneLoaded', 'info');
     }
 
