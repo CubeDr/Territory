@@ -38,13 +38,19 @@ class InfoScene extends Phaser.Scene {
         this.scene.get('engine').on('changeMoney', (newCoin) => {
             self.moneyText.setText(parseInt(newCoin));
         }).on('changeFood', (newFood) => {
-            self.foodText.setText(parseInt(newFood));
+            let max = 0;
+            if(this.show === 'territory') max = self.data.player.foodMax;
+            else if(this.show === 'player') max = self.data.foodMax;
+            InfoScene._setValueMaxText(self.foodText, newFood, max);
         }).on('changePopulation', (newPopulation) => {
-            self.populationText.setText(parseInt(newPopulation));
+            let max = 0;
+            if(this.show === 'territory') max = self.data.player.populationMax;
+            else if(this.show === 'player') max = self.data.populationMax;
+            InfoScene._setValueMaxText(self.populationText, newPopulation, max);
         }).on('changeQuantity', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
-            self.quantityText.setText(parseInt(territory.quantity));
+            InfoScene._setValueMaxText(self.quantityText, territory.quantity, territory.armyQuantityMax);
         }).on('changeQuality', (territory) => {
             if(self.show !== 'territory') return;
             if(this.data !== territory) return;
@@ -79,7 +85,9 @@ class InfoScene extends Phaser.Scene {
 
         this._showCommonResource(territory.player);
 
-        this.quantityText.setText(parseInt(territory.army.quantity) + " / " + territory.armyQuantityMax);
+        InfoScene._setValueMaxText(this.quantityText,
+            territory.army.quantity,
+            territory.armyQuantityMax);
         this.qualityText.setText(parseInt(territory.army.quality));
     }
 
@@ -93,8 +101,12 @@ class InfoScene extends Phaser.Scene {
 
     _showCommonResource(player) {
         this.moneyText.setText(parseInt(player.money));
-        this.foodText.setText(parseInt(player.food) + " / " + player.foodMax);
-        this.populationText.setText(parseInt(player.population) + " / " + player.populationMax);
+        InfoScene._setValueMaxText(this.foodText,
+            player.food,
+            player.foodMax);
+        InfoScene._setValueMaxText(this.foodText,
+            player.population,
+            player.populationMax);
 
         this.moneyIncreaseText.setText('▲' + this.player.moneyIncreaseRate);
         this.moneyDecreaseText.setText('▼' + this.player.moneyDecreaseRate);
