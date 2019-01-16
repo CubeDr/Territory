@@ -60,7 +60,6 @@ class InfoScene extends Phaser.Scene {
             else if(this.show === 'player') f = self.data.food;
             InfoScene._setValueMaxText(self.foodText, f, max);
         }).on('showInfo', (data) => {
-            console.log('event received');
             self.show = data.type;
             self.data = data.data;
 
