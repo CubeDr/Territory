@@ -44,8 +44,11 @@ class Player {
         }
 
         // update food
-        this._food += (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
-        this._food = clipToRange(this._food, 0, this.foodMax);
+        let newFood = this._food + (this._foodIncreaseRate - this._foodDecreaseRate) * dt;
+        newFood = clipToRange(newFood, 0, this.foodMax);
+        if(newFood !== this._food)
+            this.eventBus.emit('changeFood', newFood);
+        this._food = newFood;
         // update army
         this._updateSec(dt, this.eventBus);
 
