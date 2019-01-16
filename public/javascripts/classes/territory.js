@@ -9,6 +9,11 @@ class Territory {
         this._y = getValue(config.y, 0);
         this._map = getValue(config.map, Territory.DEFAULT_MAP);
         this._updateAttributes();
+
+        // gameObject handling this territory from WorldScene
+        // this property is to easily track gameObject from WorldUIScene.
+        // can be null when WorldScene is not active.
+        this.gameObject = null;
     }
 
     build(x, y, what) {

@@ -33,6 +33,9 @@ class WorldScene extends Phaser.Scene {
         player.territories.forEach((t) => {
             this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
             this.map[t.y][t.x].over.territory = t;
+
+            // saves its gameObject to parameter to easily track gameObject from another scene
+            t.gameObject = this.map[t.y][t.x].over;
         });
 
         this.input.on('pointerdown', this.pointerDownHandler, this);
