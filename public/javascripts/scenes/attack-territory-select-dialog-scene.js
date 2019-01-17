@@ -64,6 +64,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     _buildList(territoryList) {
         let list = this.add.container(CAMERA_WIDTH/2, CAMERA_HEIGHT/3 + 50);
 
+        // Adding territories to the list
         let originX = -145;
         let originY = -37;
 
@@ -103,5 +104,12 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             item.setPosition(0, offsetY);
             offsetY += 85;
         });
+
+        // Masking list
+        let g = this.make.graphics();
+        g.fillStyle(0xffffff);
+        g.fillRect(CAMERA_WIDTH/2 - 150, CAMERA_HEIGHT/3+5, 300, 350);
+        list.mask = g.createGeometryMask();
+
     }
 }
