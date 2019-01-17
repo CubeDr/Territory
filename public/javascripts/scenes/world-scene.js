@@ -82,6 +82,13 @@ class WorldScene extends Phaser.Scene {
     }
 
     _placeRandomEnemies(count) {
+        this.player.enemies.forEach((enemy) => {
+            let e = this.createTile(enemy.x, enemy.y, 'bandit', enemy);
+            this.add.existing(e);
+            this.map[enemy.y][enemy.x].over = e;
+            this.enemies.push(e);
+            count--;
+        });
         while(count-- > 0) this._placeRandomEnemy();
     }
 
@@ -94,10 +101,19 @@ class WorldScene extends Phaser.Scene {
             y = Math.floor(Math.random() * WORLD_HEIGHT) - Math.floor(WORLD_HEIGHT/2);
         } while(this.map[y][x].over != null);
 
-        let e = this.createTile(x, y, 'bandit', {quantity: 100, quality: 50});
+        let enemy = {
+            x: x,
+            y: y,
+            quantity: 100,
+            quality: 50
+        };
+
+        let e = this.createTile(x, y, 'bandit', enemy);
         this.add.existing(e);
         this.map[y][x].over = e;
         this.enemies.push(e);
+
+        this.player.enemies.push(enemy);
     }
 
     updateDialogs() {

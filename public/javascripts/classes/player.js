@@ -131,6 +131,7 @@ class Player {
         this._food = 0;
         this._population = 190;
         this._dt = 0;
+        this.enemies = [];
         this.__loadTerritories();
 
         this._initializeAttributes();
