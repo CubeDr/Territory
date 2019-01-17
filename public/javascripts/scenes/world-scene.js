@@ -133,6 +133,7 @@ class WorldScene extends Phaser.Scene {
                     break;
                 default:
                     this.closeAllDialog();
+                    break;
             }
         }
     }
