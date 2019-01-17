@@ -33,8 +33,21 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let fightableTerritories = this._getFightableTerritories();
         this._buildList(fightableTerritories);
 
-        this.add.text(textX - 50, CAMERA_HEIGHT * 4 / 5, "확인").setOrigin(1, 0.5);
-        this.add.text(textX + 50, CAMERA_HEIGHT * 4 / 5, "취소").setOrigin(0, 0.5);
+        let btnConfirm = new TextButton(this,
+            textX - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
+            onClick: () => {
+
+            }
+        }).setOrigin(1, 0.5);
+        this.add.existing(btnConfirm);
+
+        let btnCancel = new TextButton(this,
+            textX + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
+            onClick: () => {
+                this.scene.stop(AttackTerritorySelectDialogScene.KEY);
+            }
+        }).setOrigin(0, 0.5);
+        this.add.existing(btnCancel);
     }
 
     _getFightableTerritories() {
