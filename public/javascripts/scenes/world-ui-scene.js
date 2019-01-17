@@ -80,13 +80,14 @@ class WorldUIScene extends Phaser.Scene {
                     if(d >= 25)
                         self._startScroll();
                 } else {
+                    // Scroll
                     let deltaY = self.lastPointerPosition.y - p.y;
 
                     self.lastPointerPosition.y = p.y;
 
                     let newY = clipToRange(self.cameraCenter.current + deltaY,
-                        self.cameraCenter.max,
-                        self.cameraCenter.min);
+                        self.cameraCenter.min,
+                        self.cameraCenter.max);
                     self.cameraCenter.current = newY;
                     self.cameras.main.centerOn(self.width/2, newY);
                 }

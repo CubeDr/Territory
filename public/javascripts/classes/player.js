@@ -138,7 +138,16 @@ class Player {
     }
 
     __loadTerritories() {
-        this.territories = [ new Territory(this), new Territory(this, {x:1, y:0}) ];
+        this.territories = [ new Territory(this),
+            new Territory(this, {x:1, y:0}),
+            new Territory(this, {x:2, y:0}),
+            new Territory(this, {x:3, y:0}),
+            new Territory(this, {x:4, y:0}),
+            new Territory(this, {x:5, y:0}),
+            new Territory(this, {x:6, y:0}),
+            new Territory(this, {x:7, y:0}),
+            new Territory(this, {x:8, y:0}),
+            new Territory(this, {x:9, y:0}) ];
     }
 
     getRandomEnemySpec() {
