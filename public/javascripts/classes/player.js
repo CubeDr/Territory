@@ -129,7 +129,7 @@ class Player {
     __loadPlayer() {
         this._money = 2000;
         this._food = 0;
-        this._population = 190;
+        this._population = 390;
         this._dt = 0;
         this.enemies = [];
         this.__loadTerritories();

@@ -77,7 +77,7 @@ class WorldScene extends Phaser.Scene {
         this.territoryDialog = new TerritoryEnterDialog(this);
         this.add.existing(this.territoryDialog);
 
-        this.banditDialog = new BanditAttackDialog(this);
+        this.banditDialog = new BanditAttackDialog(this, this.player);
         this.add.existing(this.banditDialog);
     }
 
