@@ -38,7 +38,8 @@ class WorldUIScene extends Phaser.Scene {
     }
 
     click(item) {
-        console.log('Click ' + item);
+        this.scene.get('world').click(item.territory.gameObject, true);
+        // console.log('Click ' + item.territory.gameObject);
     }
 
     _createTerritoryButtons() {
