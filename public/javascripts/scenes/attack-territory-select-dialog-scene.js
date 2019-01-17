@@ -11,6 +11,9 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
     preload() {
         this.load.image('item_back', 'assets/ui/list_item_back.png');
+        this.load.image('icon', 'assets/ui/territory_icon.png');
+        this.load.image('quantity_icon', 'assets/ui/resources/quantity.png');
+        this.load.image('quality_icon', 'assets/ui/resources/quality.png');
     }
 
     create() {
@@ -59,15 +62,46 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _buildList(territoryList) {
-        let list = this.add.container(CAMERA_WIDTH/2, CAMERA_HEIGHT/3);
+        let list = this.add.container(CAMERA_WIDTH/2, CAMERA_HEIGHT/3 + 50);
 
+        let originX = -145;
+        let originY = -37;
+
+        let offsetY = 0;
         territoryList.forEach((t) => {
             var item = this.add.container(0, 0);
 
             var background = this.add.image(0, 0, 'item_back');
             item.add(background);
 
+            var icon = this.add.image(0, 0, 'icon').setOrigin(0);
+            item.add(icon);
+            icon.setPosition(originX + 8, originY + 8);
+
+            var text = this.add.text(0, 0, '영지(' + t.x + ", " + t.y + ")")
+                .setOrigin(0, 0.5);
+            item.add(text);
+            text.setPosition(originX + 74, originY + 20);
+
+            var quantityIcon = this.add.image(0, 0, 'quantity_icon').setOrigin(0);
+            item.add(quantityIcon);
+            quantityIcon.setPosition(originX + 74, originY + 36);
+
+            var quantityText = this.add.text(0, 0, t.army.quantity, {fontSize:20}).setOrigin(0, 0.5);
+            item.add(quantityText);
+            quantityText.setPosition(originX + 109, originY + 51);
+
+            var qualityIcon = this.add.image(0, 0, 'quality_icon').setOrigin(0);
+            item.add(qualityIcon);
+            qualityIcon.setPosition(originX + 177, originY + 36);
+
+            var qualityText = this.add.text(0, 0, t.army.quality, {fontSize:20}).setOrigin(0, 0.5);
+            item.add(qualityText);
+            qualityText.setPosition(originX + 212, originY + 51);
+
             list.add(item);
+            item.setPosition(0, offsetY);
+            offsetY += 85;
         });
     }
 }

@@ -8,7 +8,7 @@ class Territory {
         this._x = getValue(config.x, 0);
         this._y = getValue(config.y, 0);
         this._map = getValue(config.map, [
-            ['house', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['house', 'house', 'house', 'house', 'product', 'product', 'post', 'barrack'],
             ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
             ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
             ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
