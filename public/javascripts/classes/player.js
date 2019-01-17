@@ -105,6 +105,7 @@ class Player {
         });
 
         this._foodDecreaseRate += parseInt(this._population) * DEFAULT_FOOD_DECREASE_FACTOR;
+        this._moneyIncreaseRate += parseInt(this._population) * DEFAULT_MONEY_INCREASE_FACTOR;
     }
 
     get populationMax() {

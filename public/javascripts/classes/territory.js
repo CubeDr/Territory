@@ -247,7 +247,7 @@ class Territory {
     }
 
     static __moneyIncreaseRateFrom(population) {
-        return parseInt(population) * DEFAULT_MONEY_INCREASE_FACTOR;
+        return 0;
     }
 
     static __moneyDecreaseRateFrom(map) {
