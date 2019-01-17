@@ -72,7 +72,6 @@ class WorldUIScene extends Phaser.Scene {
                 if(!self.lastPointerPosition) return;
                 self.lastPointerPosition = null;
                 if(self.isScrolling) self._stopScroll();
-                else self.click(self.currentHover);
             })
             .on('pointermove', (p) => {
                 if(!self.lastPointerPosition) return;
@@ -121,6 +120,7 @@ class WorldUIScene extends Phaser.Scene {
             .on('pointerup', () => {
                 if(self.currentHover !== c) return;
                 c.iterate((c) => c.setTint(0xaaaaaa));
+                if(!self.isScrolling) self.click(c);
             });
     }
 
