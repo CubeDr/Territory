@@ -103,6 +103,8 @@ class Player {
             this._populationIncreaseRate += t.populationIncreaseRate;
             this._populationMax += t.populationMax;
         });
+
+        this._foodDecreaseRate += parseInt(this._population) * DEFAULT_FOOD_DECREASE_FACTOR;
     }
 
     get populationMax() {

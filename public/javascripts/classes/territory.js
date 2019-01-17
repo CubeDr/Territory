@@ -272,8 +272,7 @@ class Territory {
     }
 
     static __foodDecreaseRateFrom(population, army) {
-        return parseInt(population) * DEFAULT_FOOD_DECREASE_FACTOR
-            + parseInt(army.quantity) * ARMY_FOOD_DECREASE_FACTOR * army.quality / 100;
+        return parseInt(army.quantity) * ARMY_FOOD_DECREASE_FACTOR * army.quality / 100;
     }
 
     static __populationIncreaseRateFrom(food, map) {
