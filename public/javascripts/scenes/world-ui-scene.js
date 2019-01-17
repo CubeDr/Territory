@@ -5,7 +5,7 @@ class WorldUIScene extends Phaser.Scene {
         this.player = null;
         this.currentHover = null;
         this.isScrolling = false;
-        this.isPointerDown = false;
+        this.pointerDownPosition = null;
     }
 
     preload() {
@@ -29,6 +29,10 @@ class WorldUIScene extends Phaser.Scene {
         this._attachMainTouchListener();
     }
 
+    click(item) {
+        console.log('Click ' + item);
+    }
+
     _createTerritoryButtons() {
         let offsetX = IMAGE_WIDTH / 2;
         let offsetY = IMAGE_HEIGHT / 2;
@@ -45,17 +49,29 @@ class WorldUIScene extends Phaser.Scene {
         this.input
             .on('pointerdown', (p) => {
                 if(this._outOfCamera(p)) return;
-                self.isPointerDown = true;
+                self.pointerDownPosition = {
+                    x: p.x,
+                    y: p.y
+                };
                 console.log("D: " + p.x + ", " + p.y);
             })
             .on('pointerup', (p) => {
-                if(!self.isPointerDown) return;
-                self.isPointerDown = false;
+                if(!self.pointerDownPosition) return;
                 console.log("U: " + p.x + ", " + p.y);
+                console.log("from " + self.pointerDownPosition.x + ", " + self.pointerDownPosition.y);
+                self.pointerDownPosition = null;
+                if(self.isScrolling) self._stopScroll();
+                else self.click(self.currentHover);
             })
             .on('pointermove', (p) => {
-                if(!self.isPointerDown) return;
-                console.log("M: " + p.x + ", " + p.y);
+                if(!self.pointerDownPosition) return;
+                if(!self.isScrolling) {
+                    let d = sqDistance(self.pointerDownPosition, p);
+                    if(d >= 25)
+                        self._startScroll();
+                } else {
+                    // scroll
+                }
             });
     }
 
@@ -87,6 +103,16 @@ class WorldUIScene extends Phaser.Scene {
                 if(self.currentHover !== c) return;
                 c.iterate((c) => c.setTint(0xaaaaaa));
             });
+    }
+
+    _startScroll() {
+        console.log('start scroll');
+        this.isScrolling = true;
+    }
+
+    _stopScroll() {
+        console.log('stop scroll');
+        this.isScrolling = false;
     }
 
     _outOfCamera(p) {
