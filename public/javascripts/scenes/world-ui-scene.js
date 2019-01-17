@@ -6,6 +6,11 @@ class WorldUIScene extends Phaser.Scene {
         this.currentHover = null;
         this.isScrolling = false;
         this.pointerDownPosition = null;
+        this.cameraCenter = {
+            current: 0,
+            min: 0,
+            max: 0
+        };
     }
 
     preload() {
@@ -25,6 +30,9 @@ class WorldUIScene extends Phaser.Scene {
         this.cameras.main.setSize(this.width, this.height);
         this.cameras.main.setPosition(this.x, this.y);
 
+        this.cameraCenter.current = this.height/2;
+        this.cameraCenter.min = this.height/2;
+
         this._createTerritoryButtons();
         this._attachMainTouchListener();
     }
@@ -39,9 +47,14 @@ class WorldUIScene extends Phaser.Scene {
         this.player.territories.forEach((t) => {
             // place territory button
             this._addTerritoryButton(t, offsetX, offsetY);
+            console.log(offsetY);
 
             offsetY += IMAGE_HEIGHT + 10; // 10 for gap
         });
+        let maxCameraCenter = offsetY - IMAGE_HEIGHT/2 - this.height/2 - 5;
+        if(maxCameraCenter > this.cameraCenter.min)
+            this.cameraCenter.max = maxCameraCenter;
+        else this.cameraCenter.max = this.cameraCenter.min;
     }
 
     _attachMainTouchListener() {
@@ -53,12 +66,12 @@ class WorldUIScene extends Phaser.Scene {
                     x: p.x,
                     y: p.y
                 };
-                console.log("D: " + p.x + ", " + p.y);
+                // console.log("D: " + p.x + ", " + p.y);
             })
             .on('pointerup', (p) => {
                 if(!self.pointerDownPosition) return;
-                console.log("U: " + p.x + ", " + p.y);
-                console.log("from " + self.pointerDownPosition.x + ", " + self.pointerDownPosition.y);
+                // console.log("U: " + p.x + ", " + p.y);
+                // console.log("from " + self.pointerDownPosition.x + ", " + self.pointerDownPosition.y);
                 self.pointerDownPosition = null;
                 if(self.isScrolling) self._stopScroll();
                 else self.click(self.currentHover);
