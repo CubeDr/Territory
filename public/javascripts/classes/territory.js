@@ -165,10 +165,39 @@ class Territory {
         if(t + this.army.quantity > max) t = max - this.army.quantity;
         if(t > 0) {
 
-            this.player._population -= t;
+            /* Rate change calculation
+             * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
+             * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
+             */
+
+            let self = this;
+            let armyFactor = this._army.quantity * (this._army.quality / 100);
+            // console.log('armyFactorPrev:' + armyFactor);
+
+            // reset effect of army
+            eventBus.emit('deltaMoneyDecreaseRate', {
+                territory: self,
+                delta: -armyFactor * ARMY_MONEY_DECREASE_FACTOR
+            }).emit('deltaFoodDecreaseRate', {
+                territory: self,
+                delta: -armyFactor * ARMY_FOOD_DECREASE_FACTOR
+            });
+
             this._army.quality = this._army.quality * this._army.quantity + DEFAULT_ARMY_NEW_QUALITY * t;
             this._army.quantity += t;
             this._army.quality /= this._army.quantity;
+
+            // re-affect
+            this.player.deltaPopulation(-t);
+            armyFactor = this._army.quantity * (this._army.quality / 100);
+            // console.log('armyFactorNext:' + armyFactor);
+            eventBus.emit('deltaMoneyDecreaseRate', {
+                territory: self,
+                delta: armyFactor * ARMY_MONEY_DECREASE_FACTOR
+            }).emit('deltaFoodDecreaseRate', {
+                territory: self,
+                delta: armyFactor * ARMY_FOOD_DECREASE_FACTOR
+            });
 
             eventBus.emit('changeQuantity', this);
             eventBus.emit('changeQuality', this);
@@ -250,12 +279,12 @@ class Territory {
 }
 
 Territory.DEFAULT_MAP = [
-    ['grass', 'grass', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['grass', 'grass', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['grass', 'grass', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['grass', 'grass', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['grass', 'grass', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['grass', 'grass', 'landmark', 'grass', 'grass', 'grass', 'grass', 'grass'],
-    ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-    ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
+    ['house', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+    ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
+    ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
+    ['product', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
 ];

@@ -20,7 +20,10 @@ class Player {
         }).on('deltaFoodIncreaseRate', (data) => {
             this._foodIncreaseRate += data.delta;
             eventBus.emit('changeFoodIncreaseRate', this._foodIncreaseRate);
-        })
+        }).on('deltaFoodDecreaseRate', (data) => {
+            this._foodDecreaseRate += data.delta;
+            eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
+        });
     }
 
     update(dt) {
@@ -30,20 +33,7 @@ class Player {
         this.eventBus.emit('changeMoney', this._money);
 
         // update population
-        if(this._food > 0) {
-            let newPopulation = this._population + this._populationIncreaseRate * dt;
-            newPopulation = clipToRange(newPopulation, 0, this.populationMax);
-            if(newPopulation !== this._population)
-                this.eventBus.emit('changePopulation', newPopulation);
-            let delta = newPopulation - this._population;
-            this._population = newPopulation;
-
-            this._moneyIncreaseRate += delta * DEFAULT_MONEY_INCREASE_FACTOR;
-            this.eventBus.emit('changeMoneyIncreaseRate', this._moneyIncreaseRate);
-
-            this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
-            this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
-        }
+        this.deltaPopulation(this._populationIncreaseRate * dt);
 
         // update food
         let newFood = this._food + (this._foodIncreaseRate - parseInt(this._foodDecreaseRate)) * dt;
@@ -60,6 +50,24 @@ class Player {
     deltaMoney(moneyDelta) {
         this._money += moneyDelta;
         this.eventBus.emit('changeMoney', this._money);
+    }
+
+    deltaPopulation(populationDelta) {
+        if(this._food <= 0) return false;
+        let newPopulation = this._population + populationDelta;
+        if(newPopulation < 0) return false;
+        newPopulation = clipToRange(newPopulation, 0, this.populationMax);
+        if(newPopulation !== this._population)
+            this.eventBus.emit('changePopulation', newPopulation);
+        let delta = newPopulation - this._population;
+        this._population = newPopulation;
+
+        this._moneyIncreaseRate += delta * DEFAULT_MONEY_INCREASE_FACTOR;
+        this.eventBus.emit('changeMoneyIncreaseRate', this._moneyIncreaseRate);
+
+        this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
+        this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
+        return true;
     }
 
     _updateSec(dt, engine) {
@@ -116,9 +124,9 @@ class Player {
     get populationIncreaseRate() { return this._populationIncreaseRate; }
 
     __loadPlayer() {
-        this._money = 1000;
+        this._money = 2000;
         this._food = 0;
-        this._population = 100;
+        this._population = 190;
         this._dt = 0;
         this.__loadTerritories();
 
