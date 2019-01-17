@@ -140,4 +140,19 @@ class Player {
     __loadTerritories() {
         this.territories = [ new Territory(this), new Territory(this, {x:1, y:0}) ];
     }
+
+    getRandomEnemySpec() {
+        let maxQuantity = 10;
+        let maxQuality = 50;
+        this.territories.forEach((t) => {
+            if(t.army.quantity > maxQuantity) maxQuantity = t.army.quantity;
+            if(t.army.quality > maxQuality) maxQuality = t.army.quality;
+        });
+        let quantity = maxQuantity + Math.floor(Math.random()*11) - 5;
+        let quality = maxQuality + Math.floor(Math.random()*20) - 10;
+        return {
+            quantity: quantity,
+            quality: quality
+        };
+    }
 }

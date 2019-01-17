@@ -101,12 +101,9 @@ class WorldScene extends Phaser.Scene {
             y = Math.floor(Math.random() * WORLD_HEIGHT) - Math.floor(WORLD_HEIGHT/2);
         } while(this.map[y][x].over != null);
 
-        let enemy = {
-            x: x,
-            y: y,
-            quantity: 100,
-            quality: 50
-        };
+        let enemy = this.player.getRandomEnemySpec();
+        enemy.x = x;
+        enemy.y = y;
 
         let e = this.createTile(x, y, 'bandit', enemy);
         this.add.existing(e);
