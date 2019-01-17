@@ -134,6 +134,6 @@ class Player {
     }
 
     __loadTerritories() {
-        this.territories = [ new Territory(this) ];
+        this.territories = [ new Territory(this), new Territory(this, {x:1, y:0}) ];
     }
 }

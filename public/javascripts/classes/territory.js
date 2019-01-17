@@ -7,7 +7,16 @@ class Territory {
         });
         this._x = getValue(config.x, 0);
         this._y = getValue(config.y, 0);
-        this._map = getValue(config.map, Territory.DEFAULT_MAP);
+        this._map = getValue(config.map, [
+            ['house', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
+            ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
+            ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
+            ['product', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
+        ]);
         this._updateAttributes();
 
         // gameObject handling this territory from WorldScene
@@ -277,14 +286,3 @@ class Territory {
         return count;
     }
 }
-
-Territory.DEFAULT_MAP = [
-    ['house', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-    ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
-    ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
-    ['product', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
-];
