@@ -5,7 +5,7 @@ class WorldUIScene extends Phaser.Scene {
         this.player = null;
         this.currentHover = null;
         this.isScrolling = false;
-        this.pointerDownPosition = null;
+        this.lastPointerPosition = null;
         this.cameraCenter = {
             current: 0,
             min: 0,
@@ -47,7 +47,6 @@ class WorldUIScene extends Phaser.Scene {
         this.player.territories.forEach((t) => {
             // place territory button
             this._addTerritoryButton(t, offsetX, offsetY);
-            console.log(offsetY);
 
             offsetY += IMAGE_HEIGHT + 10; // 10 for gap
         });
@@ -62,28 +61,34 @@ class WorldUIScene extends Phaser.Scene {
         this.input
             .on('pointerdown', (p) => {
                 if(this._outOfCamera(p)) return;
-                self.pointerDownPosition = {
+                self.lastPointerPosition = {
                     x: p.x,
                     y: p.y
                 };
                 // console.log("D: " + p.x + ", " + p.y);
             })
             .on('pointerup', (p) => {
-                if(!self.pointerDownPosition) return;
-                // console.log("U: " + p.x + ", " + p.y);
-                // console.log("from " + self.pointerDownPosition.x + ", " + self.pointerDownPosition.y);
-                self.pointerDownPosition = null;
+                if(!self.lastPointerPosition) return;
+                self.lastPointerPosition = null;
                 if(self.isScrolling) self._stopScroll();
                 else self.click(self.currentHover);
             })
             .on('pointermove', (p) => {
-                if(!self.pointerDownPosition) return;
+                if(!self.lastPointerPosition) return;
                 if(!self.isScrolling) {
-                    let d = sqDistance(self.pointerDownPosition, p);
+                    let d = sqDistance(self.lastPointerPosition, p);
                     if(d >= 25)
                         self._startScroll();
                 } else {
-                    // scroll
+                    let deltaY = self.lastPointerPosition.y - p.y;
+
+                    self.lastPointerPosition.y = p.y;
+
+                    let newY = clipToRange(self.cameraCenter.current + deltaY,
+                        self.cameraCenter.max,
+                        self.cameraCenter.min);
+                    self.cameraCenter.current = newY;
+                    self.cameras.main.centerOn(self.width/2, newY);
                 }
             });
     }
@@ -119,12 +124,10 @@ class WorldUIScene extends Phaser.Scene {
     }
 
     _startScroll() {
-        console.log('start scroll');
         this.isScrolling = true;
     }
 
     _stopScroll() {
-        console.log('stop scroll');
         this.isScrolling = false;
     }
 
