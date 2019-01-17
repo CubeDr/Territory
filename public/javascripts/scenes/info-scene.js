@@ -125,11 +125,11 @@ class InfoScene extends Phaser.Scene {
             player.population,
             player.populationMax);
 
-        this.moneyIncreaseText.setText('▲' + this.player.moneyIncreaseRate);
-        this.moneyDecreaseText.setText('▼' + this.player.moneyDecreaseRate);
-        this.foodIncreaseText.setText('▲' + this.player.foodIncreaseRate);
-        this.foodDecreaseText.setText('▼' + this.player.foodDecreaseRate);
-        this.populationIncreaseText.setText('▲' + this.player.populationIncreaseRate);
+        this.moneyIncreaseText.setText('▲' + parseInt(this.player.moneyIncreaseRate));
+        this.moneyDecreaseText.setText('▼' + parseInt(this.player.moneyDecreaseRate));
+        this.foodIncreaseText.setText('▲' + parseInt(this.player.foodIncreaseRate));
+        this.foodDecreaseText.setText('▼' + parseInt(this.player.foodDecreaseRate));
+        this.populationIncreaseText.setText('▲' + parseInt(this.player.populationIncreaseRate));
     }
 
     _setTerritoryInfoVisibility(visible) {
