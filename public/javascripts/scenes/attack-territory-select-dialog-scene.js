@@ -106,6 +106,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let offsetY = 0;
         territoryList.forEach((t) => {
             var item = this.add.container(0, 0);
+            item.territory = t;
 
             var background = this.add.image(0, 0, 'item_back').setOrigin(0.5, 0);
             item.add(background);
@@ -134,6 +135,19 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             var qualityText = this.add.text(0, 0, t.army.quality, {fontSize:20}).setOrigin(0, 0.5);
             item.add(qualityText);
             qualityText.setPosition(originX + 212, 51);
+
+            item.quantityListener = (t) => {
+                if(t !== item.territory) return;
+                quantityText.setText(t.army.quantity);
+            };
+            item.qualityListener = (t) => {
+                if(t !== item.territory) return;
+                qualityText.setText(t.army.quality);
+            };
+
+            this.scene.get('engine')
+                .on('changeQuantity', item.quantityListener)
+                .on('changeQuality', item.qualityListener);
 
             item.setInteractive(
                 new Phaser.Geom.Rectangle(originX, 0, 290, 74),
@@ -193,6 +207,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
                 onClick: () => {
                     if(this.isScrolling) return;
+                    this._offAllListeners();
                     this.scene.stop(AttackTerritorySelectDialogScene.KEY);
                 }
             }).setOrigin(0, 0.5);
@@ -204,5 +219,13 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             && y >= this.listY
             && x <= this.listX + this.listW/2
             && y <= this.listY + this.listH;
+    }
+
+    _offAllListeners() {
+        this.list.iterate((item) => {
+            this.scene.get('engine')
+                .off('changeQuantity', item.quantityListener)
+                .off('changeQuality', item.qualityListener);
+        });
     }
 }
