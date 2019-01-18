@@ -3,6 +3,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
     constructor() {
         super({key: AttackTerritorySelectDialogScene.KEY});
+        this.currentHover = null;
     }
 
     init(player) {
@@ -24,33 +25,15 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let textX = CAMERA_WIDTH / 2;
         let textY = CAMERA_HEIGHT / 3;
         // title text
-        this.add.text(textX, textY, "병력을 출진시킬 영지를 선택하세요").setOrigin(0.5, 1)
+        let title = this.add.text(textX, textY, "병력을 출진시킬 영지를 선택하세요").setOrigin(0.5, 1);
         // set dialog modal
-            .setInteractive(new Phaser.Geom.Rectangle(), () => { return true; })
-            .on('pointerdown',  (p, x, y, e) => e.stopPropagation())
-            .on('pointerup',    (p, x, y, e) => e.stopPropagation())
-            .on('pointermove',  (p, x, y, e) => e.stopPropagation())
-            .on('pointerover',  (p, x, y, e) => e.stopPropagation())
-            .on('pointerout',   (p, e) => e.stopPropagation());
+        title.setInteractive(new Phaser.Geom.Rectangle(), () => { return true; });
+        ignoreEvents(title);
 
         let fightableTerritories = this._getFightableTerritories();
         this._buildList(fightableTerritories);
 
-        let btnConfirm = new TextButton(this,
-            textX - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
-            onClick: () => {
-
-            }
-        }).setOrigin(1, 0.5);
-        this.add.existing(btnConfirm);
-
-        let btnCancel = new TextButton(this,
-            textX + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
-            onClick: () => {
-                this.scene.stop(AttackTerritorySelectDialogScene.KEY);
-            }
-        }).setOrigin(0, 0.5);
-        this.add.existing(btnCancel);
+        this._buildButtons();
     }
 
     _getFightableTerritories() {
@@ -67,6 +50,11 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         // Adding territories to the list
         let originX = -145;
         let originY = -37;
+
+        let listX = list.x + originX;
+        let listY = list.y + originY;
+        let listW = 290;
+        let listH = 340;
 
         let offsetY = 0;
         territoryList.forEach((t) => {
@@ -100,6 +88,19 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             item.add(qualityText);
             qualityText.setPosition(originX + 212, originY + 51);
 
+            item.setInteractive(
+                new Phaser.Geom.Rectangle(originX, originY, 290, 74),
+                Phaser.Geom.Rectangle.Contains
+            ).on('pointerdown', (p, x, y) => {
+                console.log('pdown ');
+            }).on('pointerup', (p, x, y) => {
+                console.log('pup');
+            }).on('pointerover', (p, x, y) => {
+                console.log('pover');
+            }).on('pointerout', (p, x, y) => {
+                console.log('pout');
+            });
+
             list.add(item);
             item.setPosition(0, offsetY);
             offsetY += 85;
@@ -108,8 +109,37 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         // Masking list
         let g = this.make.graphics();
         g.fillStyle(0xffffff);
-        g.fillRect(CAMERA_WIDTH/2 - 150, CAMERA_HEIGHT/3+5, 300, 350);
+        g.fillRect(listX, listY, listW, listH);
         list.mask = g.createGeometryMask();
 
+        // Covering list so that masked part doesn't get touched
+        let c = this.add.image(0, 0, '');
+        c.setAlpha(0, 0, 0, 0);
+        c.setInteractive(
+            new Phaser.Geom.Rectangle(0, 0, 10, 10),
+            (c, x, y) => {
+                return x < listX || y < listY || x > listX + listW || y > listY + listH;
+            }
+        );
+        ignoreEvents(c);
+
+    }
+
+    _buildButtons() {
+        let btnConfirm = new TextButton(this,
+            CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
+                onClick: () => {
+
+                }
+            }).setOrigin(1, 0.5);
+        this.add.existing(btnConfirm);
+
+        let btnCancel = new TextButton(this,
+            CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
+                onClick: () => {
+                    this.scene.stop(AttackTerritorySelectDialogScene.KEY);
+                }
+            }).setOrigin(0, 0.5);
+        this.add.existing(btnCancel);
     }
 }

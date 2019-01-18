@@ -13,3 +13,12 @@ function clipToRange(value, min, max) {
 function getValue(value, defaultValue) {
     return value? value: defaultValue;
 }
+
+function ignoreEvents(interactive) {
+    interactive
+        .on('pointerdown',  (p, x, y, e) => e.stopPropagation())
+        .on('pointerup',    (p, x, y, e) => e.stopPropagation())
+        .on('pointermove',  (p, x, y, e) => e.stopPropagation())
+        .on('pointerover',  (p, x, y, e) => e.stopPropagation())
+        .on('pointerout',   (p, e) => e.stopPropagation());
+}
