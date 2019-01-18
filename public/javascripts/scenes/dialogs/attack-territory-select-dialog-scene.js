@@ -41,7 +41,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         g.fillStyle(0x000000, 0.7);
         g.fillRect(0, IMAGE_HEIGHT, GAME_WIDTH, CAMERA_HEIGHT);
 
-        g.fillStyle(0x000000, 0.3);
+        g.fillStyle(0xaaaaaa, 1);
         g.fillRoundedRect(this.bodyX - this.bodyWidth/2 - 10, this.bodyY - 10, this.bodyWidth + 20, this.bodyHeight + 20, 5);
 
         let textX = CAMERA_WIDTH / 2;
