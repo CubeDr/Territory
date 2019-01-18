@@ -48,11 +48,13 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
     constructor(scene, x, y, width, config) {
         super(scene, x, y);
 
+        this.width = width;
         this.min = getValue(config.min, 0);
         this.max = getValue(config.max, 100);
         this.isDescrete = getValue(config.isDescrete, false);
         this.thumbRadius = getValue(config.thumbRadius, 10);
 
+        this.value = 0;
         this.valueChangeListener = null;
 
         this.bar = scene.add.rectangle(0, 0, width, 3, 0x777777).setOrigin(0.5);
@@ -62,14 +64,29 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
         this.add(this.thumb);
         this.thumb.setInteractive({draggable: true})
             .on('drag', (p, x, y) => {
-                console.log('drag ', x, y);
                 if(x < -width/2) x = -width/2;
                 else if(x > width/2) x = width/2;
                 this.thumb.setPosition(x, 0);
-            })
+
+                this._calculateValue();
+            }, this)
             .on('dragend', (p, x, y) => {
-                console.log('end');
-            });
+                this._snapToPoint();
+            }, this);
+    }
+
+    _calculateValue() {
+        let value = (this.thumb.x + this.width/2) / this.width * (this.max - this.min) + this.min;
+        if(this.isDescrete) value = Math.floor(value);
+        if(value !== this.value) {
+            this.value = value;
+            if(this.valueChangeListener)
+                this.valueChangeListener(this.value);
+        }
+    }
+
+    _snapToPoint() {
+        if(!this.isDescrete) return;
     }
 
     setOnValueChangeListener(listener) {
