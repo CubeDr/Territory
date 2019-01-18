@@ -5,10 +5,11 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         super({key: AttackTerritorySelectDialogScene.KEY});
         this.currentHover = null;
         this.list = null;
-        this.listX = CAMERA_WIDTH/2;
-        this.listY = CAMERA_HEIGHT/3 + 20;
-        this.listW = 290;
-        this.listH = 340;
+        this.card = null;
+        this.bodyX = CAMERA_WIDTH/2;
+        this.bodyY = CAMERA_HEIGHT/3 + 20;
+        this.bodyWidth = 290;
+        this.bodyHeight = 340;
         this.isScrolling = false;
         this.lastPointerPosition = null;
         this.scrollOffset = {
@@ -17,6 +18,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             max: 0
         };
         this.selected = null;
+        this.state = 'territory';
     }
 
     init(player) {
@@ -27,8 +29,11 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this.load.image('item_back', 'assets/ui/list_item_back.png');
         this.load.image('item_back_selected', 'assets/ui/list_item_back_selected.png');
         this.load.image('icon', 'assets/ui/territory_icon.png');
+        this.load.image('territory_image', 'assets/world/territory.png');
         this.load.image('quantity_icon', 'assets/ui/resources/quantity.png');
         this.load.image('quality_icon', 'assets/ui/resources/quality.png');
+        this.load.image('money_icon', 'assets/ui/resources/coin.png');
+        this.load.image('food_icon', 'assets/ui/resources/food.png');
     }
 
     create() {
@@ -39,18 +44,20 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let textX = CAMERA_WIDTH / 2;
         let textY = CAMERA_HEIGHT / 3;
         // title text
-        let title = this.add.text(textX, textY, "병력을 출진시킬 영지를 선택하세요").setOrigin(0.5, 1);
+        this.title = this.add.text(textX, textY, "병력을 출진시킬 영지를 선택하세요").setOrigin(0.5, 1);
         // set dialog modal
-        title.setInteractive(new Phaser.Geom.Rectangle(), () => { return true; });
+        this.title.setInteractive(new Phaser.Geom.Rectangle(), () => { return true; });
 
         let fightableTerritories = this._getFightableTerritories();
         this.list = this._buildList(fightableTerritories);
+        this.card = this._buildCard();
+        this.card.setVisible(false);
 
         this._buildButtons();
 
         this.input
             .on('pointerdown', (p) => {
-                if(!this._isInList(p.x, p.y)) return;
+                if(!this._isInBody(p.x, p.y)) return;
                 this.lastPointerPosition = {
                     x: p.x,
                     y: p.y
@@ -59,7 +66,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             .on('pointerup', (p) => {
                 if(!this.lastPointerPosition) return;
                 this.lastPointerPosition = null;
-                if(!this._isInList(p.x, p.y) && this.currentHover)
+                if(!this._isInBody(p.x, p.y) && this.currentHover)
                     this.currentHover.iterate((c) => {
                         c.clearTint();
                     });
@@ -98,10 +105,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _buildList(territoryList) {
-        let list = this.add.container(this.listX, this.listY);
+        let list = this.add.container(this.bodyX, this.bodyY);
 
         // Adding territories to the list
-        let originX = -this.listW/2;
+        let originX = -this.bodyWidth/2;
 
         let offsetY = 0;
         territoryList.forEach((t) => {
@@ -155,13 +162,13 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 Phaser.Geom.Rectangle.Contains
             )
                 .on('pointerdown', (p, x, y) => {
-                    if(!this._isInList(p.x, p.y)) return;
+                    if(!this._isInBody(p.x, p.y)) return;
                     item.iterate((c) => {
                         c.setTint(0x999999);
                     });
                 })
                 .on('pointerup', (p, x, y) => {
-                    if(!this._isInList(p.x, p.y)) return;
+                    if(!this._isInBody(p.x, p.y)) return;
                     item.iterate((c) => {
                         c.setTint(0xaaaaaa);
                     });
@@ -171,14 +178,14 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                     }
                 })
                 .on('pointerover', (p, x, y) => {
-                    if(!this._isInList(p.x, p.y)) return;
+                    if(!this._isInBody(p.x, p.y)) return;
                     this.currentHover = item;
                     item.iterate((c) => {
                         c.setTint(0xaaaaaa);
                     });
                 })
                 .on('pointerout', (p, x, y) => {
-                    if(!this._isInList(p.x, p.y)) return;
+                    if(!this._isInBody(p.x, p.y)) return;
                     this.currentHover = null;
                     item.iterate((c) => {
                         c.clearTint();
@@ -193,18 +200,84 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         // Masking list
         let g = this.make.graphics();
         g.fillStyle(0xffffff);
-        g.fillRect(this.listX - this.listW/2, this.listY, this.listW, this.listH);
+        g.fillRect(this.bodyX - this.bodyWidth/2, this.bodyY, this.bodyWidth, this.bodyHeight);
         list.mask = g.createGeometryMask();
 
         return list;
+    }
+
+    _buildCard() {
+        let card = this.add.container(this.bodyX, this.bodyY);
+
+        let image = this.add.image(0, 0, 'territory_image').setOrigin(0);
+        card.add(image);
+        image.setPosition(-this.bodyWidth/2, 0);
+
+        let name = '영지(' + 0 + ', ' + 0 + ')';
+        let title = this.add.text(0, 0, name, {fontSize: 20}).setOrigin(0, 0.5);
+        card.add(title);
+        title.setPosition(-10, 50);
+
+        let quantityIcon = this.add.image(0, 0, 'quantity_icon').setOrigin(0, 0.5);
+        card.add(quantityIcon);
+        quantityIcon.setPosition(-this.bodyWidth/2, 125);
+
+        let qualityIcon = this.add.image(0, 0, 'quality_icon').setOrigin(0, 0.5);
+        card.add(qualityIcon);
+        qualityIcon.setPosition(0, 125);
+
+        let quantityText = this.add.text(0, 0, "100").setOrigin(0, 0.5);
+        card.add(quantityText);
+        quantityText.setPosition(-this.bodyWidth/2 + 40, 125);
+
+        let qualityText = this.add.text(0, 0, "70").setOrigin(0, 0.5);
+        card.add(qualityText);
+        qualityText.setPosition(40, 125);
+
+        let countText = this.add.text(0, 0, "출진할 병사: 100명").setOrigin(0.5);
+        card.add(countText);
+        countText.setPosition(0, 165);
+
+        let consumeTitle = this.add.text(0, 0, "소모 자원").setOrigin(0);
+        card.add(consumeTitle);
+        consumeTitle.setPosition(-this.bodyWidth/2, 260);
+
+        let moneyIcon = this.add.image(0, 0, 'money_icon').setOrigin(0, 0.5);
+        card.add(moneyIcon);
+        moneyIcon.setPosition(-this.bodyWidth/2, 305);
+
+        let foodIcon = this.add.image(0, 0, 'food_icon').setOrigin(0, 0.5);
+        card.add(foodIcon);
+        foodIcon.setPosition(0, 305);
+
+        let moneyText = this.add.text(0, 0, "1000").setOrigin(0, 0.5);
+        card.add(moneyText);
+        moneyText.setPosition(-this.bodyWidth/2 + 40, 305);
+
+        let foodText = this.add.text(0, 0, "1000").setOrigin(0, 0.5);
+        card.add(foodText);
+        foodText.setPosition(40, 305);
+
+        card.title = title;
+        card.quantityText = quantityText;
+        card.qualityText = qualityText;
+        card.countText = countText;
+        card.moneyText = moneyText;
+        card.foodText = foodText;
+        return card;
     }
 
     _buildButtons() {
         let btnConfirm = new TextButton(this,
             CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
                 onClick: () => {
-                    if(this.isScrolling) return;
-                    console.log(this.selected);
+                    if(this.state === 'territory') {
+                        if(this.isScrolling) return;
+                        if(!this.selected) return;
+                        this._setState('quantity');
+                    } else {
+                        // select done
+                    }
                 }
             }).setOrigin(1, 0.5);
         this.add.existing(btnConfirm);
@@ -212,19 +285,23 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let btnCancel = new TextButton(this,
             CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
                 onClick: () => {
-                    if(this.isScrolling) return;
-                    this._offAllListeners();
-                    this.scene.remove(AttackTerritorySelectDialogScene.KEY);
+                    if(this.state === 'territory') {
+                        if(this.isScrolling) return;
+                        this._offAllListeners();
+                        this.scene.remove(AttackTerritorySelectDialogScene.KEY);
+                    } else {
+                        this._setState('territory');
+                    }
                 }
             }).setOrigin(0, 0.5);
         this.add.existing(btnCancel);
     }
 
-    _isInList(x, y) {
-        return x >= this.listX - this.listW/2
-            && y >= this.listY
-            && x <= this.listX + this.listW/2
-            && y <= this.listY + this.listH;
+    _isInBody(x, y) {
+        return x >= this.bodyX - this.bodyWidth/2
+            && y >= this.bodyY
+            && x <= this.bodyX + this.bodyWidth/2
+            && y <= this.bodyY + this.bodyHeight;
     }
 
     _offAllListeners() {
@@ -245,5 +322,18 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         if(this.selected) this.selected.background.setTexture('item_back');
         this.selected = item;
         item.background.setTexture('item_back_selected');
+    }
+
+    _setState(state) {
+        this.state = state;
+        if(state === 'territory') {
+            this.list.setVisible(true);
+            this.card.setVisible(false);
+            this.title.setText('병력을 출진시킬 영지를 선택하세요');
+        } else if(state === 'quantity') {
+            this.title.setText('출진시킬 병력의 양을 결정하세요');
+            this.list.setVisible(false);
+            this.card.setVisible(true);
+        }
     }
 }
