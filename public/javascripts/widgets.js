@@ -13,11 +13,14 @@ class TextButton extends Phaser.GameObjects.Text {
             .on('pointerdown', (pointer, localX, localY, event) => {
                 event.stopPropagation();
                 this.enterButtonActiveState()
+                this.down = true;
             })
             .on('pointerover', () => this.enterButtonHoverState())
             .on('pointerout', () => this.enterButtonRestState())
             .on('pointerup', () => {
-                this.click();
+                if(this.down)
+                    this.click();
+                this.down = false;
                 this.enterButtonHoverState();
             });
     }
