@@ -16,6 +16,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             min: 0,
             max: 0
         };
+        this.selected = null;
     }
 
     init(player) {
@@ -24,6 +25,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
     preload() {
         this.load.image('item_back', 'assets/ui/list_item_back.png');
+        this.load.image('item_back_selected', 'assets/ui/list_item_back_selected.png');
         this.load.image('icon', 'assets/ui/territory_icon.png');
         this.load.image('quantity_icon', 'assets/ui/resources/quantity.png');
         this.load.image('quality_icon', 'assets/ui/resources/quality.png');
@@ -82,9 +84,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                     let deltaY = this.lastPointerPosition.y - p.y;
 
                     this.lastPointerPosition.y = p.y;
-                    this.list.iterate((item) => {
-                        item.setPosition(item.x, item.y - deltaY);
-                    });
+                    this._scroll(deltaY);
                 }
             }, this);
     }
@@ -110,6 +110,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
             var background = this.add.image(0, 0, 'item_back').setOrigin(0.5, 0);
             item.add(background);
+            item.background = background;
 
             var icon = this.add.image(0, 0, 'icon').setOrigin(0);
             item.add(icon);
@@ -164,6 +165,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                     item.iterate((c) => {
                         c.setTint(0xaaaaaa);
                     });
+                    if(!this.isScrolling) {
+                        // click
+                        this._select(item);
+                    }
                 })
                 .on('pointerover', (p, x, y) => {
                     if(!this._isInList(p.x, p.y)) return;
@@ -199,6 +204,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
                 onClick: () => {
                     if(this.isScrolling) return;
+                    console.log(this.selected);
                 }
             }).setOrigin(1, 0.5);
         this.add.existing(btnConfirm);
@@ -208,7 +214,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 onClick: () => {
                     if(this.isScrolling) return;
                     this._offAllListeners();
-                    this.scene.stop(AttackTerritorySelectDialogScene.KEY);
+                    this.scene.remove(AttackTerritorySelectDialogScene.KEY);
                 }
             }).setOrigin(0, 0.5);
         this.add.existing(btnCancel);
@@ -227,5 +233,17 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 .off('changeQuantity', item.quantityListener)
                 .off('changeQuality', item.qualityListener);
         });
+    }
+
+    _scroll(deltaY) {
+        this.list.iterate((item) => {
+            item.setPosition(item.x, item.y - deltaY);
+        });
+    }
+
+    _select(item) {
+        if(this.selected) this.selected.background.setTexture('item_back');
+        this.selected = item;
+        item.background.setTexture('item_back_selected');
     }
 }

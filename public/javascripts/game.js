@@ -4,7 +4,7 @@ var config = {
     height: GAME_HEIGHT,
     scene: [ Engine,
         TerritoryScene, WorldScene, InfoScene,
-        WorldUIScene, AttackTerritorySelectDialogScene
+        WorldUIScene
     ],
     parent: '#gameCanvas'
 };
