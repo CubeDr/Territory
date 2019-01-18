@@ -40,7 +40,6 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let title = this.add.text(textX, textY, "병력을 출진시킬 영지를 선택하세요").setOrigin(0.5, 1);
         // set dialog modal
         title.setInteractive(new Phaser.Geom.Rectangle(), () => { return true; });
-        ignoreEvents(title);
 
         let fightableTerritories = this._getFightableTerritories();
         this.list = this._buildList(fightableTerritories);
@@ -78,6 +77,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                         this.isScrolling = true;
                     }
                 } else {
+                    if(!p.isDown) {
+                        // end scrolling
+                        this.isScrolling = false;
+                    }
                     let deltaY = this.lastPointerPosition.y - p.y;
 
                     this.lastPointerPosition.y = p.y;
@@ -97,15 +100,6 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _buildList(territoryList) {
-        // list background input event
-        let b = this.add.image(0, 0, '');
-        b.setAlpha(0, 0, 0, 0);
-        b.setInteractive(
-            new Phaser.Geom.Rectangle(this.listX - this.listW/2, this.listY,
-                this.listW, this.listH),
-            Phaser.Geom.Rectangle.Contains
-        );
-
         let list = this.add.container(this.listX, this.listY);
 
         // Adding territories to the list
