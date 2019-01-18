@@ -60,6 +60,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
         this.input
             .on('pointerdown', (p) => {
+                if(this.state !== 'territory') return;
                 if(!this._isInBody(p.x, p.y)) return;
                 this.lastPointerPosition = {
                     x: p.x,
@@ -67,6 +68,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 };
             }, this)
             .on('pointerup', (p) => {
+                if(this.state !== 'territory') return;
                 if(!this.lastPointerPosition) return;
                 this.lastPointerPosition = null;
                 if(!this._isInBody(p.x, p.y) && this.currentHover)
@@ -79,6 +81,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 }
             }, this)
             .on('pointermove', (p) => {
+                if(this.state !== 'territory') return;
                 if(!this.lastPointerPosition) return;
                 if(!this.isScrolling) {
                     let d = sqDistance(this.lastPointerPosition, p);
