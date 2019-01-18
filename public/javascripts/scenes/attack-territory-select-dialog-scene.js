@@ -57,12 +57,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             .on('pointerup', (p) => {
                 if(!this.lastPointerPosition) return;
                 this.lastPointerPosition = null;
-                if(this.currentHover) {
+                if(!this._isInList(p.x, p.y) && this.currentHover)
                     this.currentHover.iterate((c) => {
                         c.clearTint();
                     });
-                    this.currentHover = null;
-                }
                 if(this.isScrolling) {
                     // stop scrolling
                     this.isScrolling = false;
@@ -150,7 +148,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 .on('pointerup', (p, x, y) => {
                     if(!this._isInList(p.x, p.y)) return;
                     item.iterate((c) => {
-                        c.clearTint();
+                        c.setTint(0xaaaaaa);
                     });
                 })
                 .on('pointerover', (p, x, y) => {
