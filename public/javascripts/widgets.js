@@ -57,6 +57,17 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
 
         this.thumb = scene.add.circle(0, 0, this.thumbRadius, 0xffff00);
         this.add(this.thumb);
+        this.thumb.setInteractive({draggable: true})
+            .on('dragstart', (p, x, y) => {
+                console.log('start');
+            })
+            .on('drag', (p, x, y) => {
+                console.log('drag ', x, y);
+                this.thumb.setPosition(x, 0);
+            })
+            .on('dragend', (p, x, y) => {
+                console.log('end');
+            });
     }
 
     setOnValueChangeListener(listener) {
