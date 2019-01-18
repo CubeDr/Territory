@@ -4,6 +4,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     constructor() {
         super({key: AttackTerritorySelectDialogScene.KEY});
         this.currentHover = null;
+        this.listX = CAMERA_WIDTH/2;
+        this.listY = CAMERA_HEIGHT/3 + 20;
+        this.listW = 290;
+        this.listH = 340;
     }
 
     init(player) {
@@ -34,6 +38,18 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this._buildList(fightableTerritories);
 
         this._buildButtons();
+
+        this.input
+            .on('pointerdown', (p) => {
+                if(!this.currentHover) return;
+                console.log('DOWN on item');
+            })
+            .on('poointerup', (p) => {
+
+            })
+            .on('pointermove', (p) => {
+
+            });
     }
 
     _getFightableTerritories() {
@@ -45,61 +61,57 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _buildList(territoryList) {
-        let list = this.add.container(CAMERA_WIDTH/2, CAMERA_HEIGHT/3 + 50);
+        let list = this.add.container(this.listX, this.listY);
 
         // Adding territories to the list
-        let originX = -145;
-        let originY = -37;
-
-        let listX = list.x + originX;
-        let listY = list.y + originY;
-        let listW = 290;
-        let listH = 340;
+        let originX = -this.listW/2;
 
         let offsetY = 0;
         territoryList.forEach((t) => {
             var item = this.add.container(0, 0);
 
-            var background = this.add.image(0, 0, 'item_back');
+            var background = this.add.image(0, 0, 'item_back').setOrigin(0.5, 0);
             item.add(background);
 
             var icon = this.add.image(0, 0, 'icon').setOrigin(0);
             item.add(icon);
-            icon.setPosition(originX + 8, originY + 8);
+            icon.setPosition(originX + 8, 8);
 
             var text = this.add.text(0, 0, '영지(' + t.x + ", " + t.y + ")")
                 .setOrigin(0, 0.5);
             item.add(text);
-            text.setPosition(originX + 74, originY + 20);
+            text.setPosition(originX + 74,  20);
 
             var quantityIcon = this.add.image(0, 0, 'quantity_icon').setOrigin(0);
             item.add(quantityIcon);
-            quantityIcon.setPosition(originX + 74, originY + 36);
+            quantityIcon.setPosition(originX + 74, 36);
 
             var quantityText = this.add.text(0, 0, t.army.quantity, {fontSize:20}).setOrigin(0, 0.5);
             item.add(quantityText);
-            quantityText.setPosition(originX + 109, originY + 51);
+            quantityText.setPosition(originX + 109, 51);
 
             var qualityIcon = this.add.image(0, 0, 'quality_icon').setOrigin(0);
             item.add(qualityIcon);
-            qualityIcon.setPosition(originX + 177, originY + 36);
+            qualityIcon.setPosition(originX + 177, 36);
 
             var qualityText = this.add.text(0, 0, t.army.quality, {fontSize:20}).setOrigin(0, 0.5);
             item.add(qualityText);
-            qualityText.setPosition(originX + 212, originY + 51);
+            qualityText.setPosition(originX + 212, 51);
 
             item.setInteractive(
-                new Phaser.Geom.Rectangle(originX, originY, 290, 74),
+                new Phaser.Geom.Rectangle(originX, 0, 290, 74),
                 Phaser.Geom.Rectangle.Contains
-            ).on('pointerdown', (p, x, y) => {
-                console.log('pdown ');
-            }).on('pointerup', (p, x, y) => {
-                console.log('pup');
-            }).on('pointerover', (p, x, y) => {
-                console.log('pover');
-            }).on('pointerout', (p, x, y) => {
-                console.log('pout');
-            });
+            )
+                .on('pointerdown', (p, x, y) => {
+                })
+                .on('pointerup', (p, x, y) => {
+                })
+                .on('pointerover', (p, x, y) => {
+                    this.currentHover = item;
+                })
+                .on('pointerout', (p, x, y) => {
+                    this.currentHover = null;
+                });
 
             list.add(item);
             item.setPosition(0, offsetY);
@@ -109,7 +121,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         // Masking list
         let g = this.make.graphics();
         g.fillStyle(0xffffff);
-        g.fillRect(listX, listY, listW, listH);
+        g.fillRect(this.listX - this.listW/2, this.listY, this.listW, this.listH);
         list.mask = g.createGeometryMask();
 
         // Covering list so that masked part doesn't get touched
@@ -118,7 +130,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         c.setInteractive(
             new Phaser.Geom.Rectangle(0, 0, 10, 10),
             (c, x, y) => {
-                return x < listX || y < listY || x > listX + listW || y > listY + listH;
+                return this._isInList(x, y);
             }
         );
         ignoreEvents(c);
@@ -141,5 +153,12 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 }
             }).setOrigin(0, 0.5);
         this.add.existing(btnCancel);
+    }
+
+    _isInList(x, y) {
+        return x < this.listX - this.listW/2
+            || y < this.listY
+            || x > this.listX + this.listW/2
+            || y > this.listY + this.listH;
     }
 }
