@@ -4,10 +4,18 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     constructor() {
         super({key: AttackTerritorySelectDialogScene.KEY});
         this.currentHover = null;
+        this.list = null;
         this.listX = CAMERA_WIDTH/2;
         this.listY = CAMERA_HEIGHT/3 + 20;
         this.listW = 290;
         this.listH = 340;
+        this.isScrolling = false;
+        this.lastPointerPosition = null;
+        this.scrollOffset = {
+            current: 0,
+            min: 0,
+            max: 0
+        };
     }
 
     init(player) {
@@ -35,21 +43,49 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         ignoreEvents(title);
 
         let fightableTerritories = this._getFightableTerritories();
-        this._buildList(fightableTerritories);
+        this.list = this._buildList(fightableTerritories);
 
         this._buildButtons();
 
         this.input
             .on('pointerdown', (p) => {
-                if(!this.currentHover) return;
-                console.log('DOWN on item');
-            })
-            .on('poointerup', (p) => {
-
-            })
+                if(!this._isInList(p.x, p.y)) return;
+                this.lastPointerPosition = {
+                    x: p.x,
+                    y: p.y
+                };
+            }, this)
+            .on('pointerup', (p) => {
+                if(!this.lastPointerPosition) return;
+                this.lastPointerPosition = null;
+                if(this.currentHover) {
+                    this.currentHover.iterate((c) => {
+                        c.clearTint();
+                    });
+                    this.currentHover = null;
+                }
+                if(this.isScrolling) {
+                    // stop scrolling
+                    this.isScrolling = false;
+                }
+            }, this)
             .on('pointermove', (p) => {
+                if(!this.lastPointerPosition) return;
+                if(!this.isScrolling) {
+                    let d = sqDistance(this.lastPointerPosition, p);
+                    if(d >= 25) {
+                        // start scrolling
+                        this.isScrolling = true;
+                    }
+                } else {
+                    let deltaY = this.lastPointerPosition.y - p.y;
 
-            });
+                    this.lastPointerPosition.y = p.y;
+                    this.list.iterate((item) => {
+                        item.setPosition(item.x, item.y - deltaY);
+                    });
+                }
+            }, this);
     }
 
     _getFightableTerritories() {
@@ -61,6 +97,15 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _buildList(territoryList) {
+        // list background input event
+        let b = this.add.image(0, 0, '');
+        b.setAlpha(0, 0, 0, 0);
+        b.setInteractive(
+            new Phaser.Geom.Rectangle(this.listX - this.listW/2, this.listY,
+                this.listW, this.listH),
+            Phaser.Geom.Rectangle.Contains
+        );
+
         let list = this.add.container(this.listX, this.listY);
 
         // Adding territories to the list
@@ -103,14 +148,30 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 Phaser.Geom.Rectangle.Contains
             )
                 .on('pointerdown', (p, x, y) => {
+                    if(!this._isInList(p.x, p.y)) return;
+                    item.iterate((c) => {
+                        c.setTint(0x999999);
+                    });
                 })
                 .on('pointerup', (p, x, y) => {
+                    if(!this._isInList(p.x, p.y)) return;
+                    item.iterate((c) => {
+                        c.clearTint();
+                    });
                 })
                 .on('pointerover', (p, x, y) => {
+                    if(!this._isInList(p.x, p.y)) return;
                     this.currentHover = item;
+                    item.iterate((c) => {
+                        c.setTint(0xaaaaaa);
+                    });
                 })
                 .on('pointerout', (p, x, y) => {
+                    if(!this._isInList(p.x, p.y)) return;
                     this.currentHover = null;
+                    item.iterate((c) => {
+                        c.clearTint();
+                    });
                 });
 
             list.add(item);
@@ -124,24 +185,14 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         g.fillRect(this.listX - this.listW/2, this.listY, this.listW, this.listH);
         list.mask = g.createGeometryMask();
 
-        // Covering list so that masked part doesn't get touched
-        let c = this.add.image(0, 0, '');
-        c.setAlpha(0, 0, 0, 0);
-        c.setInteractive(
-            new Phaser.Geom.Rectangle(0, 0, 10, 10),
-            (c, x, y) => {
-                return this._isInList(x, y);
-            }
-        );
-        ignoreEvents(c);
-
+        return list;
     }
 
     _buildButtons() {
         let btnConfirm = new TextButton(this,
             CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
                 onClick: () => {
-
+                    if(this.isScrolling) return;
                 }
             }).setOrigin(1, 0.5);
         this.add.existing(btnConfirm);
@@ -149,6 +200,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let btnCancel = new TextButton(this,
             CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
                 onClick: () => {
+                    if(this.isScrolling) return;
                     this.scene.stop(AttackTerritorySelectDialogScene.KEY);
                 }
             }).setOrigin(0, 0.5);
@@ -156,9 +208,9 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _isInList(x, y) {
-        return x < this.listX - this.listW/2
-            || y < this.listY
-            || x > this.listX + this.listW/2
-            || y > this.listY + this.listH;
+        return x >= this.listX - this.listW/2
+            && y >= this.listY
+            && x <= this.listX + this.listW/2
+            && y <= this.listY + this.listH;
     }
 }
