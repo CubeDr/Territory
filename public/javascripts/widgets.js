@@ -41,6 +41,29 @@ class TextButton extends Phaser.GameObjects.Text {
     }
 }
 
+class HorizontalSlider extends Phaser.GameObjects.Container {
+    constructor(scene, x, y, width, config) {
+        super(scene, x, y);
+
+        this.min = getValue(config.min, 0);
+        this.max = getValue(config.max, 100);
+        this.isDescrete = getValue(config.isDescrete, false);
+        this.thumbRadius = getValue(config.thumbRadius, 10);
+
+        this.valueChangeListener = null;
+
+        this.bar = scene.add.rectangle(0, 0, width, 3, 0x777777).setOrigin(0.5);
+        this.add(this.bar);
+
+        this.thumb = scene.add.circle(0, 0, this.thumbRadius, 0xffff00);
+        this.add(this.thumb);
+    }
+
+    setOnValueChangeListener(listener) {
+        this.valueChangeListener = listener;
+    }
+}
+
 // const ACTION_POINTER_DOWN  = 'pointerdown';
 // const ACTION_POINTER_UP    = 'pointerup';
 // const ACTION_POINTER_OVER  = 'pointerover';

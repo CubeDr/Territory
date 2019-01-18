@@ -241,6 +241,13 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         card.add(countText);
         countText.setPosition(0, 165);
 
+        let slider = new HorizontalSlider(this, 0, 0, this.bodyWidth, {
+
+        });
+        this.add.existing(slider);
+        card.add(slider);
+        slider.setPosition(0, 210);
+
         let consumeTitle = this.add.text(0, 0, "소모 자원").setOrigin(0);
         card.add(consumeTitle);
         consumeTitle.setPosition(-this.bodyWidth/2, 260);
