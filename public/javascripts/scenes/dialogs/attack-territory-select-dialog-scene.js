@@ -41,6 +41,9 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         g.fillStyle(0x000000, 0.7);
         g.fillRect(0, IMAGE_HEIGHT, GAME_WIDTH, CAMERA_HEIGHT);
 
+        g.fillStyle(0x000000, 0.3);
+        g.fillRoundedRect(this.bodyX - this.bodyWidth/2 - 10, this.bodyY - 10, this.bodyWidth + 20, this.bodyHeight + 20, 5);
+
         let textX = CAMERA_WIDTH / 2;
         let textY = CAMERA_HEIGHT / 3;
         // title text
@@ -269,7 +272,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
 
     _buildButtons() {
         let btnConfirm = new TextButton(this,
-            CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5, "확인", {
+            CAMERA_WIDTH/2 - 50, CAMERA_HEIGHT * 4 / 5 + 10, "확인", {
                 onClick: () => {
                     if(this.state === 'territory') {
                         if(this.isScrolling) return;
@@ -283,7 +286,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this.add.existing(btnConfirm);
 
         let btnCancel = new TextButton(this,
-            CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5, "취소", {
+            CAMERA_WIDTH/2 + 50, CAMERA_HEIGHT * 4 / 5 + 10, "취소", {
                 onClick: () => {
                     if(this.state === 'territory') {
                         if(this.isScrolling) return;
