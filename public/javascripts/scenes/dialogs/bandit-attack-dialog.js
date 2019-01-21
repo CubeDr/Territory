@@ -3,35 +3,59 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
         super(scene, config);
         this.scene = scene;
         this.width = 200;
-        this.height = 80;
+        this.height = 200;
 
         this.territory = null;
 
-        let background = scene.add.image(0, 0, 'rectangle');
+        let background = scene.add.nineslice(
+            0, 0, this.width, this.height, 'rectangle', 30, 10
+        ).setOrigin(0.5);
         background.setInteractive().on('pointerdown', (p, x, y, e) => {
             e.stopPropagation();
         });
         this.add(background);
 
-        let quantityIcon = scene.add.image(0, 0, 'quantity');
-        this.add(quantityIcon);
-        quantityIcon.setPosition(-70, -10);
+        let title = scene.add.text(0, 0, "산적", { fontSize: 25 }).setOrigin(0.5);
+        this.add(title);
+        title.setPosition(0, -this.height/2 + 25);
 
-        let quantityText = scene.add.text(0, 0, '0', {fontSize: 20});
+
+        let scale = scene.add.text(0, 0, "규모").setOrigin(0, 0.5);
+        this.add(scale);
+
+        let quantityIcon = scene.add.image(0, 0, 'quantity').setScale(0.8);
+        this.add(quantityIcon);
+
+        let quantityText = scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
         this.add(quantityText);
-        quantityText.setOrigin(0, 0.5);
-        quantityText.setPosition(-50, -10);
         this.quantityText = quantityText;
 
-        let qualityIcon = scene.add.image(0, 0, 'quality');
+        let qualityIcon = scene.add.image(0, 0, 'quality').setScale(0.8);
         this.add(qualityIcon);
-        qualityIcon.setPosition(15, -10);
 
-        let qualityText = scene.add.text(0, 0, '0', {fontSize: 20});
+        let qualityText = scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
         this.add(qualityText);
-        qualityText.setOrigin(0, 0.5);
-        qualityText.setPosition(35, -10);
         this.qualityText = qualityText;
+
+        this._placeInfoCard(-this.height/2 + 55, scale, quantityIcon, quantityText, qualityIcon, qualityText);
+
+
+        let reward = scene.add.text(0, 0, "보상").setOrigin(0, 0.5);
+        this.add(reward);
+
+        let moneyIcon = scene.add.image(0, 0, 'coin').setScale(0.8);
+        this.add(moneyIcon);
+
+        let moneyText = scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
+        this.add(moneyText);
+
+        let foodIcon = scene.add.image(0, 0, 'food').setScale(0.8);
+        this.add(foodIcon);
+
+        let foodText=  scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
+        this.add(foodText);
+
+        this._placeInfoCard(15, reward, moneyIcon, moneyText, foodIcon, foodText);
 
         let attackButton = new TextButton(scene, 0, 0, '공격', {
             onClick: () => {
@@ -39,15 +63,23 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
                     AttackTerritorySelectDialogScene);
                 scene.scene.launch(AttackTerritorySelectDialogScene.KEY, player);
             }
-        });
+        }).setOrigin(0.5);
         this.add(attackButton);
-        attackButton.setOrigin(0.5);
-        attackButton.setPosition(0, 25);
+        attackButton.setPosition(0, this.width/2 - 20);
         this.setVisible(false);
     }
 
     setBandit(banditConfig) {
         this.quantityText.setText(banditConfig.quantity);
         this.qualityText.setText(banditConfig.quality);
+    }
+
+    _placeInfoCard(offsetY, title, lIcon, lText, rIcon, rText) {
+        let offsetX = -this.width/2 + 10;
+        title.setPosition(offsetX, offsetY);
+        lIcon.setPosition(offsetX + 20, offsetY + 25);
+        lText.setPosition(offsetX + 40, offsetY + 25);
+        rIcon.setPosition(offsetX + 105, offsetY + 25);
+        rText.setPosition(offsetX + 125, offsetY + 25);
     }
 }
