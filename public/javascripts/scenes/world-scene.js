@@ -275,8 +275,18 @@ class WorldScene extends Phaser.Scene {
     }
 
     _updateArmyWalking() {
+        let now = Date.now();
         this.player.runningArmies.forEach((a) => {
-
+            let dt = (now - a.start) / 1000;
+            let distance = dt * FIGHT_MOVEMENT_SPEED;
+            let direction = normalize(a.to.x - a.from.x, a.to.y - a.from.y);
+            direction.x *= distance;
+            direction.y *= distance;
+            let position = {
+                x: a.from.x + direction.x,
+                y: a.from.y + direction.y
+            };
+            a.sprite.setPosition(position.x, position.y);
         });
     }
 

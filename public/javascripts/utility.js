@@ -38,3 +38,11 @@ function getDirectionName(dx, dy) {
 
     return "E";
 }
+
+function normalize(dx, dy) {
+    let size = Math.sqrt(dx*dx + dy*dy);
+    return {
+        x: dx / size,
+        y: dy / size
+    };
+}
