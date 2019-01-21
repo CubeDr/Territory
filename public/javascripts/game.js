@@ -6,6 +6,9 @@ var config = {
         TerritoryScene, WorldScene, InfoScene,
         WorldUIScene
     ],
+    plugins: {
+        global: [ NineSlice.Plugin.DefaultCfg ]
+    },
     parent: '#gameCanvas'
 };
 
