@@ -51,7 +51,7 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
         this.width = width;
         this.min = getValue(config.min, 0);
         this.max = getValue(config.max, 100);
-        this.isDescrete = getValue(config.isDescrete, false);
+        this.isDiscrete = getValue(config.isDiscrete, false);
         this.thumbRadius = getValue(config.thumbRadius, 10);
 
         this.value = 0;
@@ -62,6 +62,7 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
 
         this.thumb = scene.add.circle(0, 0, this.thumbRadius, 0xffff00);
         this.add(this.thumb);
+
         this.thumb.setInteractive({draggable: true})
             .on('drag', (p, x, y) => {
                 if(x < -width/2) x = -width/2;
@@ -73,11 +74,16 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
             .on('dragend', (p, x, y) => {
                 this._snapToPoint();
             }, this);
+
+        // to set initial value to maximum
+        this.thumb.setPosition(this.width/2, 0);
+        this._calculateValue();
+        this._snapToPoint();
     }
 
     _calculateValue() {
         let value = (this.thumb.x + this.width/2) / this.width * (this.max - this.min) + this.min;
-        if(this.isDescrete) value = Math.floor(value);
+        if(this.isDiscrete) value = Math.round(value);
         if(value !== this.value) {
             this.value = value;
             if(this.valueChangeListener)
@@ -86,7 +92,9 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
     }
 
     _snapToPoint() {
-        if(!this.isDescrete) return;
+        if(!this.isDiscrete) return;
+        let thumbPosition = (this.value - this.min) / (this.max - this.min) * this.width - this.width/2;
+        this.thumb.setPosition(thumbPosition, 0);
     }
 
     setOnValueChangeListener(listener) {

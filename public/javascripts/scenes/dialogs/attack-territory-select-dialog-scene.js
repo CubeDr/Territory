@@ -245,7 +245,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         countText.setPosition(0, 165);
 
         let slider = new HorizontalSlider(this, 0, 0, this.bodyWidth, {
-            isDescrete: true
+            isDiscrete: true
         });
         slider.setOnValueChangeListener((v) => {
             console.log(v);
