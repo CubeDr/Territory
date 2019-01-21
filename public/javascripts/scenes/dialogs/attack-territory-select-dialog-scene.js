@@ -12,11 +12,6 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this.bodyHeight = 340;
         this.isScrolling = false;
         this.lastPointerPosition = null;
-        this.scrollOffset = {
-            current: 0,
-            min: 0,
-            max: 0
-        };
         this.selected = null;
         this.state = 'territory';
     }
