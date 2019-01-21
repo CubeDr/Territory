@@ -16,8 +16,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this.state = 'territory';
     }
 
-    init(player) {
-        this.player = player;
+    init(config) {
+        this.player = config.player;
+        // target bandit to attack
+        this.target = config.target;
     }
 
     preload() {
@@ -298,14 +300,14 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             else moneyText.setColor("#ffffff");
         };
 
+        let target = this.target;
         card.calculateResources = function(usingQuantity) {
             let armyFactor = usingQuantity * card.territory.army.quality / 100;
 
-            // TODO calculate distance from territory to bandit
-            let d = 5;
+            let d = Math.sqrt(sqDistance(card.territory, target));
 
-            let foodConsume = d * armyFactor * FIGHT_ARMY_FOOD;
-            let moneyConsume = d * armyFactor * FIGHT_ARMY_MONEY;
+            let foodConsume = Math.ceil(d * armyFactor * FIGHT_ARMY_FOOD);
+            let moneyConsume = Math.ceil(d * armyFactor * FIGHT_ARMY_MONEY);
 
             foodText.setText(foodConsume);
             moneyText.setText(moneyConsume);

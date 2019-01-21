@@ -61,7 +61,10 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
             onClick: () => {
                 scene.scene.add(AttackTerritorySelectDialogScene.KEY,
                     AttackTerritorySelectDialogScene);
-                scene.scene.launch(AttackTerritorySelectDialogScene.KEY, player);
+                scene.scene.launch(AttackTerritorySelectDialogScene.KEY, {
+                    player: player,
+                    target: this.bandit
+                });
             }
         }).setOrigin(0.5);
         this.add(attackButton);
@@ -70,6 +73,7 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
     }
 
     setBandit(banditConfig) {
+        this.bandit = banditConfig;
         this.quantityText.setText(banditConfig.quantity);
         this.qualityText.setText(banditConfig.quality);
     }
