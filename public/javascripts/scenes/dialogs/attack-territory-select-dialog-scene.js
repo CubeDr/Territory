@@ -240,19 +240,21 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         card.add(qualityText);
         qualityText.setPosition(40, 125);
 
+
+
         let countText = this.add.text(0, 0, "출진할 병사: 100명").setOrigin(0.5);
         card.add(countText);
         countText.setPosition(0, 165);
 
         let slider = new HorizontalSlider(this, 0, 0, this.bodyWidth, {
+            min: 1,
             isDiscrete: true
-        });
-        slider.setOnValueChangeListener((v) => {
-            console.log(v);
         });
         this.add.existing(slider);
         card.add(slider);
         slider.setPosition(0, 210);
+
+
 
         let consumeTitle = this.add.text(0, 0, "소모 자원").setOrigin(0);
         card.add(consumeTitle);
@@ -274,12 +276,75 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         card.add(foodText);
         foodText.setPosition(40, 305);
 
+
+
+        let onValueChange = (v) => {
+            countText.setText("출진할 병사: " + v + "명");
+            card.calculateResources(v);
+        };
+        slider.setOnValueChangeListener(onValueChange);
+
+
         card.title = title;
         card.quantityText = quantityText;
         card.qualityText = qualityText;
         card.countText = countText;
         card.moneyText = moneyText;
         card.foodText = foodText;
+        card.slider = slider;
+
+
+        let player = this.player;
+
+        card.checkResourcesEnough = function() {
+            if(card.foodConsume > player.food) foodText.setColor("#ff0000");
+            else foodText.setColor("#ffffff");
+            if(card.moneyConsume > player.money) moneyText.setColor("#ff0000");
+            else moneyText.setColor("#ffffff");
+        };
+
+        card.calculateResources = function(usingQuantity) {
+            let armyFactor = usingQuantity * card.territory.army.quality / 100;
+
+            // TODO calculate distance from territory to bandit
+            let d = 5;
+
+            let foodConsume = d * armyFactor * FIGHT_ARMY_FOOD;
+            let moneyConsume = d * armyFactor * FIGHT_ARMY_MONEY;
+
+            foodText.setText(foodConsume);
+            moneyText.setText(moneyConsume);
+
+            card.foodConsume = foodConsume;
+            card.moneyConsume = moneyConsume;
+
+            card.checkResourcesEnough();
+        };
+
+        let engine = this.scene.get('engine');
+        card.show = function(territory) {
+            card.territory = territory;
+            // set value of widgets to selected territory
+            card.title.setText("영지" + "(" + territory.x + ", " + territory.y + ")");
+            card.quantityText.setText(territory.army.quantity);
+            card.qualityText.setText(territory.army.quality);
+
+            slider.max = territory.army.quantity;
+            onValueChange(territory.army.quantity);
+
+            engine.on('changeMoney', card.checkResourcesEnough)
+                  .on('changeFood', card.checkResourcesEnough);
+
+            card.setVisible(true);
+        };
+
+        card.hide = function() {
+            engine.off('changeMoney', card.checkResourcesEnough)
+                  .off('changeFood', card.checkResourcesEnough);
+
+            card.setVisible(false);
+        };
+
         return card;
     }
 
@@ -344,12 +409,12 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         this.state = state;
         if(state === 'territory') {
             this.list.setVisible(true);
-            this.card.setVisible(false);
+            this.card.hide();
             this.title.setText('병력을 출진시킬 영지를 선택하세요');
         } else if(state === 'quantity') {
             this.title.setText('출진시킬 병력의 양을 결정하세요');
             this.list.setVisible(false);
-            this.card.setVisible(true);
+            this.card.show(this.selected.territory);
         }
     }
 }
