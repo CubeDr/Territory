@@ -60,7 +60,9 @@ class WorldScene extends Phaser.Scene {
         });
 
         // player army animation sprites
-        this.player.runningArmies.forEach(this._createArmyWalking);
+        this.player.runningArmies.forEach((a) => {
+            this._createArmyWalking(a);
+        });
         let config = {
             frameRate: 6,
             repeat: -1
@@ -79,6 +81,9 @@ class WorldScene extends Phaser.Scene {
                 this.anims.create(config);
             }
         }
+        this.engine.on('runArmy', (a) => {
+            this._createArmyWalking(a);
+        });
     }
 
     update(time, dt) {
@@ -262,7 +267,7 @@ class WorldScene extends Phaser.Scene {
         let dy = army.to.y - army.from.y;
         let direction = getDirectionName(dx, dy);
 
-        army.sprite = this.add.sprite(0, 0, 'armySprite');
+        army.sprite = this.add.sprite(army.from.x * IMAGE_WIDTH, army.from.y * IMAGE_HEIGHT, 'armySprite');
         army.sprite.anims.load('armyWalk' + direction);
         army.sprite.anims.play('armyWalk' + direction);
     }

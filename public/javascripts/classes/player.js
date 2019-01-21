@@ -26,6 +26,25 @@ class Player {
         });
     }
 
+    sendArmy(fromTerritory, toBandit, quantity, moneyConsume, foodConsume) {
+        console.log(fromTerritory, toBandit, quantity, moneyConsume, foodConsume);
+
+        fromTerritory.deltaArmy(this.eventBus, quantity);
+        this.deltaMoney(-moneyConsume);
+        this.deltaFood(-foodConsume);
+
+        let army = {
+            from: fromTerritory,
+            to: toBandit,
+            sprite: null,
+            start: Date.now(),
+            quantity: quantity,
+            quality: fromTerritory.army.quality
+        };
+        this.runningArmies.push(army);
+        this.eventBus.emit('runArmy', army);
+    }
+
     update(dt) {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
@@ -50,6 +69,11 @@ class Player {
     deltaMoney(moneyDelta) {
         this._money += moneyDelta;
         this.eventBus.emit('changeMoney', this._money);
+    }
+
+    deltaFood(foodDelta) {
+        this._food += foodDelta;
+        this.eventBus.emit('changeFood', this._food);
     }
 
     deltaPopulation(populationDelta) {
@@ -129,7 +153,7 @@ class Player {
     __loadPlayer() {
         this._money = 2000;
         this._food = 0;
-        this._population = 390;
+        this._population = 1800;
         this._dt = 0;
         this.enemies = [];
         // list of armies currently attacking bandits

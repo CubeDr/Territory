@@ -161,6 +161,11 @@ class Territory {
         return this._populationIncreaseRate;
     }
 
+    deltaArmy(eventBus, deltaQuantity) {
+        this._army.quantity -= deltaQuantity;
+        eventBus.emit('changeQuantity', this);
+    }
+
     transferArmy(eventBus) {
         let factor = 0;
         this.map.forEach( (row) => {

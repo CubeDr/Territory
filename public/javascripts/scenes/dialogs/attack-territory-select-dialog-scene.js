@@ -278,6 +278,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let onValueChange = (v) => {
             countText.setText("출진할 병사: " + v + "명");
             card.calculateResources(v);
+            card.value = v;
         };
         slider.setOnValueChangeListener(onValueChange);
 
@@ -294,10 +295,19 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
         let player = this.player;
 
         card.checkResourcesEnough = function() {
-            if(card.foodConsume > player.food) foodText.setColor("#ff0000");
+            let valid = true;
+            if(card.foodConsume > player.food) {
+                valid = false;
+                foodText.setColor("#ff0000");
+            }
             else foodText.setColor("#ffffff");
-            if(card.moneyConsume > player.money) moneyText.setColor("#ff0000");
+
+            if(card.moneyConsume > player.money) {
+                valid = false;
+                moneyText.setColor("#ff0000");
+            }
             else moneyText.setColor("#ffffff");
+            card.valid = valid;
         };
 
         let target = this.target;
@@ -355,6 +365,20 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                         this._setState('quantity');
                     } else {
                         // select done
+                        // not enough resources
+                        if(!this.card.valid) return;
+
+                        // territory to attack
+                        let from = this.selected.territory;
+                        // target bandit
+                        let to = this.target;
+                        let amount = this.card.value;
+                        let moneyConsume = this.card.moneyConsume;
+                        let foodConsume = this.card.foodConsume;
+
+                        this.player.sendArmy(from, to, amount, moneyConsume, foodConsume);
+
+                        this._destroy();
                     }
                 }
             }).setOrigin(1, 0.5);
@@ -365,8 +389,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
                 onClick: () => {
                     if(this.state === 'territory') {
                         if(this.isScrolling) return;
-                        this._offAllListeners();
-                        this.scene.remove(AttackTerritorySelectDialogScene.KEY);
+                        this._destroy();
                     } else {
                         this._setState('territory');
                     }
@@ -383,6 +406,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     _offAllListeners() {
+        this.card.hide();
         this.list.iterate((item) => {
             this.scene.get('engine')
                 .off('changeQuantity', item.quantityListener)
@@ -413,5 +437,10 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             this.list.setVisible(false);
             this.card.show(this.selected.territory);
         }
+    }
+
+    _destroy() {
+        this._offAllListeners();
+        this.scene.remove(AttackTerritorySelectDialogScene.KEY);
     }
 }
