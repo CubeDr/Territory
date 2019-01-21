@@ -107,9 +107,11 @@ class WorldScene extends Phaser.Scene {
     createDialogs() {
         this.territoryDialog = new TerritoryEnterDialog(this);
         this.add.existing(this.territoryDialog);
+        this.territoryDialog.setDepth(1);
 
         this.banditDialog = new BanditAttackDialog(this, this.player);
         this.add.existing(this.banditDialog);
+        this.banditDialog.setDepth(1);
     }
 
     _placeRandomEnemies(count) {
