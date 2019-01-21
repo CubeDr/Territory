@@ -159,9 +159,20 @@ class Player {
         });
         let quantity = maxQuantity + Math.floor(Math.random()*11) - 5;
         let quality = maxQuality + Math.floor(Math.random()*20) - 10;
+
+        if(quantity <= 0) quantity = 1;
+        if(quality <= 0) quality = 10;
+
+        let factor = quantity * quality / 100;
+        let reward = {
+            money: factor * FIGHT_REWARD_MONEY,
+            food: 100 * FIGHT_REWARD_FOOD
+        };
+
         return {
             quantity: quantity,
-            quality: quality
+            quality: quality,
+            reward: reward
         };
     }
 }
