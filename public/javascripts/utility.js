@@ -24,6 +24,7 @@ function ignoreEvents(interactive) {
 }
 
 function getDirectionName(dx, dy) {
+    dy = -dy;
     let r = Math.atan(dy / dx) / Math.PI;
 
     if(dx < 0) r += 1;
