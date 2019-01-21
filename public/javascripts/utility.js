@@ -22,3 +22,18 @@ function ignoreEvents(interactive) {
         .on('pointerover',  (p, x, y, e) => e.stopPropagation())
         .on('pointerout',   (p, e) => e.stopPropagation());
 }
+
+function getDirectionName(dx, dy) {
+    let r = Math.atan(dy / dx) / Math.PI;
+
+    if(dx < 0) r += 1;
+    if(r < 0) r += 2;
+
+    let dname = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"];
+    for(let d = 0; d < 8; d++) {
+        let a = (1 + d*2) / 8;
+        if(r <= a) return dname[d];
+    }
+
+    return "E";
+}

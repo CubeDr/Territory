@@ -19,6 +19,9 @@ class WorldScene extends Phaser.Scene {
 
         this.load.image('quality', 'assets/ui/resources/quality.png');
         this.load.image('quantity', 'assets/ui/resources/quantity.png');
+
+        // player army animation
+        this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
     }
 
     create() {
@@ -55,10 +58,33 @@ class WorldScene extends Phaser.Scene {
             type: 'player',
             data: this.player
         });
+
+        // player army animation sprites
+        this.player.runningArmies.forEach(this._createArmyWalking);
+        let config = {
+            frameRate: 6,
+            repeat: -1
+        };
+        // create animations if not already created
+        if(!this.anims.get("armyWalkE")) {
+            let direction = ["E", "N", "NE", "NW", "S", "SE", "SW", "W"];
+            for(let d=0; d<8; d++) {
+                config.key = "armyWalk" + direction[d];
+                config.frames = [];
+                for(let i=0; i<8; i++)
+                    config.frames.push({
+                        key: 'armySprite',
+                        frame: d*8 + i
+                    });
+                this.anims.create(config);
+            }
+        }
     }
 
     update(time, dt) {
         this.player.update(dt/1000);
+
+        this._updateArmyWalking();
 
         this.updateDialogs();
     }
@@ -231,4 +257,25 @@ class WorldScene extends Phaser.Scene {
         this.cameras.main.centerOn(x, y);
     }
 
+    _createArmyWalking(army) {
+        let dx = army.to.x - army.from.x;
+        let dy = army.to.y - army.from.y;
+        let direction = getDirectionName(dx, dy);
+
+        army.sprite = this.add.sprite(0, 0, 'armySprite');
+        army.sprite.anims.load('armyWalk' + direction);
+        army.sprite.anims.play('armyWalk' + direction);
+    }
+
+    _updateArmyWalking() {
+        this.player.runningArmies.forEach((a) => {
+
+        });
+    }
+
+    destroy() {
+        this.player.runningArmies.forEach((a) => {
+            a.sprite.destroy();
+        });
+    }
 }

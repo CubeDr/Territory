@@ -132,6 +132,13 @@ class Player {
         this._population = 390;
         this._dt = 0;
         this.enemies = [];
+        // list of armies currently attacking bandits
+        // from: Territory this army started from
+        // to: Bandit this army is heading to
+        // sprite: Sprite gameobject of this army. null if not on world scene.
+        // start: time that army started to move. used to calculate current position
+        // quantity, quality: info of army
+        this.runningArmies = [];
         this.__loadTerritories();
 
         this._initializeAttributes();
