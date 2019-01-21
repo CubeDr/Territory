@@ -7,7 +7,9 @@ class TerritoryEnterDialog extends Phaser.GameObjects.Container {
 
         this.territory = null;
 
-        let background = scene.add.image(0, 0, 'rectangle');
+        let background = scene.add.nineslice(
+            0, 0, this.width, this.height, 'rectangle', 30, 10
+        ).setOrigin(0.5);
         background.setInteractive().on('pointerdown', (p, x, y, e) => {
             e.stopPropagation();
         });
