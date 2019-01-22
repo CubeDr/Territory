@@ -164,6 +164,18 @@ class Territory {
     deltaArmy(eventBus, deltaQuantity) {
         this._army.quantity -= deltaQuantity;
         eventBus.emit('changeQuantity', this);
+
+        let deltaArmyFactor = deltaQuantity * this._army.quality / 100;
+
+        eventBus.emit('deltaMoneyDecreaseRate', {
+            territory: this,
+            delta: -deltaArmyFactor * ARMY_MONEY_DECREASE_FACTOR
+        });
+
+        eventBus.emit('deltaFoodDecreaseRate', {
+            territory: this,
+            delta: -deltaArmyFactor * ARMY_FOOD_DECREASE_FACTOR
+        });
     }
 
     transferArmy(eventBus) {
