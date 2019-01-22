@@ -1,10 +1,13 @@
 class WorldScene extends Phaser.Scene {
     constructor() {
         super({key: 'world'});
+        this._registeredEvents = [];
     }
 
     init(player) {
         this.player = player;
+
+        this.events.on('shutdown', this._shutdown, this);
     }
 
     preload() {
@@ -82,7 +85,7 @@ class WorldScene extends Phaser.Scene {
                 this.anims.create(config);
             }
         }
-        this.engine.on('runArmy', (a) => {
+        this._listen('runArmy', (a) => {
             this._createArmyWalking(a);
         });
     }
@@ -311,7 +314,7 @@ class WorldScene extends Phaser.Scene {
         this.player.fightingArmies.push(army);
 
         this.engine.registerFight(army);
-        this.engine.on('fightEnd', (a) => {
+        this._listen('fightEnd', (a) => {
             if(a === army) {
                 a.sprite.forEach((s) => {
                     s.destroy();
@@ -363,9 +366,23 @@ class WorldScene extends Phaser.Scene {
         });
     }
 
-    destroy() {
+    _listen(eventName, callback) {
+        this._registeredEvents.push({
+            event: eventName,
+            callback: callback
+        });
+        this.engine.on(eventName, callback);
+    }
+
+    _shutdown() {
+        this._registeredEvents.forEach((e) => {
+            this.engine.off(e.event, e.callback)
+        });
+
         this.player.runningArmies.forEach((a) => {
             a.sprite.destroy();
         });
+
+        this.events.off('shutdown', this._shutdown);
     }
 }

@@ -29,7 +29,9 @@ class Engine extends Phaser.Scene {
     on(eventName, callback) {
         if(this._events[eventName] == null)
             this._events[eventName] = [];
-        this._events[eventName].push(callback);
+        // prevent duplicate callback register
+        if(this._events[eventName].indexOf(callback) === -1)
+            this._events[eventName].push(callback);
         return this;
     }
 

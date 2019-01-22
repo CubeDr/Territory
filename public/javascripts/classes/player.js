@@ -27,8 +27,6 @@ class Player {
     }
 
     sendArmy(fromTerritory, toBandit, quantity, moneyConsume, foodConsume) {
-        console.log(fromTerritory, toBandit, quantity, moneyConsume, foodConsume);
-
         toBandit.state = 'attacked';
 
         fromTerritory.deltaArmy(this.eventBus, quantity);
