@@ -65,6 +65,8 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
         }).setOrigin(0.5);
         this.add(attackButton);
         attackButton.setPosition(0, this.width/2 - 20);
+        this.button = attackButton;
+
         this.setVisible(false);
     }
 
@@ -72,6 +74,20 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
         this.bandit = banditConfig;
         this.quantityText.setText(banditConfig.quantity);
         this.qualityText.setText(banditConfig.quality);
+        switch(banditConfig.state) {
+            case 'idle':
+                this.button.setEnabled(true);
+                this.button.setText('공격');
+                break;
+            case 'attacked':
+                this.button.setEnabled(false);
+                this.button.setText('공격중입니다!');
+                break;
+            case 'fighting':
+                this.button.setEnabled(false);
+                this.button.setText('전투중입니다!');
+                break;
+        }
     }
 
     _placeInfoCard(offsetY, title, lIcon, lText, rIcon, rText) {

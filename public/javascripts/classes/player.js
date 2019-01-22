@@ -29,6 +29,8 @@ class Player {
     sendArmy(fromTerritory, toBandit, quantity, moneyConsume, foodConsume) {
         console.log(fromTerritory, toBandit, quantity, moneyConsume, foodConsume);
 
+        toBandit.state = 'attacked';
+
         fromTerritory.deltaArmy(this.eventBus, quantity);
         this.deltaMoney(-moneyConsume);
         this.deltaFood(-foodConsume);
@@ -204,7 +206,8 @@ class Player {
         return {
             quantity: quantity,
             quality: quality,
-            reward: reward
+            reward: reward,
+            state: 'idle'
         };
     }
 }

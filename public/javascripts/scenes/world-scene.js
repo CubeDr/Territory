@@ -286,6 +286,7 @@ class WorldScene extends Phaser.Scene {
     }
 
     _createArmyFighting(army) {
+        army.to.state = 'fighting';
         army.sprite = [];
         let dx = [-20, 20, -10];
         let dy = [-10, 0, 20];

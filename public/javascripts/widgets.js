@@ -7,12 +7,15 @@ class TextButton extends Phaser.GameObjects.Text {
         this.downColor = getValue(style.downColor, '#aaa');
         this.idleColor = getValue(style.fill, '#fff');
 
+        this.enabled = true;
+
         this.setStyle({fill: this.idleColor});
 
         this.setInteractive({ useHandCursor: true })
             .on('pointerdown', (pointer, localX, localY, event) => {
                 event.stopPropagation();
-                this.enterButtonActiveState()
+                if(!this.enabled) return;
+                this.enterButtonActiveState();
                 this.down = true;
             })
             .on('pointerover', () => this.enterButtonHoverState())
@@ -26,21 +29,30 @@ class TextButton extends Phaser.GameObjects.Text {
     }
 
     enterButtonActiveState() {
+        if(!this.enabled) return;
         this.setStyle({fill: this.downColor});
     }
 
     enterButtonRestState() {
+        if(!this.enabled) return;
         this.setStyle({fill: this.idleColor});
     }
 
 
     enterButtonHoverState() {
+        if(!this.enabled) return;
         this.setStyle({fill: this.hoverColor});
     }
 
     click() {
         if(this.onClick)
             this.onClick();
+    }
+
+    setEnabled(enabled) {
+        this.enabled = enabled;
+        if(!enabled)
+            this.setStyle({fill: this.hoverColor});
     }
 }
 
