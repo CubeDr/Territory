@@ -65,6 +65,7 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
                     player: player,
                     target: this.bandit
                 });
+                this.setVisible(false);
             }
         }).setOrigin(0.5);
         this.add(attackButton);
