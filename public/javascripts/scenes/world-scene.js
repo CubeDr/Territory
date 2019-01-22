@@ -167,6 +167,8 @@ class WorldScene extends Phaser.Scene {
     click(gameObject, center=false) {
         if(this.selectBox)
             this.selectBox.destroy();
+        if(this.buildButton)
+            this.buildButton.destroy();
         if(this.selected === gameObject) {
             // unselect
             this.closeAllDialog();
@@ -192,6 +194,17 @@ class WorldScene extends Phaser.Scene {
                     this.openBanditDialog(gameObject);
                     break;
                 default:
+                    // 빈 토지 클릭
+                    this.buildButton = new TextButton(this, gameObject.x, gameObject.y, "개척", {
+                        fontSize: 20,
+                        onClick: () => {
+                            // 나누어 떨어지지만 혹시 몰라 반올림
+                            let x = Math.round(gameObject.x / IMAGE_WIDTH);
+                            let y = Math.round(gameObject.y / IMAGE_HEIGHT);
+                            console.log(x, y);
+                        }
+                    }).setOrigin(0.5);
+                    this.add.existing(this.buildButton);
                     this.closeAllDialog();
                     break;
             }
