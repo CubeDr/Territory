@@ -15,6 +15,16 @@ class Engine extends Phaser.Scene {
         this.player.attachListeners(this);
     }
 
+    registerFight(army) {
+        let a = Math.min(army.quantity, army.to.quantity);
+        let b = Math.max(army.quantity, army.to.quantity);
+        let fightDuration = a * a / b / 10 * 1000;
+
+        this.time.delayedCall(fightDuration, () => {
+            this.emit('fightEnd', army);
+        }, army, this)
+    }
+
     /* ===== PubSub Pattern methods ===== */
     on(eventName, callback) {
         if(this._events[eventName] == null)

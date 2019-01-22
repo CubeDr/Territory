@@ -309,6 +309,15 @@ class WorldScene extends Phaser.Scene {
             });
         }
         this.player.fightingArmies.push(army);
+
+        this.engine.registerFight(army);
+        this.engine.on('fightEnd', (a) => {
+            if(a === army) {
+                a.sprite.forEach((s) => {
+                    s.destroy();
+                })
+            }
+        });
     }
 
     _updateArmyWalking() {
@@ -336,7 +345,6 @@ class WorldScene extends Phaser.Scene {
             };
             if(sqDistance(position, from) >= sqDistance(to, from)) {
                 // if arrived
-                console.log('arrive');
                 a.sprite.destroy();
                 a.sprite = null;
                 arrived.push(a);
