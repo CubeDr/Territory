@@ -316,9 +316,17 @@ class WorldScene extends Phaser.Scene {
         this.engine.registerFight(army);
         this._listen('fightEnd', (a) => {
             if(a === army) {
+                this.player.fightingArmies.splice(
+                    this.player.fightingArmies.indexOf(a), 1
+                );
                 a.sprite.forEach((s) => {
                     s.destroy();
-                })
+                });
+                this.player.enemies.splice(
+                    this.player.enemies.indexOf(a.to), 1
+                );
+                this.map[a.to.y][a.to.x].over.destroy();
+                this.map[a.to.y][a.to.x].over = null;
             }
         });
     }
