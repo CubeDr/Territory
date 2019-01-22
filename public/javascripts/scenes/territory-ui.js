@@ -82,6 +82,10 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
             Building.POST.type, '주둔지', () => {
                 startEditing(Building.POST.type, Building.POST.cost);
             }));
+        buildings.army.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+            Building.TRAIN.type, '훈련장', () => {
+                startEditing(Building.TRAIN.type, Building.TRAIN.cost);
+            }));
         buildings.army.close();
 
         // 기타 건물

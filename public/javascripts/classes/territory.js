@@ -65,6 +65,7 @@ class Territory {
                     territory: self,
                     delta: Building.TRAIN.maintain
                 });
+                this._qualityIncreaseRate += 10;
                 break;
             case Building.HOUSE.type:
                 // moneyDecreaseRate
@@ -142,6 +143,7 @@ class Territory {
         this._moneyIncreaseRate = Territory.__moneyIncreaseRateFrom(this.player.population);
         this._foodDecreaseRate = Territory.__foodDecreaseRateFrom(this.player.population, this.army);
         this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this.map);
+        this._qualityIncreaseRate = Territory.__qualityIncreaseRate(this.map);
 
     }
 
@@ -179,6 +181,32 @@ class Territory {
     }
 
     transferArmy(eventBus) {
+        /* Transfer Army Logic
+         *  1. Remove effect to player of this.army
+         *  2. Calculate quality upgrade by train
+         *  3. Transfer army from population to army
+         *  4. Re affect player
+         */
+
+        let armyFactor = this._army.quantity * (this._army.quality / 100);
+
+        // 1. Remove effect to player of this.army
+        eventBus.emit('deltaMoneyDecreaseRate', {
+            territory: this,
+            delta: -armyFactor * ARMY_MONEY_DECREASE_FACTOR
+        }).emit('deltaFoodDecreaseRate', {
+            territory: this,
+            delta: -armyFactor * ARMY_FOOD_DECREASE_FACTOR
+        });
+
+        // 2. Calcualte quality upgrade by train
+        let deltaQuality = 0;
+        if(this.army.quantity > 0) deltaQuality = this._qualityIncreaseRate / this.army.quantity;
+        if(deltaQuality !== 0) {
+            this._army.quality += deltaQuality;
+        }
+
+        // 3. Transfer army from population to army
         let factor = 0;
         this.map.forEach( (row) => {
             row.forEach((b) => {
@@ -196,40 +224,29 @@ class Territory {
              * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
              */
 
-            let self = this;
-            let armyFactor = this._army.quantity * (this._army.quality / 100);
-            // console.log('armyFactorPrev:' + armyFactor);
-
-            // reset effect of army
-            eventBus.emit('deltaMoneyDecreaseRate', {
-                territory: self,
-                delta: -armyFactor * ARMY_MONEY_DECREASE_FACTOR
-            }).emit('deltaFoodDecreaseRate', {
-                territory: self,
-                delta: -armyFactor * ARMY_FOOD_DECREASE_FACTOR
-            });
-
             this._army.quality = this._army.quality * this._army.quantity + DEFAULT_ARMY_NEW_QUALITY * t;
             this._army.quantity += t;
             this._army.quality /= this._army.quantity;
+        }
 
-            // re-affect
-            this.player.deltaPopulation(-t);
-            armyFactor = this._army.quantity * (this._army.quality / 100);
-            // console.log('armyFactorNext:' + armyFactor);
-            eventBus.emit('deltaMoneyDecreaseRate', {
-                territory: self,
-                delta: armyFactor * ARMY_MONEY_DECREASE_FACTOR
-            }).emit('deltaFoodDecreaseRate', {
-                territory: self,
-                delta: armyFactor * ARMY_FOOD_DECREASE_FACTOR
-            });
+        // 4. Re affect player
+        this.player.deltaPopulation(-t);
+        armyFactor = this._army.quantity * (this._army.quality / 100);
 
-            eventBus.emit('changeQuantity', this);
+        eventBus.emit('deltaMoneyDecreaseRate', {
+            territory: self,
+            delta: armyFactor * ARMY_MONEY_DECREASE_FACTOR
+        }).emit('deltaFoodDecreaseRate', {
+            territory: self,
+            delta: armyFactor * ARMY_FOOD_DECREASE_FACTOR
+        });
+        eventBus.emit('changeQuantity', this);
+
+        if(deltaQuality !== 0 || t !== 0) {
             eventBus.emit('changeQuality', this);
-
             return true;
         }
+
         return false;
     }
 
@@ -297,6 +314,16 @@ class Territory {
         map.forEach((row) => {
             row.forEach((b) => {
                 if(b === 'landmark') count += 1;
+            })
+        });
+        return count;
+    }
+
+    static __qualityIncreaseRate(map) {
+        let count = 0;
+        map.forEach((r) => {
+            r.forEach((b) => {
+                if(b === Building.TRAIN.type) count += 10;
             })
         });
         return count;

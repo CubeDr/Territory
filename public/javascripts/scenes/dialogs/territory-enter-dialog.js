@@ -49,8 +49,8 @@ class TerritoryEnterDialog extends Phaser.GameObjects.Container {
 
     update() {
         if(!this.territory) return;
-        this.quantityText.setText(this.territory.army.quantity);
-        this.qualityText.setText(this.territory.army.quality);
+        this.quantityText.setText(parseInt(this.territory.army.quantity));
+        this.qualityText.setText(parseInt(this.territory.army.quality));
     }
 
 }
