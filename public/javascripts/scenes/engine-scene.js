@@ -24,14 +24,16 @@ class Engine extends Phaser.Scene {
         b = army.to.quantity * army.to.quality;
         army.result = a > b;
 
-        if(army.result) {
-            console.log("Win");
-        } else {
-            console.log("Lose");
-        }
-
         this.time.delayedCall(fightDuration, () => {
             this.emit('fightEnd', army);
+
+            if(army.result) {
+                console.log("Win");
+                this.player.deltaMoney(army.to.reward.money);
+                this.player.deltaFood(army.to.reward.food);
+            } else {
+                console.log("Lose");
+            }
         }, army, this)
     }
 
