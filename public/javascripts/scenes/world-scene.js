@@ -274,20 +274,53 @@ class WorldScene extends Phaser.Scene {
         army.sprite.anims.play('armyWalk' + direction);
     }
 
+    _createArmyFighting(army) {
+
+    }
+
     _updateArmyWalking() {
         let now = Date.now();
+        let arrived = [];
         this.player.runningArmies.forEach((a) => {
+            let from = {
+                x: a.from.x * IMAGE_WIDTH,
+                y: a.from.y * IMAGE_HEIGHT
+            };
+            let to = {
+                x: a.to.x * IMAGE_WIDTH,
+                y: a.to.y * IMAGE_HEIGHT
+            };
+
             let dt = (now - a.start) / 1000;
             let distance = dt * FIGHT_MOVEMENT_SPEED;
-            let direction = normalize(a.to.x - a.from.x, a.to.y - a.from.y);
+            let direction = normalize(to.x - from.x, to.y - from.y);
+
             direction.x *= distance;
             direction.y *= distance;
             let position = {
-                x: a.from.x * IMAGE_WIDTH + direction.x,
-                y: a.from.y * IMAGE_HEIGHT + direction.y
+                x: from.x + direction.x,
+                y: from.y + direction.y
             };
-            a.sprite.setPosition(position.x, position.y);
+            if(sqDistance(position, from) >= sqDistance(to, from)) {
+                // if arrived
+                console.log('arrive');
+                a.sprite.destroy();
+                a.sprite = null;
+                arrived.push(a);
+            } else {
+                // if not arrived, keep on walking
+                a.sprite.setPosition(position.x, position.y);
+            }
         });
+
+        // delete arrived armies from runningArmies
+        arrived.forEach((a) => {
+            this.player.runningArmies.splice(
+                this.player.runningArmies.indexOf(a), 1
+            );
+        });
+
+
     }
 
     destroy() {
