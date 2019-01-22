@@ -283,8 +283,8 @@ class WorldScene extends Phaser.Scene {
             direction.x *= distance;
             direction.y *= distance;
             let position = {
-                x: a.from.x + direction.x,
-                y: a.from.y + direction.y
+                x: a.from.x * IMAGE_WIDTH + direction.x,
+                y: a.from.y * IMAGE_HEIGHT + direction.y
             };
             a.sprite.setPosition(position.x, position.y);
         });
