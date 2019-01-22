@@ -163,6 +163,7 @@ class Player {
         // start: time that army started to move. used to calculate current position
         // quantity, quality: info of army
         this.runningArmies = [];
+        this.fightingArmies = [];
         this.__loadTerritories();
 
         this._initializeAttributes();

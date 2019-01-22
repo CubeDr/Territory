@@ -22,6 +22,7 @@ class WorldScene extends Phaser.Scene {
 
         // player army animation
         this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('armyFightSprite', 'assets/sprites/cloud_spritesheet.png', {frameWidth: 140, frameHeight: 122});
     }
 
     create() {
@@ -275,7 +276,28 @@ class WorldScene extends Phaser.Scene {
     }
 
     _createArmyFighting(army) {
+        army.sprite = [];
+        let dx = [-20, 20, -10];
+        let dy = [-10, 0, 20];
+        for(let i = 0; i < 3; i++) {
+            let px = army.to.x * IMAGE_WIDTH + dx[i];
+            let py = army.to.y * IMAGE_HEIGHT + dy[i];
+            let idx = randInt(0, 18);
+            let s = this.add.sprite(px, py, 'armyFightSprite', idx)
+                .setScale(0.8);
+            army.sprite.push(s);
 
+            this.tweens.add({
+                targets: s,
+                scaleX: 0.6,
+                scaleY: 0.6,
+                duration: 1000,
+                delay: i * 333,
+                repeat: -1,
+                yoyo: true,
+            });
+        }
+        this.player.fightingArmies.push(army);
     }
 
     _updateArmyWalking() {
@@ -318,9 +340,8 @@ class WorldScene extends Phaser.Scene {
             this.player.runningArmies.splice(
                 this.player.runningArmies.indexOf(a), 1
             );
+            this._createArmyFighting(a);
         });
-
-
     }
 
     destroy() {

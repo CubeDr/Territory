@@ -46,3 +46,7 @@ function normalize(dx, dy) {
         y: dy / size
     };
 }
+
+function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
