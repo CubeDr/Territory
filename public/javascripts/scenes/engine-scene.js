@@ -20,6 +20,16 @@ class Engine extends Phaser.Scene {
         let b = Math.max(army.quantity, army.to.quantity);
         let fightDuration = a * a / b / 10 * 1000;
 
+        a = army.quantity * army.quality;
+        b = army.to.quantity * army.to.quality;
+        army.result = a > b;
+
+        if(army.result) {
+            console.log("Win");
+        } else {
+            console.log("Lose");
+        }
+
         this.time.delayedCall(fightDuration, () => {
             this.emit('fightEnd', army);
         }, army, this)

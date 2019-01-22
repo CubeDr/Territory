@@ -48,12 +48,14 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
 
         let moneyText = scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
         this.add(moneyText);
+        this.moneyText = moneyText;
 
         let foodIcon = scene.add.image(0, 0, 'food').setScale(0.8);
         this.add(foodIcon);
 
-        let foodText=  scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
+        let foodText = scene.add.text(0, 0, '0', {fontSize: 20}).setOrigin(0, 0.5);
         this.add(foodText);
+        this.foodText = foodText;
 
         this._placeInfoCard(15, reward, moneyIcon, moneyText, foodIcon, foodText);
 
@@ -74,6 +76,9 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
         this.bandit = banditConfig;
         this.quantityText.setText(banditConfig.quantity);
         this.qualityText.setText(banditConfig.quality);
+        this.moneyText.setText(banditConfig.reward.money);
+        this.foodText.setText(banditConfig.reward.food);
+
         switch(banditConfig.state) {
             case 'idle':
                 this.button.setEnabled(true);

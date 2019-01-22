@@ -198,7 +198,7 @@ class Player {
         let factor = quantity * quality / 100;
         let reward = {
             money: factor * FIGHT_REWARD_MONEY,
-            food: 100 * FIGHT_REWARD_FOOD
+            food: factor * FIGHT_REWARD_FOOD
         };
 
         return {
