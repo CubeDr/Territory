@@ -110,7 +110,17 @@ class WorldScene extends Phaser.Scene {
         this.add.existing(this.territoryDialog);
         this.territoryDialog.setDepth(1);
 
-        this.banditDialog = new BanditAttackDialog(this, this.player);
+        this.banditDialog = new BanditAttackDialog(this, this.player, (bandit) => {
+            this.scene.add(AttackTerritorySelectDialogScene.KEY,
+                AttackTerritorySelectDialogScene);
+            this.scene.launch(AttackTerritorySelectDialogScene.KEY, {
+                player: this.player,
+                target: bandit
+            });
+            if(this.selectBox) this.selectBox.destroy();
+            this.closeAllDialog();
+            this.selected = null;
+        });
         this.add.existing(this.banditDialog);
         this.banditDialog.setDepth(1);
     }

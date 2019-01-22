@@ -1,6 +1,6 @@
 class BanditAttackDialog extends Phaser.GameObjects.Container {
-    constructor(scene, player, config) {
-        super(scene, config);
+    constructor(scene, player, listener) {
+        super(scene);
         this.scene = scene;
         this.width = 200;
         this.height = 200;
@@ -59,13 +59,8 @@ class BanditAttackDialog extends Phaser.GameObjects.Container {
 
         let attackButton = new TextButton(scene, 0, 0, '공격', {
             onClick: () => {
-                scene.scene.add(AttackTerritorySelectDialogScene.KEY,
-                    AttackTerritorySelectDialogScene);
-                scene.scene.launch(AttackTerritorySelectDialogScene.KEY, {
-                    player: player,
-                    target: this.bandit
-                });
-                this.setVisible(false);
+                if(listener)
+                    listener(this.bandit);
             }
         }).setOrigin(0.5);
         this.add(attackButton);
