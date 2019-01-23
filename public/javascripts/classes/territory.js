@@ -65,7 +65,7 @@ class Territory {
                     territory: self,
                     delta: Building.TRAIN.maintain
                 });
-                this._qualityIncreaseRate += 10;
+                this._qualityIncrement += 10;
                 break;
             case Building.HOUSE.type:
                 // moneyDecreaseRate
@@ -143,7 +143,7 @@ class Territory {
         this._moneyIncreaseRate = Territory.__moneyIncreaseRateFrom(this.player.population);
         this._foodDecreaseRate = Territory.__foodDecreaseRateFrom(this.player.population, this.army);
         this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this.map);
-        this._qualityIncreaseRate = Territory.__qualityIncreaseRate(this.map);
+        this._qualityIncrement = Territory.__qualityIncrementFrom(this.map);
 
     }
 
@@ -183,9 +183,8 @@ class Territory {
     transferArmy(eventBus) {
         /* Transfer Army Logic
          *  1. Remove effect to player of this.army
-         *  2. Calculate quality upgrade by train
-         *  3. Transfer army from population to army
-         *  4. Re affect player
+         *  2. Transfer army from population to army
+         *  3. Re affect player
          */
 
         let armyFactor = this._army.quantity * (this._army.quality / 100);
@@ -199,14 +198,7 @@ class Territory {
             delta: -armyFactor * ARMY_FOOD_DECREASE_FACTOR
         });
 
-        // 2. Calcualte quality upgrade by train
-        let deltaQuality = 0;
-        if(this.army.quantity > 0) deltaQuality = this._qualityIncreaseRate / this.army.quantity;
-        if(deltaQuality !== 0) {
-            this._army.quality += deltaQuality;
-        }
-
-        // 3. Transfer army from population to army
+        // 2. Transfer army from population to army
         let factor = 0;
         this.map.forEach( (row) => {
             row.forEach((b) => {
@@ -218,18 +210,17 @@ class Territory {
         let max = this.armyQuantityMax;
         if(t + this.army.quantity > max) t = max - this.army.quantity;
         if(t > 0) {
-
-            /* Rate change calculation
-             * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
-             * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
-             */
-
-            this._army.quality = this._army.quality * this._army.quantity + DEFAULT_ARMY_NEW_QUALITY * t;
+            let newQuality = DEFAULT_ARMY_NEW_QUALITY + this._qualityIncrement;
+            this._army.quality = this._army.quality * this._army.quantity + newQuality * t;
             this._army.quantity += t;
             this._army.quality /= this._army.quantity;
         }
 
-        // 4. Re affect player
+        // 3. Re affect player
+        /* Rate change calculation
+         * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
+         * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
+         */
         this.player.deltaPopulation(-t);
         armyFactor = this._army.quantity * (this._army.quality / 100);
 
@@ -242,7 +233,7 @@ class Territory {
         });
         eventBus.emit('changeQuantity', this);
 
-        if(deltaQuality !== 0 || t !== 0) {
+        if(t !== 0) {
             eventBus.emit('changeQuality', this);
             return true;
         }
@@ -319,7 +310,7 @@ class Territory {
         return count;
     }
 
-    static __qualityIncreaseRate(map) {
+    static __qualityIncrementFrom(map) {
         let count = 0;
         map.forEach((r) => {
             r.forEach((b) => {
