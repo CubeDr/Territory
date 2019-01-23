@@ -205,6 +205,18 @@ class WorldScene extends Phaser.Scene {
                             let x = Math.round(gameObject.x / IMAGE_WIDTH);
                             let y = Math.round(gameObject.y / IMAGE_HEIGHT);
                             console.log(x, y);
+                            let t = new Territory(this.player, {
+                                x: x, y: y
+                            });
+                            this.player.territories.push(t);
+
+                            this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
+                            this.map[t.y][t.x].over.territory = t;
+
+                            // saves its gameObject to parameter to easily track gameObject from another scene
+                            t.gameObject = this.map[t.y][t.x].over;
+
+                            this.unselect();
                         }
                     }).setOrigin(0.5);
                     this.add.existing(this.buildButton);
@@ -408,5 +420,11 @@ class WorldScene extends Phaser.Scene {
         });
 
         this.events.off('shutdown', this._shutdown);
+    }
+
+    unselect() {
+        if(this.selectBox)
+            this.selectBox.destroy();
+        this.closeAllDialog();
     }
 }
