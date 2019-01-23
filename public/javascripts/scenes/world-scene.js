@@ -4,10 +4,13 @@ class WorldScene extends Phaser.Scene {
         this._registeredEvents = [];
     }
 
-    init(player) {
-        this.player = player;
+    init(data) {
+        this.player = data.player;
 
         this.events.on('shutdown', this._shutdown, this);
+
+        this.centerX = data.centerX * IMAGE_WIDTH;
+        this.centerY = data.centerY * IMAGE_HEIGHT;
     }
 
     preload() {
@@ -38,7 +41,7 @@ class WorldScene extends Phaser.Scene {
 
         this.cameras.main.setSize(CAMERA_WIDTH, CAMERA_HEIGHT);
         this.cameras.main.setPosition(0, 100);
-        this.centerCamera(0, 0);
+        this.centerCamera(this.centerX, this.centerY);
 
         player.territories.forEach((t) => {
             this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
