@@ -3,11 +3,12 @@
 
 function preloadUiElements(self) {
     self.load.image('button', 'assets/ui/button.png');
+    self.load.image('purple_button', 'assets/ui/purple_button.png');
 }
 
 /* ====== ImageButton definition ===== */
 // Constructor
-function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClickListener) {
+function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClickListener, backgroundKey='button') {
     Phaser.GameObjects.GameObject.call(this, scene, 'imageButton');
 
     var self = this;
@@ -20,7 +21,7 @@ function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClick
     self.clickListener = clickListener;
     self.longClickListener = longClickListener;
 
-    var background = scene.add.image(0, 0, 'button');
+    var background = scene.add.image(0, 0, backgroundKey);
     background.setOrigin(0, 0);
     w /= background.width;
     h /= background.height;

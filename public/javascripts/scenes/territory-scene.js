@@ -71,6 +71,18 @@ function create() {
     }
     this.engine.emit('sceneLoaded', 'territory');
 
+    this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT, 'barrack', '영지 삭제', () => {
+        player.territories.splice(
+            player.territories.indexOf(territory), 1
+        );
+        this.scene.start('world', {
+            player: player,
+            centerX: territory.x,
+            centerY: territory.y
+        });
+    }, null, 'purple_button');
+    this.add.existing(this.exitButton);
+
 }
 
 function update(up, delta) {
