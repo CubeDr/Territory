@@ -206,36 +206,38 @@ class Territory {
             })
         });
 
-        let t = parseInt(parseInt(this.player._population) * factor);
-        let max = this.armyQuantityMax;
-        if(t + this.army.quantity > max) t = max - this.army.quantity;
-        if(t > 0) {
-            let newQuality = DEFAULT_ARMY_NEW_QUALITY + this._qualityIncrement;
-            this._army.quality = this._army.quality * this._army.quantity + newQuality * t;
-            this._army.quantity += t;
-            this._army.quality /= this._army.quantity;
-        }
+        if(this.player.population > 0) {
+            let t = factor;
+            let max = this.armyQuantityMax;
+            if(t + this.army.quantity > max) t = max - this.army.quantity;
+            if(t > 0) {
+                let newQuality = DEFAULT_ARMY_NEW_QUALITY + this._qualityIncrement;
+                this._army.quality = this._army.quality * this._army.quantity + newQuality * t;
+                this._army.quantity += t;
+                this._army.quality /= this._army.quantity;
+            }
 
-        // 3. Re affect player
-        /* Rate change calculation
-         * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
-         * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
-         */
-        this.player.deltaPopulation(-t);
-        armyFactor = this._army.quantity * (this._army.quality / 100);
+            // 3. Re affect player
+            /* Rate change calculation
+             * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
+             * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
+             */
+            this.player.deltaPopulation(-t);
+            armyFactor = this._army.quantity * (this._army.quality / 100);
 
-        eventBus.emit('deltaMoneyDecreaseRate', {
-            territory: self,
-            delta: armyFactor * ARMY_MONEY_DECREASE_FACTOR
-        }).emit('deltaFoodDecreaseRate', {
-            territory: self,
-            delta: armyFactor * ARMY_FOOD_DECREASE_FACTOR
-        });
-        eventBus.emit('changeQuantity', this);
+            eventBus.emit('deltaMoneyDecreaseRate', {
+                territory: self,
+                delta: armyFactor * ARMY_MONEY_DECREASE_FACTOR
+            }).emit('deltaFoodDecreaseRate', {
+                territory: self,
+                delta: armyFactor * ARMY_FOOD_DECREASE_FACTOR
+            });
+            eventBus.emit('changeQuantity', this);
 
-        if(t !== 0) {
-            eventBus.emit('changeQuality', this);
-            return true;
+            if(t !== 0) {
+                eventBus.emit('changeQuality', this);
+                return true;
+            }
         }
 
         return false;
