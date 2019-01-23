@@ -135,7 +135,7 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             item.add(quantityIcon);
             quantityIcon.setPosition(originX + 74, 36);
 
-            var quantityText = this.add.text(0, 0, t.army.quantity, {fontSize:20}).setOrigin(0, 0.5);
+            var quantityText = this.add.text(0, 0, Math.floor(t.army.quantity), {fontSize:20}).setOrigin(0, 0.5);
             item.add(quantityText);
             quantityText.setPosition(originX + 109, 51);
 
@@ -143,17 +143,17 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
             item.add(qualityIcon);
             qualityIcon.setPosition(originX + 177, 36);
 
-            var qualityText = this.add.text(0, 0, t.army.quality, {fontSize:20}).setOrigin(0, 0.5);
+            var qualityText = this.add.text(0, 0, Math.floor(t.army.quality), {fontSize:20}).setOrigin(0, 0.5);
             item.add(qualityText);
             qualityText.setPosition(originX + 212, 51);
 
             item.quantityListener = (t) => {
                 if(t !== item.territory) return;
-                quantityText.setText(t.army.quantity);
+                quantityText.setText(Math.floor(t.army.quantity));
             };
             item.qualityListener = (t) => {
                 if(t !== item.territory) return;
-                qualityText.setText(t.army.quality);
+                qualityText.setText(Math.floor(t.army.quality));
             };
 
             this.scene.get('engine')
