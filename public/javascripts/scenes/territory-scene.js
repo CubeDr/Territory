@@ -72,9 +72,7 @@ function create() {
     this.engine.emit('sceneLoaded', 'territory');
 
     this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT, 'barrack', '영지 삭제', () => {
-        player.territories.splice(
-            player.territories.indexOf(territory), 1
-        );
+        player.deleteTerritory(territory);
         this.scene.start('world', {
             player: player,
             centerX: territory.x,
@@ -131,6 +129,7 @@ function moveEditing(gameObject) {
 function confirmEditing() {
     if(!edit.object) return;
     if(!edit.placable) return;
+    if(!edit.over) return;
     if(edit.isRemoving) {
         territory.remove(edit.object.mapX, edit.object.mapY, this.engine);
     }

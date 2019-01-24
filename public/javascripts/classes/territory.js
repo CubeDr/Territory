@@ -16,6 +16,14 @@ class Territory {
             ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
             ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
             ['product', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'house', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
         ]);
         this._updateAttributes();
 
@@ -273,6 +281,15 @@ class Territory {
                 });
                 break;
         }
+    }
+
+    delete(engine) {
+        for(let y=0; y<this._map.length; y++) {
+            for(let x=0; x<this._map[y].length; x++) {
+                this.remove(x, y, engine);
+            }
+        }
+        this.deltaArmy(engine, -this._army.quantity);
     }
 
     _updateAttributes() {

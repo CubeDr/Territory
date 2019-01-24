@@ -45,6 +45,13 @@ class Player {
         this.eventBus.emit('runArmy', army);
     }
 
+    deleteTerritory(territory) {
+        territory.delete(this.eventBus);
+        this.territories.splice(
+            this.territories.indexOf(territory), 1
+        );
+    }
+
     update(dt) {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
@@ -77,7 +84,7 @@ class Player {
     }
 
     deltaPopulation(populationDelta) {
-        if(this._food <= 0) return false;
+        if(this._food <= 0) populationDelta = 0;
         let newPopulation = this._population + populationDelta;
         if(newPopulation < 0) return false;
         newPopulation = clipToRange(newPopulation, 0, this.populationMax);
