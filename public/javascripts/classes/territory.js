@@ -469,7 +469,7 @@ class Territory {
     }
 
     static __populationIncreaseRateFrom(food, map) {
-        let count = 0.1;
+        let count = DEFAULT_POPULATION_INCREASE_FACTOR;
         map.forEach((row) => {
             row.forEach((b) => {
                 if(b === 'landmark') count += 1;

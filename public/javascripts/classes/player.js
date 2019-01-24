@@ -53,6 +53,7 @@ class Player {
     }
 
     update(time, dt) {
+        // console.log(this.moneyIncreaseRate, this.moneyDecreaseRate, this.foodIncreaseRate, this.foodDecreaseRate);
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
         this._money = clipToRange(this._money, 0);
