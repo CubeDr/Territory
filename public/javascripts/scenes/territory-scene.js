@@ -131,8 +131,12 @@ function moveEditing(gameObject) {
 function confirmEditing() {
     if(!edit.object) return;
     if(!edit.placable) return;
+    if(edit.isRemoving) {
+        territory.remove(edit.object.mapX, edit.object.mapY, this.engine);
+    }
     territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
     edit.object.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
+    edit.object.setAlpha(1);
 
     territory._player.deltaMoney(-edit.cost);
 
@@ -143,11 +147,13 @@ function confirmEditing() {
 function startEditing(buildingType, cost) {
     cancelEditing();
 
+    edit.isRemoving = false;
     if(edit.over) {
         edit.object = createNewMapChild(buildingType, edit.over.x, edit.over.y);
         if(edit.over.type !== 'grass') edit.object.setTint(0xff0000);
     } else edit.object = createNewMapChild(buildingType);
     edit.cost = cost;
+    edit.object.setAlpha(1);
 }
 
 function updateEnoughMoney() {
@@ -157,16 +163,21 @@ function updateEnoughMoney() {
 
 function updatePlacable() {
     if(!edit.object) return;
-    if(!edit.over || edit.over.type !== 'grass') {
-        edit.object.setTint(0xff0000);
-        edit.placable = false;
-        return;
-    }
 
-    if(!edit.enoughMoney) {
-        edit.object.setTint(0xff0000);
-        edit.placable = false;
-        return;
+    if(edit.isRemoving) {
+
+    } else {
+        if(!edit.over || edit.over.type !== 'grass') {
+            edit.object.setTint(0xff0000);
+            edit.placable = false;
+            return;
+        }
+
+        if(!edit.enoughMoney) {
+            edit.object.setTint(0xff0000);
+            edit.placable = false;
+            return;
+        }
     }
 
     edit.object.clearTint();
@@ -177,6 +188,16 @@ function cancelEditing() {
     if(!edit.object) return;
     edit.object.destroy();
     edit.object = null;
+}
+
+function startRemoving() {
+    cancelEditing();
+    edit.isRemoving = true;
+    if(edit.over) {
+        edit.object = createNewMapChild('grass', edit.over.x, edit.over.y);
+    } else edit.object = createNewMapChild('grass');
+    edit.object.setAlpha(0.5);
+    edit.cost = 0;
 }
 
 function createNewMapChild(type, x, y, mx, my) {

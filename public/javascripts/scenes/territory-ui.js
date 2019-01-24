@@ -17,6 +17,9 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
             menu.close();
             buildings.main.open();
         }));
+        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'barrack', '건물 삭제', function() {
+            startRemoving();
+        }));
     }
 
     _createBuildingLists(scene, menu) {

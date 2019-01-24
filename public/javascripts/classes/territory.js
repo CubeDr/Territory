@@ -38,97 +38,238 @@ class Territory {
          * 8. populationIncreaseRate
          */
         let self = this;
+        let delta = 0;
         switch(what) {
             case Building.BARRACK.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.BARRACK.maintain;
+                delta = Building.BARRACK.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.BARRACK.maintain
+                    delta: delta
                 });
                 break;
             case Building.POST.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.POST.maintain;
+                delta = Building.POST.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.POST.maintain
+                    delta: delta
                 });
                 // armyQuantityMax
-                this._armyQuantityMax += 10;
+                delta = 10;
+                this._armyQuantityMax += delta;
                 engine.emit('changeQuantityMax', this);
                 break;
             case Building.TRAIN.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.TRAIN.maintain;
+                delta = Building.TRAIN.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.TRAIN.maintain
+                    delta: delta
                 });
-                this._qualityIncrement += 10;
+                // quality
+                delta = 10;
+                this._qualityIncrement += delta;
                 break;
             case Building.HOUSE.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.HOUSE.maintain;
+                delta = Building.HOUSE.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.HOUSE.maintain
+                    delta: delta
                 });
                 // populationMax
-                this._populationMax += 10;
+                delta = 10;
+                this._populationMax += delta;
                 engine.emit('deltaPopulationMax', {
                     territory: self,
-                    delta: 10
+                    delta: delta
                 });
                 break;
             case Building.PRODUCT.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.PRODUCT.maintain;
+                delta = Building.PRODUCT.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.PRODUCT.maintain
+                    delta: delta
                 });
                 // foodIncreaseRate
-                this._foodIncreaseRate += 25;
+                delta = 25;
+                this._foodIncreaseRate += delta;
                 engine.emit('deltaFoodIncreaseRate', {
                     territory: self,
-                    delta: 25
+                    delta: delta
                 });
                 break;
             case Building.SAVE.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.SAVE.maintain;
+                delta = Building.SAVE.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.SAVE.maintain
+                    delta: delta
                 });
                 // foodMax
-                this._foodMax += 100;
+                delta = 100;
+                this._foodMax += delta;
                 engine.emit('deltaFoodMax', {
                     territory: self,
-                    delta: 100
+                    delta: delta
                 });
                 break;
             case Building.LANDMARK.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.LANDMARK.maintain;
+                delta = Building.LANDMARK.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.LANDMARK.maintain
+                    delta: delta
                 });
                 // populationIncreaseRate
-                this._populationIncreaseRate += 1;
+                delta = 1;
+                this._populationIncreaseRate += delta;
                 engine.emit('deltaPopulationIncreaseRate', {
                     territory: self,
-                    delta: 1
+                    delta: delta
                 });
                 break;
             case Building.MUSEUM.type:
                 // moneyDecreaseRate
-                this._moneyDecreaseRate += Building.MUSEUM.maintain;
+                delta = Building.MUSEUM.maintain;
+                this._moneyDecreaseRate += delta;
                 engine.emit('deltaMoneyDecreaseRate', {
                     territory: self,
-                    delta: Building.MUSEUM.maintain
+                    delta: delta
+                });
+                break;
+        }
+    }
+
+    remove(x, y, engine) {
+        let what = this._map[y][x];
+        /* Update Attributes
+         * 1. foodMax
+         * 2. populationMax
+         * 3. armyQuantityMax
+         * 4. moneyDecreaseRate
+         * 5. foodIncreaseRate
+         * 6. moneyIncreaseRate
+         * 7. foodDecreaseRate
+         * 8. populationIncreaseRate
+         */
+        let self = this;
+        let delta = 0;
+        switch(what) {
+            case Building.BARRACK.type:
+                // moneyDecreaseRate
+                delta = -Building.BARRACK.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                break;
+            case Building.POST.type:
+                // moneyDecreaseRate
+                delta = -Building.POST.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // armyQuantityMax
+                delta = -10;
+                this._armyQuantityMax += delta;
+                engine.emit('changeQuantityMax', this);
+                break;
+            case Building.TRAIN.type:
+                // moneyDecreaseRate
+                delta = -Building.TRAIN.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // quality
+                delta = -10;
+                this._qualityIncrement += delta;
+                break;
+            case Building.HOUSE.type:
+                // moneyDecreaseRate
+                delta = -Building.HOUSE.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // populationMax
+                delta = -10;
+                this._populationMax += delta;
+                engine.emit('deltaPopulationMax', {
+                    territory: self,
+                    delta: delta
+                });
+                break;
+            case Building.PRODUCT.type:
+                // moneyDecreaseRate
+                delta = -Building.PRODUCT.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // foodIncreaseRate
+                delta = -25;
+                this._foodIncreaseRate += delta;
+                engine.emit('deltaFoodIncreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                break;
+            case Building.SAVE.type:
+                // moneyDecreaseRate
+                delta = -Building.SAVE.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // foodMax
+                delta = -100;
+                this._foodMax += delta;
+                engine.emit('deltaFoodMax', {
+                    territory: self,
+                    delta: delta
+                });
+                break;
+            case Building.LANDMARK.type:
+                // moneyDecreaseRate
+                delta = -Building.LANDMARK.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                // populationIncreaseRate
+                delta = -1;
+                this._populationIncreaseRate += delta;
+                engine.emit('deltaPopulationIncreaseRate', {
+                    territory: self,
+                    delta: delta
+                });
+                break;
+            case Building.MUSEUM.type:
+                // moneyDecreaseRate
+                delta = -Building.MUSEUM.maintain;
+                this._moneyDecreaseRate += delta;
+                engine.emit('deltaMoneyDecreaseRate', {
+                    territory: self,
+                    delta: delta
                 });
                 break;
         }
