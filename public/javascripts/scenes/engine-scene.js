@@ -15,6 +15,10 @@ class Engine extends Phaser.Scene {
         this.player.attachListeners(this);
     }
 
+    update(time, dt) {
+        this.player.update(dt/1000, this);
+    }
+
     registerFight(army) {
         let a = Math.min(army.quantity, army.to.quantity);
         let b = Math.max(army.quantity, army.to.quantity);

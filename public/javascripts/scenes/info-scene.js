@@ -91,10 +91,6 @@ class InfoScene extends Phaser.Scene {
         }).emit('sceneLoaded', 'info');
     }
 
-    update(time, dt) {
-        this.player.update(dt/1000, this.scene.get('engine'));
-    }
-
     _showTerritory(territory) {
         this.show = 'territory';
         this.data = territory;
