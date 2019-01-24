@@ -168,7 +168,8 @@ function updatePlacable() {
     if(edit.isRemoving) {
 
     } else {
-        if(!edit.over || edit.over.type !== 'grass') {
+        // 만약 아래에 아무것도 없거나(맵 밖) 이미 건물이 지어진 곳이라면 못지음
+        if(!edit.over || edit.over.over) {
             edit.object.setTint(0xff0000);
             edit.placable = false;
             return;
