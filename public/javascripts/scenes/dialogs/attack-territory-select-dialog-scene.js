@@ -23,14 +23,14 @@ class AttackTerritorySelectDialogScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('item_back', 'assets/ui/list_item_back.png');
-        this.load.image('item_back_selected', 'assets/ui/list_item_back_selected.png');
+        this.load.image('item_back', 'assets/ui/list_item.png');
+        this.load.image('item_back_selected', 'assets/ui/list_item_selected.png');
         this.load.image('icon', 'assets/ui/territory_icon.png');
-        this.load.image('territory_image', 'assets/world/territory.png');
-        this.load.image('quantity_icon', 'assets/ui/resources/quantity.png');
-        this.load.image('quality_icon', 'assets/ui/resources/quality.png');
-        this.load.image('money_icon', 'assets/ui/resources/coin.png');
-        this.load.image('food_icon', 'assets/ui/resources/food.png');
+        this.load.image('territory_image', 'assets/world/tile_territory.png');
+        this.load.image('quantity_icon', 'assets/ui/resources/icon_quantity.png');
+        this.load.image('quality_icon', 'assets/ui/resources/icon_quality.png');
+        this.load.image('money_icon', 'assets/ui/resources/icon_coin.png');
+        this.load.image('food_icon', 'assets/ui/resources/icon_food.png');
     }
 
     create() {

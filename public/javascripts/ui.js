@@ -2,8 +2,8 @@
 /* ===== External Methods ===== */
 
 function preloadUiElements(self) {
-    self.load.image('button', 'assets/ui/button.png');
-    self.load.image('purple_button', 'assets/ui/purple_button.png');
+    self.load.image('button', 'assets/ui/background_button.png');
+    self.load.image('purple_button', 'assets/ui/strong_background_button.png');
 }
 
 /* ====== ImageButton definition ===== */

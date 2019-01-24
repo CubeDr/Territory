@@ -14,8 +14,8 @@ class WorldUIScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('w_territory', 'assets/world/territory.png');
-        this.load.image('button', 'assets/ui/button.png');
+        this.load.image('w_territory', 'assets/world/tile_territory.png');
+        this.load.image('button', 'assets/ui/background_button.png');
     }
 
     init(player) {

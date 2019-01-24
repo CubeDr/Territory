@@ -31,18 +31,18 @@ function preload() {
 
     this.engine = this.scene.get('engine');
 
-    this.load.image('grass', 'assets/grass.jpg');
-    this.load.image(Building.BARRACK.type, 'assets/barrack.jpg');
-    this.load.image(Building.POST.type, 'assets/post.png');
-    this.load.image(Building.TRAIN.type, 'assets/train.jpg');
-    this.load.image(Building.HOUSE.type, 'assets/house.png');
-    this.load.image(Building.PRODUCT.type, 'assets/product.jpg');
-    this.load.image(Building.SAVE.type, 'assets/save.jpg');
-    this.load.image(Building.LANDMARK.type, 'assets/landmark.jpg');
-    this.load.image(Building.MUSEUM.type, 'assets/museum.jpg');
+    this.load.image('grass', 'assets/tile_grass.jpg');
+    this.load.image(Building.BARRACK.type, 'assets/tile_barrack.jpg');
+    this.load.image(Building.POST.type, 'assets/tile_post.png');
+    this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
+    this.load.image(Building.HOUSE.type, 'assets/tile_house.png');
+    this.load.image(Building.PRODUCT.type, 'assets/tile_product.jpg');
+    this.load.image(Building.SAVE.type, 'assets/tile_save.jpg');
+    this.load.image(Building.LANDMARK.type, 'assets/tile_landmark.jpg');
+    this.load.image(Building.MUSEUM.type, 'assets/tile_museum.jpg');
 
-    this.load.image('back', 'assets/back.png');
-    this.load.image('world', 'assets/world.png');
+    this.load.image('back', 'assets/menu_back.png');
+    this.load.image('world', 'assets/tile_world.png');
 
     preloadUiElements(this);
 }

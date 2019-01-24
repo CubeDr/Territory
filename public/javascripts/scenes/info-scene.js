@@ -8,11 +8,11 @@ class InfoScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('coin', 'assets/ui/resources/coin.png');
-        this.load.image('food', 'assets/ui/resources/food.png');
-        this.load.image('population', 'assets/ui/resources/population.png');
-        this.load.image('quality', 'assets/ui/resources/quality.png');
-        this.load.image('quantity', 'assets/ui/resources/quantity.png');
+        this.load.image('coin', 'assets/ui/resources/icon_coin.png');
+        this.load.image('food', 'assets/ui/resources/icon_food.png');
+        this.load.image('population', 'assets/ui/resources/icon_population.png');
+        this.load.image('quality', 'assets/ui/resources/icon_quality.png');
+        this.load.image('quantity', 'assets/ui/resources/icon_quantity.png');
     }
 
     create() {

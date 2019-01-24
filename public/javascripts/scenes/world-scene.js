@@ -17,14 +17,14 @@ class WorldScene extends Phaser.Scene {
         this.scene.launch('worldUi', this.player);
         if(!this.scene.isActive('info')) this.scene.launch('info', this.player);
 
-        this.load.image('grass', 'assets/grass.jpg');
-        this.load.image('post', 'assets/post.png');
-        this.load.image('rectangle', 'assets/rectangle.png');
-        this.load.image('territory', 'assets/world/territory.png');
-        this.load.image('bandit', 'assets/world/bandit.png');
+        this.load.image('grass', 'assets/tile_grass.jpg');
+        this.load.image('post', 'assets/tile_post.png');
+        this.load.image('rectangle', 'assets/background_dialog.png');
+        this.load.image('territory', 'assets/world/tile_territory.png');
+        this.load.image('bandit', 'assets/world/tile_bandit.png');
 
-        this.load.image('quality', 'assets/ui/resources/quality.png');
-        this.load.image('quantity', 'assets/ui/resources/quantity.png');
+        this.load.image('quality', 'assets/ui/resources/icon_quality.png');
+        this.load.image('quantity', 'assets/ui/resources/icon_quantity.png');
 
         // player army animation
         this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
