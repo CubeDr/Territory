@@ -11,6 +11,7 @@ var mapWidth = 8;
 var mapHeight = 8;
 
 var territory = null;
+var tweens = null;
 
 var edit = {
     object: null,
@@ -47,6 +48,8 @@ function preload() {
 }
 
 function create() {
+    tweens = this.tweens;
+
     // create empty map tiles
     createMap(this);
 
@@ -123,7 +126,11 @@ function outListener(pointer, gameObject) {
 function moveEditing(gameObject) {
     edit.over = gameObject;
     if(!edit.object) return;
-    edit.object.setPosition(gameObject.x, gameObject.y);
+    if(edit.isRemoving) {
+        edit.object.setPosition(gameObject.x, gameObject.y);
+    } else {
+        edit.object.setPosition(gameObject.x + IMAGE_WIDTH/2, gameObject.y + IMAGE_HEIGHT/2);
+    }
     edit.object.mapX = gameObject.mapX;
     edit.object.mapY = gameObject.mapY;
 }
@@ -134,11 +141,23 @@ function confirmEditing() {
     if(!edit.over) return;
     if(edit.isRemoving) {
         territory.remove(edit.object.mapX, edit.object.mapY, this.engine);
+
+        // 원래 있던 건물 제거
+        edit.over.over.destroy();
+        // 제거 효과 표시 제거
+        edit.object.destroy();
+    } else {
+        // 애니메이션 제거
+        edit.tween.stop();
+        edit.tween = null;
+        edit.object.setScale(1);
+
+        // 풀 위에 건물 짓기
+        territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
+        edit.over.over = edit.object;
+        edit.object.setOrigin(0);
+        edit.object.setPosition(edit.over.x, edit.over.y);
     }
-    // 풀 위에 건물 짓기
-    edit.over.over = territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
-    edit.object.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
-    edit.object.setAlpha(1);
 
     territory._player.deltaMoney(-edit.cost);
 
@@ -150,11 +169,20 @@ function startEditing(buildingType, cost) {
 
     edit.isRemoving = false;
     if(edit.over) {
-        edit.object = createNewMapChild(buildingType, edit.over.x, edit.over.y);
+        edit.object = createNewMapChild(buildingType, edit.over.x + IMAGE_WIDTH/2, edit.over.y + IMAGE_HEIGHT/2);
         if(edit.over.type !== 'grass') edit.object.setTint(0xff0000);
     } else edit.object = createNewMapChild(buildingType, 0, IMAGE_HEIGHT);
     edit.cost = cost;
     edit.object.setAlpha(1);
+
+    edit.object.setOrigin(0.5);
+    edit.tween = tweens.add({
+        targets: edit.object,
+        scaleX: 0.8,
+        scaleY: 0.8,
+        yoyo: true,
+        repeat: -1
+    });
 }
 
 function updateEnoughMoney() {
