@@ -34,7 +34,7 @@ function preload() {
     this.load.image(Building.BARRACK.type, 'assets/barrack.jpg');
     this.load.image(Building.POST.type, 'assets/post.png');
     this.load.image(Building.TRAIN.type, 'assets/train.jpg');
-    this.load.image(Building.HOUSE.type, 'assets/house.jpg');
+    this.load.image(Building.HOUSE.type, 'assets/house.png');
     this.load.image(Building.PRODUCT.type, 'assets/product.jpg');
     this.load.image(Building.SAVE.type, 'assets/save.jpg');
     this.load.image(Building.LANDMARK.type, 'assets/landmark.jpg');
@@ -93,8 +93,10 @@ function createMap(scene) {
     map = scene.add.group();
     for(var y=0; y<mapHeight; y++) {
         for (var x = 0; x < mapWidth; x++) {
-            createNewMapChild(territory.map[y][x], x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y)
+            let grass = createNewMapChild('grass', x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y)
                 .setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
+            if(territory.map[y][x] !== 'grass')
+                grass.over = createNewMapChild(territory.map[y][x], x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y);
         }
     }
 }
