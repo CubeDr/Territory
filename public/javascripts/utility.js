@@ -50,3 +50,12 @@ function normalize(dx, dy) {
 function randInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+// getDecimal(10.12345, 2) => 10.12
+// getDecimal(10.12345, 4) -> 10.1235
+function getDecimal(number, precision) {
+    let div = 1;
+    while(precision-- > 0)
+        div *= 10;
+    return Math.round(number * div) / div;
+}

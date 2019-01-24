@@ -87,7 +87,7 @@ class InfoScene extends Phaser.Scene {
         }).on('changeFoodDecreaseRate', (newRate) => {
             this.foodDecreaseText.setText('▼' + parseInt(newRate));
         }).on('changePopulationIncreaseRate', (newRate) => {
-            this.populationIncreaseText.setText('▲' + parseInt(newRate));
+            this.populationIncreaseText.setText('▲' + getDecimal(newRate, 1));
         }).emit('sceneLoaded', 'info');
     }
 
@@ -125,7 +125,7 @@ class InfoScene extends Phaser.Scene {
         this.moneyDecreaseText.setText('▼' + parseInt(this.player.moneyDecreaseRate));
         this.foodIncreaseText.setText('▲' + parseInt(this.player.foodIncreaseRate));
         this.foodDecreaseText.setText('▼' + parseInt(this.player.foodDecreaseRate));
-        this.populationIncreaseText.setText('▲' + parseInt(this.player.populationIncreaseRate));
+        this.populationIncreaseText.setText('▲' + getDecimal(this.player.populationIncreaseRate, 1));
     }
 
     _setTerritoryInfoVisibility(visible) {
