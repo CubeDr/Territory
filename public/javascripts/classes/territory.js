@@ -298,6 +298,11 @@ class Territory {
             }
         }
         this.deltaArmy(engine, this._army.quantity);
+        // 기본 인구 증가량 삭제
+        engine.emit('deltaPopulationIncreaseRate', {
+            territory: self,
+            delta: -DEFAULT_POPULATION_INCREASE_FACTOR
+        });
     }
 
     _updateAttributes() {
