@@ -135,13 +135,13 @@ function confirmEditing() {
     if(edit.isRemoving) {
         territory.remove(edit.object.mapX, edit.object.mapY, this.engine);
     }
-    territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
+    // 풀 위에 건물 짓기
+    edit.over.over = territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
     edit.object.setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
     edit.object.setAlpha(1);
 
     territory._player.deltaMoney(-edit.cost);
 
-    edit.over.destroy();
     edit.object = null;
 }
 
