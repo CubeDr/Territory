@@ -4,6 +4,7 @@ class Engine extends Phaser.Scene {
 
         // propery to handle events
         this._events = {};
+        this._lastUpdate = -1000;
     }
 
     init(player) {

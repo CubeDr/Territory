@@ -94,8 +94,6 @@ class WorldScene extends Phaser.Scene {
     }
 
     update(time, dt) {
-        this.player.update(dt/1000);
-
         this._updateArmyWalking();
 
         this.updateDialogs();
