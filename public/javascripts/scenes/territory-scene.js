@@ -152,7 +152,7 @@ function startEditing(buildingType, cost) {
     if(edit.over) {
         edit.object = createNewMapChild(buildingType, edit.over.x, edit.over.y);
         if(edit.over.type !== 'grass') edit.object.setTint(0xff0000);
-    } else edit.object = createNewMapChild(buildingType);
+    } else edit.object = createNewMapChild(buildingType, 0, IMAGE_HEIGHT);
     edit.cost = cost;
     edit.object.setAlpha(1);
 }
