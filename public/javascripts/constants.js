@@ -21,6 +21,8 @@ const CAMERA_HEIGHT = 800;
 const WORLD_WIDTH = 51;
 const WORLD_HEIGHT = 51;
 
+const UPDATE_CYCLE = 50; // ms
+
 var Building = {
     BARRACK: {
         type: 'barrack',

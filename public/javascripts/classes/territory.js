@@ -289,7 +289,7 @@ class Territory {
                 this.remove(x, y, engine);
             }
         }
-        this.deltaArmy(engine, -this._army.quantity);
+        this.deltaArmy(engine, this._army.quantity);
     }
 
     _updateAttributes() {

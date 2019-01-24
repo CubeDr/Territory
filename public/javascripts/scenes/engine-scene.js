@@ -17,7 +17,10 @@ class Engine extends Phaser.Scene {
     }
 
     update(time, dt) {
-        this.player.update(dt/1000, this);
+        while(time >= this._lastUpdate + UPDATE_CYCLE) {
+            this.player.update(UPDATE_CYCLE / 1000, this);
+            this._lastUpdate += UPDATE_CYCLE;
+        }
     }
 
     registerFight(army) {
