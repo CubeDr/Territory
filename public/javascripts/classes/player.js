@@ -52,7 +52,7 @@ class Player {
         );
     }
 
-    update(dt) {
+    update(time, dt) {
         // update money
         this._money += (this._moneyIncreaseRate - this._moneyDecreaseRate) * dt;
         this._money = clipToRange(this._money, 0);
@@ -68,9 +68,9 @@ class Player {
             this.eventBus.emit('changeFood', newFood);
         this._food = newFood;
         // update army
-        this._updateSec(dt, this.eventBus);
-
-        // this._recalculateDeltas();
+        this.territories.forEach((t) => {
+            t.update(time, this.eventBus);
+        });
     }
 
     deltaMoney(moneyDelta) {
@@ -99,21 +99,6 @@ class Player {
         this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
         this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
         return true;
-    }
-
-    _updateSec(dt, engine) {
-        let eventBus = this.eventBus;
-        this._dt += dt;
-        while(this._dt >= 1) {
-            this._dt -= 1;
-            this.territories.forEach((t) => {
-                let transferred = t.transferArmy(engine);
-                if(transferred) {
-                    eventBus.emit('quantityChange', t)
-                          .emit('qualityChange', t);
-                }
-            });
-        }
     }
 
     _initializeAttributes() {

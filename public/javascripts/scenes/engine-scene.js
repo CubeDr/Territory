@@ -16,9 +16,9 @@ class Engine extends Phaser.Scene {
         this.player.attachListeners(this);
     }
 
-    update(time, dt) {
+    update(time) {
         while(time >= this._lastUpdate + UPDATE_CYCLE) {
-            this.player.update(UPDATE_CYCLE / 1000, this);
+            this.player.update(time, UPDATE_CYCLE / 1000, this);
             this._lastUpdate += UPDATE_CYCLE;
         }
     }

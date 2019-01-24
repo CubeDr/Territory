@@ -31,6 +31,14 @@ class Territory {
         // this property is to easily track gameObject from WorldUIScene.
         // can be null when WorldScene is not active.
         this.gameObject = null;
+        this.lastTransfer = 0;
+    }
+
+    update(time, eventBus) {
+        while(time > this.lastTransfer + DEFAULT_ARMY_TRANSFER_CYCLE) {
+            this.transferArmy(eventBus);
+            this.lastTransfer += DEFAULT_ARMY_TRANSFER_CYCLE;
+        }
     }
 
     build(x, y, what, engine) {
@@ -360,7 +368,7 @@ class Territory {
         let factor = 0;
         this.map.forEach( (row) => {
             row.forEach((b) => {
-                if(b === Building.BARRACK.type) factor += DEFAULT_ARMY_TRANSFER_FACTOR;
+                if(b === Building.BARRACK.type) factor += 1;
             })
         });
 
