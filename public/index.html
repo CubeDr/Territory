@@ -3,6 +3,14 @@
 <head>
   <title>Express</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
+
+  <!-- Google Sign in -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+  <script src="javascripts/google-signin.js"></script>
+  <!-------------------->
+
+
   <script src="//cdn.jsdelivr.net/npm/phaser@3.15/dist/phaser.min.js"></script>
   <script
           type="text/javascript"
@@ -25,6 +33,15 @@
 
 <body>
 </body>
+
+<button id="signinButton">Sign in with Google</button>
+<script>
+  $('#signinButton').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+
 <div id="gameCanvas"></div>
 <script src="javascripts/scenes/territory-scene.js"></script>
 <script src="javascripts/scenes/world-scene.js"></script>
