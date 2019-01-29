@@ -12,10 +12,9 @@ function signInCallback(authResult) {
         // Hide the sign-in button now that the user is authorized, for example:
         $('#signinButton').attr('style', 'display: none');
 
-        console.log(parseJwt(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token));
         $.ajax({
             type: 'POST',
-            url: 'https://localhost:8080/storeauthcode',
+            url: 'https://localhost:8080/signin',
             // Always include an `X-Requested-With` header in every AJAX request,
             // to protect against CSRF attacks.
             headers: {
@@ -23,8 +22,11 @@ function signInCallback(authResult) {
             },
             contentType: 'application/octet-stream; charset=utf-8',
             success: function(result) {
-                // Handle or verify the server response.
-                console.log(result);
+                if(result === 0) {
+                    // signed in
+                } else if(result === 1) {
+                    // needs sign up
+                }
             },
             processData: false,
             data: authResult['code']
