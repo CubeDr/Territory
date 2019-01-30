@@ -13,6 +13,8 @@ var mapHeight = 8;
 var territory = null;
 var tweens = null;
 
+var territoryScene = null;
+
 var edit = {
     object: null,
     over: null,
@@ -23,6 +25,7 @@ var edit = {
 
 function init(territoryData) {
     territory = territoryData;
+    territoryScene = this;
 }
 
 function preload() {
@@ -31,7 +34,7 @@ function preload() {
 
     this.engine = this.scene.get('engine');
 
-    this.load.image('grass', 'assets/tile_grass.jpg');
+    loadTileSprites(this);
     this.load.image(Building.BARRACK.type, 'assets/tile_barrack.jpg');
     this.load.image(Building.POST.type, 'assets/tile_post.png');
     this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
@@ -48,6 +51,8 @@ function preload() {
 }
 
 function create() {
+    createAnimations(this);
+
     tweens = this.tweens;
 
     // create empty map tiles
@@ -233,7 +238,19 @@ function startRemoving() {
 function createNewMapChild(type, x, y, mx, my) {
     x = typeof x !== 'undefined'? x : 0;
     y = typeof y !== 'undefined'? y : 0;
-    var e = map.create(x, y, type);
+
+    let e = null;
+    switch(type) {
+        case 'grass':
+            e = territoryScene.add.sprite(x, y, 'grassSprite');
+            e.anims.load('grassAnim');
+            e.anims.play('grassAnim');
+            map.add(e);
+            break;
+        default:
+            e = map.create(x, y, type);
+            break;
+    }
     e.setOrigin(0, 0);
     e.type = type;
     e.layer = 'map';

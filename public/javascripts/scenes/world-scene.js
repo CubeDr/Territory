@@ -17,7 +17,7 @@ class WorldScene extends Phaser.Scene {
         this.scene.launch('worldUi', this.player);
         if(!this.scene.isActive('info')) this.scene.launch('info', this.player);
 
-        this.load.image('grass', 'assets/tile_grass.jpg');
+        loadTileSprites(this);
         this.load.image('post', 'assets/tile_post.png');
         this.load.image('rectangle', 'assets/background_dialog.png');
         this.load.image('territory', 'assets/world/tile_territory.png');
@@ -29,9 +29,13 @@ class WorldScene extends Phaser.Scene {
         // player army animation
         this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('armyFightSprite', 'assets/sprites/cloud_spritesheet.png', {frameWidth: 140, frameHeight: 122});
+
     }
 
     create() {
+        // load animations
+        createAnimations(this);
+
         this.map = [];
         for(let y=-parseInt(WORLD_HEIGHT/2); y<=parseInt(WORLD_HEIGHT/2); y++) {
             this.map[y] = [];
@@ -74,6 +78,7 @@ class WorldScene extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         };
+
         // create animations if not already created
         if(!this.anims.get("armyWalkE")) {
             let direction = ["E", "N", "NE", "NW", "S", "SE", "SW", "W"];
@@ -100,7 +105,19 @@ class WorldScene extends Phaser.Scene {
     }
 
     createTile(x, y, key, config) {
-        let tile = this.add.image(x*100, y*100, key);
+        let tile = null;
+
+        switch (key) {
+            case 'grass':
+                tile = this.add.sprite(x*100, y*100, 'grassSprite');
+                tile.anims.load('grassAnim');
+                tile.anims.play('grassAnim');
+                break;
+            default:
+                tile = this.add.image(x*100, y*100, key);
+                break;
+        }
+
         tile.mapX = x;
         tile.mapY = y;
         tile.key = key;
