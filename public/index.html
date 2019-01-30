@@ -34,16 +34,18 @@
 
 <body>
 </body>
+<div id="content">
+  <button id="signinButton">Sign in with Google</button>
+  <script>
+    $('#signinButton').click(function() {
+      // signInCallback defined in step 6.
+      auth2.grantOfflineAccess().then(signInCallback);
+    });
+  </script>
 
-<button id="signinButton">Sign in with Google</button>
-<script>
-  $('#signinButton').click(function() {
-    // signInCallback defined in step 6.
-    auth2.grantOfflineAccess().then(signInCallback);
-  });
-</script>
+  <div id="gameCanvas"></div>
+</div>
 
-<div id="gameCanvas"></div>
 <script src="javascripts/scenes/territory-scene.js"></script>
 <script src="javascripts/scenes/world-scene.js"></script>
 <script src="javascripts/scenes/info-scene.js"></script>

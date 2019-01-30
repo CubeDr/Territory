@@ -9,7 +9,7 @@ var config = {
     plugins: {
         global: [ NineSlice.Plugin.DefaultCfg ]
     },
-    parent: '#gameCanvas'
+    parent: 'gameCanvas'
 };
 
 var player = new Player(1);
