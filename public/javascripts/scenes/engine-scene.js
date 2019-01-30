@@ -1,3 +1,5 @@
+let gameEngine = null;
+
 class Engine extends Phaser.Scene {
     constructor() {
         super({key: 'engine'});
@@ -9,6 +11,7 @@ class Engine extends Phaser.Scene {
 
     init(player) {
         this.player = player;
+        gameEngine = this;
     }
 
     create() {

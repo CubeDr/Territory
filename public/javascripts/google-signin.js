@@ -24,8 +24,10 @@ function signInCallback(authResult) {
             success: function(result) {
                 if(result === 0) {
                     // signed in
+                    gameEngine.emit('sign in');
                 } else if(result === 1) {
                     // needs sign up
+                    gameEngine.emit('sign up');
                 }
             },
             processData: false,

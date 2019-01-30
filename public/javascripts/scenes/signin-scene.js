@@ -16,5 +16,11 @@ class SigninScene extends Phaser.Scene {
         this.add.text(900, 900, '배경: 구글에 awesome background 검색ㅎ', {
             color: '#999999'
         }).setOrigin(1, 1);
+
+        gameEngine.on('sign in', () => {
+            console.log('sign in');
+        }).on('sign up', () => {
+            console.log('sign up');
+        });
     }
 }
