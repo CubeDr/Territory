@@ -12,7 +12,7 @@ class Engine extends Phaser.Scene {
     }
 
     create() {
-        this.scene.launch('territory', this.player.territories[0]);
+        this.scene.launch('signin', this.player.territories[0]);
         this.player.attachListeners(this);
     }
 
