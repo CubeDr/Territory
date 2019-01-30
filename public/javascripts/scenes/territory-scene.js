@@ -160,6 +160,7 @@ function confirmEditing() {
 
         // 원래 있던 건물 제거
         edit.over.over.destroy();
+        edit.over.over = null;
         // 제거 효과 표시 제거
         edit.object.destroy();
     } else {
