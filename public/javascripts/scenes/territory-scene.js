@@ -42,6 +42,9 @@ function preload() {
     // load menu items
     this.load.image('menu_build', 'assets/menu/menu_build.png');
     this.load.image('menu_remove_build', 'assets/menu/menu_remove_build.png');
+    this.load.image('menu_population', 'assets/menu/menu_population.png');
+    this.load.image('menu_food', 'assets/menu/menu_food.png');
+    this.load.image('menu_army', 'assets/menu/menu_army.png');
 
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');

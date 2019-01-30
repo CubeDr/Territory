@@ -122,25 +122,20 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 menu.open();
             }));
         buildings.main.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.HOUSE.type, '인구', () => {
+            'menu_population', '인구', () => {
                 buildings.main.close();
                 buildings.population.open();
             }));
         buildings.main.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.PRODUCT.type, '식량', () => {
+            'menu_food', '식량', () => {
                 buildings.main.close();
                 buildings.food.open();
                 buildings.food.open();
             }));
         buildings.main.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.BARRACK.type, '병력', () => {
+            'menu_army', '병력', () => {
                 buildings.main.close();
                 buildings.army.open();
-            }));
-        buildings.main.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.MUSEUM.type, '기타', () => {
-                buildings.main.close();
-                buildings.extra.open();
             }));
         buildings.main.close();
 
