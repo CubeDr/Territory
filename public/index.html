@@ -36,13 +36,22 @@
 <body>
 </body>
 <div id="content">
-  <button id="signinButton">Sign in with Google</button>
+
+  <!-- Google Sign in -->
+  <div id="gSignInWrapper">
+    <div id="signinButton" class="customGPlusSignIn">
+      <span class="icon"></span>
+      <span class="buttonText">Google</span>
+    </div>
+  </div>
+  <div id="name"></div>
+
   <script>
     $('#signinButton').click(function() {
-      // signInCallback defined in step 6.
       auth2.grantOfflineAccess().then(signInCallback);
     });
   </script>
+  <!-------------------->
 
   <div id="gameCanvas"></div>
 </div>
