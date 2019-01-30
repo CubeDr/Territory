@@ -45,6 +45,13 @@ function preload() {
     this.load.image('menu_population', 'assets/menu/menu_population.png');
     this.load.image('menu_food', 'assets/menu/menu_food.png');
     this.load.image('menu_army', 'assets/menu/menu_army.png');
+    this.load.image('menu_barrack', 'assets/menu/menu_barrack.png');
+    this.load.image('menu_house', 'assets/menu/menu_house.png');
+    this.load.image('menu_landmark', 'assets/menu/menu_landmark.png');
+    this.load.image('menu_post', 'assets/menu/menu_post.png');
+    this.load.image('menu_product', 'assets/menu/menu_product.png');
+    this.load.image('menu_save', 'assets/menu/menu_save.png');
+    this.load.image('menu_train', 'assets/menu/menu_train.png');
 
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');

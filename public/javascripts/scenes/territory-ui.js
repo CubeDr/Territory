@@ -42,11 +42,11 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 buildings.main.open();
             }));
         buildings.population.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.HOUSE.type, '집', () => {
+            'menu_' + Building.HOUSE.type, '집', () => {
                 startEditing(Building.HOUSE.type, Building.HOUSE.cost);
             }));
         buildings.population.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.LANDMARK.type, '랜드마크', () => {
+            'menu_' + Building.LANDMARK.type, '랜드마크', () => {
                 startEditing(Building.LANDMARK.type, Building.LANDMARK.cost);
             }));
         buildings.population.close();
@@ -62,11 +62,11 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 buildings.main.open();
             }));
         buildings.food.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.PRODUCT.type, '생산소', () => {
+            'menu_' + Building.PRODUCT.type, '생산소', () => {
                 startEditing(Building.PRODUCT.type, Building.PRODUCT.cost);
             }));
         buildings.food.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.SAVE.type, '저장고', () => {
+            'menu_' + Building.SAVE.type, '저장고', () => {
                 startEditing(Building.SAVE.type, Building.SAVE.cost);
             }));
         buildings.food.close();
@@ -82,34 +82,34 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 buildings.main.open();
             }));
         buildings.army.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.BARRACK.type, '병영', () => {
+            'menu_' + Building.BARRACK.type, '병영', () => {
                 startEditing(Building.BARRACK.type, Building.BARRACK.cost);
             }));
         buildings.army.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.POST.type, '주둔지', () => {
+            'menu_' + Building.POST.type, '주둔지', () => {
                 startEditing(Building.POST.type, Building.POST.cost);
             }));
         buildings.army.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.TRAIN.type, '훈련장', () => {
+            'menu_' + Building.TRAIN.type, '훈련장', () => {
                 startEditing(Building.TRAIN.type, Building.TRAIN.cost);
             }));
         buildings.army.close();
 
         // 기타 건물
-        buildings.extra = new List(scene, mapWidth * IMAGE_WIDTH, 0,
-            IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
-            'vertical', 10);
-        buildings.extra.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            'back', '뒤로', () => {
-                cancelEditing();
-                buildings.extra.close();
-                buildings.main.open();
-            }));
-        buildings.extra.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-            Building.MUSEUM.type, '전시장', () => {
-                startEditing(Building.MUSEUM.type, Building.MUSEUM.cost);
-            }));
-        buildings.extra.close();
+        // buildings.extra = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        //     IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
+        //     'vertical', 10);
+        // buildings.extra.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+        //     'back', '뒤로', () => {
+        //         cancelEditing();
+        //         buildings.extra.close();
+        //         buildings.main.open();
+        //     }));
+        // buildings.extra.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+        //     Building.MUSEUM.type, '전시장', () => {
+        //         startEditing(Building.MUSEUM.type, Building.MUSEUM.cost);
+        //     }));
+        // buildings.extra.close();
 
 
         buildings.main = new List(scene, mapWidth * IMAGE_WIDTH, 0,
