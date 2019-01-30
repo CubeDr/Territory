@@ -15,7 +15,7 @@ var tweens = null;
 
 var territoryScene = null;
 const TERRITORY_USING_SPRITE = [
-    "grass", "house", "landmark", "product", "save"
+    "grass", "house", "landmark", "product", "save", "barrack"
 ];
 
 var edit = {
@@ -38,7 +38,6 @@ function preload() {
     this.engine = this.scene.get('engine');
 
     loadTileSprites(this, TERRITORY_USING_SPRITE);
-    this.load.image(Building.BARRACK.type, 'assets/tile_barrack.jpg');
     this.load.image(Building.POST.type, 'assets/tile_post.png');
     this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
     this.load.image(Building.PRODUCT.type, 'assets/tile_product.jpg');
@@ -244,6 +243,7 @@ function createNewMapChild(type, x, y, mx, my) {
     let e = null;
     switch(type) {
         case 'grass': case 'house': case 'landmark': case 'product': case 'save':
+        case 'barrack':
             e = territoryScene.add.sprite(x, y, type + 'Sprite');
             e.anims.load(type + 'Anim');
             e.anims.play(type + 'Anim');
