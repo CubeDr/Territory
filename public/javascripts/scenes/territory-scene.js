@@ -112,10 +112,10 @@ function createMap(scene) {
     map = scene.add.group();
     for(var y=0; y<mapHeight; y++) {
         for (var x = 0; x < mapWidth; x++) {
-            let grass = createNewMapChild('grass', x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y)
+            let grass = createNewMapChild('grass', x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true)
                 .setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
             if(territory.map[y][x] !== 'grass')
-                grass.over = createNewMapChild(territory.map[y][x], x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y);
+                grass.over = createNewMapChild(territory.map[y][x], x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true);
         }
     }
 }
@@ -247,13 +247,20 @@ function startRemoving() {
     edit.cost = 0;
 }
 
-function createNewMapChild(type, x, y, mx, my) {
+function createNewMapChild(type, x, y, mx, my, randomStart=false) {
     x = typeof x !== 'undefined'? x : 0;
     y = typeof y !== 'undefined'? y : 0;
 
     let e = territoryScene.add.sprite(x, y, type + 'Sprite');
     e.anims.load(type + 'Anim');
+
+    if(randomStart) {
+        // Randomize animation
+        e.anims.setDelay(randInt(0, 200));
+        e.anims.setProgress(randInt(0, 2));
+    }
     e.anims.play(type + 'Anim');
+
     map.add(e);
 
     e.setOrigin(0, 0);
