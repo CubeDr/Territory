@@ -13,11 +13,11 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 centerY: territory.y
             });
         }));
-        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'grass', '건축', function() {
+        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'menu_build', '건축', function() {
             menu.close();
             buildings.main.open();
         }));
-        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'barrack', '건물 삭제', function() {
+        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'menu_remove_build', '건물 삭제', function() {
             startRemoving();
         }));
     }

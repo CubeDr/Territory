@@ -39,6 +39,10 @@ function preload() {
 
     loadTileSprites(this, TERRITORY_USING_SPRITE);
 
+    // load menu items
+    this.load.image('menu_build', 'assets/menu/menu_build.png');
+    this.load.image('menu_remove_build', 'assets/menu/menu_remove_build.png');
+
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');
 
