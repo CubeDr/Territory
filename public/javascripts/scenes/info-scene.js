@@ -17,22 +17,22 @@ class InfoScene extends Phaser.Scene {
 
     create() {
         this.coinIcon = this.add.image(50, 40, 'coin');
-        this.foodIcon = this.add.image(200, 40, 'food');
-        this.populationIcon = this.add.image(350, 40, 'population');
+        this.foodIcon = this.add.image(170, 40, 'food');
+        this.populationIcon = this.add.image(320, 40, 'population');
         this.quantityIcon = this.add.image(500, 40, 'quantity');
         this.qualityIcon = this.add.image(650, 40, 'quality');
 
         this.moneyText = this.add.text(80, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
-        this.foodText = this.add.text(230, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
-        this.populationText = this.add.text(380, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
+        this.foodText = this.add.text(200, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
+        this.populationText = this.add.text(350, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
         this.quantityText = this.add.text(530, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
         this.qualityText = this.add.text(680, 40, '0', {fontSize: 18}).setOrigin(0, 0.5);
 
         this.moneyIncreaseText = this.add.text(88, 70, '▲0', {color: 'green'}).setOrigin(1, 0.5);
         this.moneyDecreaseText = this.add.text(92, 70, '▼0', {color: 'red'}).setOrigin(0, 0.5);
-        this.foodIncreaseText = this.add.text(258, 70, '▲0', {color: 'green'}).setOrigin(1, 0.5);
-        this.foodDecreaseText = this.add.text(262, 70, '▼0', {color: 'red'}).setOrigin(0, 0.5);
-        this.populationIncreaseText = this.add.text(410, 70, '▲0', {color: 'green'}).setOrigin(0, 0.5);
+        this.foodIncreaseText = this.add.text(228, 70, '▲0', {color: 'green'}).setOrigin(1, 0.5);
+        this.foodDecreaseText = this.add.text(232, 70, '▼0', {color: 'red'}).setOrigin(0, 0.5);
+        this.populationIncreaseText = this.add.text(380, 70, '▲0', {color: 'green'}).setOrigin(0, 0.5);
 
         let self = this;
         this.scene.get('engine')
