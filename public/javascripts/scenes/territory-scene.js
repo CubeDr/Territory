@@ -240,19 +240,11 @@ function createNewMapChild(type, x, y, mx, my) {
     x = typeof x !== 'undefined'? x : 0;
     y = typeof y !== 'undefined'? y : 0;
 
-    let e = null;
-    switch(type) {
-        case 'grass': case 'house': case 'landmark': case 'product': case 'save':
-        case 'barrack': case 'post': case 'train':
-            e = territoryScene.add.sprite(x, y, type + 'Sprite');
-            e.anims.load(type + 'Anim');
-            e.anims.play(type + 'Anim');
-            map.add(e);
-            break;
-        default:
-            e = map.create(x, y, type);
-            break;
-    }
+    let e = territoryScene.add.sprite(x, y, type + 'Sprite');
+    e.anims.load(type + 'Anim');
+    e.anims.play(type + 'Anim');
+    map.add(e);
+
     e.setOrigin(0, 0);
     e.type = type;
     e.layer = 'map';
