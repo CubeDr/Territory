@@ -52,6 +52,7 @@ function preload() {
     this.load.image('menu_product', 'assets/menu/menu_product.png');
     this.load.image('menu_save', 'assets/menu/menu_save.png');
     this.load.image('menu_train', 'assets/menu/menu_train.png');
+    this.load.image('menu_remove_territory', 'assets/menu/menu_remove_territory.png');
 
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');
@@ -88,7 +89,8 @@ function create() {
     }
     this.engine.emit('sceneLoaded', 'territory');
 
-    this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT, 'barrack', '영지 삭제', () => {
+    this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT,
+        'menu_remove_territory', '영지 삭제', () => {
         player.deleteTerritory(territory);
         this.scene.start('world', {
             player: player,
