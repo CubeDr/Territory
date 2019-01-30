@@ -15,7 +15,7 @@ var tweens = null;
 
 var territoryScene = null;
 const TERRITORY_USING_SPRITE = [
-    "grass", "house", "landmark"
+    "grass", "house", "landmark", "product", "save"
 ];
 
 var edit = {
@@ -243,7 +243,7 @@ function createNewMapChild(type, x, y, mx, my) {
 
     let e = null;
     switch(type) {
-        case 'grass': case 'house': case 'landmark':
+        case 'grass': case 'house': case 'landmark': case 'product': case 'save':
             e = territoryScene.add.sprite(x, y, type + 'Sprite');
             e.anims.load(type + 'Anim');
             e.anims.play(type + 'Anim');
