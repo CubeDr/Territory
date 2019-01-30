@@ -21,7 +21,6 @@ class WorldScene extends Phaser.Scene {
         if(!this.scene.isActive('info')) this.scene.launch('info', this.player);
 
         loadTileSprites(this, this.USING_SPRITES);
-        this.load.image('post', 'assets/tile_post.png');
         this.load.image('rectangle', 'assets/background_dialog.png');
         this.load.image('territory', 'assets/world/tile_territory.png');
         this.load.image('bandit', 'assets/world/tile_bandit.png');

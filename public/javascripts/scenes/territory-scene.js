@@ -38,12 +38,6 @@ function preload() {
     this.engine = this.scene.get('engine');
 
     loadTileSprites(this, TERRITORY_USING_SPRITE);
-    this.load.image(Building.POST.type, 'assets/tile_post.png');
-    this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
-    this.load.image(Building.PRODUCT.type, 'assets/tile_product.jpg');
-    this.load.image(Building.SAVE.type, 'assets/tile_save.jpg');
-    this.load.image(Building.LANDMARK.type, 'assets/tile_landmark.jpg');
-    this.load.image(Building.MUSEUM.type, 'assets/tile_museum.jpg');
 
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');
