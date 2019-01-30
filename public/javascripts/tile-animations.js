@@ -1,6 +1,7 @@
 function loadTileSprites(scene) {
     scene.load.spritesheet('grassSprite', 'assets/sprites/grass_sprite.png', { frameWidth: 100, frameHeight: 100});
     scene.load.spritesheet('houseSprite', 'assets/sprites/house_sprite.png', { frameWidth: 100, frameHeight: 100});
+    scene.load.spritesheet('landmarkSprite', 'assets/sprites/landmark_sprite.png', { frameWidth: 100, frameHeight: 100});
 }
 
 function createAnimations(scene) {
@@ -23,6 +24,16 @@ function createAnimations(scene) {
         frameRate: 5,
         repeat: -1,
         frames: scene.anims.generateFrameNumbers('houseSprite')
+    };
+
+    scene.anims.create(config);
+
+    // landmark animation
+    config = {
+        key: 'landmarkAnim',
+        frameRate: 5,
+        repeat: -1,
+        frames: scene.anims.generateFrameNumbers('landmarkSprite')
     };
 
     scene.anims.create(config);

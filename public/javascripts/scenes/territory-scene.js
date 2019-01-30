@@ -252,6 +252,12 @@ function createNewMapChild(type, x, y, mx, my) {
             e.anims.play('houseAnim');
             map.add(e);
             break;
+        case 'landmark':
+            e = territoryScene.add.sprite(x, y, 'landmarkSprite');
+            e.anims.load('landmarkAnim');
+            e.anims.play('landmarkAnim');
+            map.add(e);
+            break;
         default:
             e = map.create(x, y, type);
             break;
