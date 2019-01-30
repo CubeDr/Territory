@@ -16,6 +16,9 @@ body {
     border: thin solid #888;
     box-shadow: 1px 1px 1px grey;
     white-space: nowrap;
+    position: absolute;
+    left: calc(50% - 95px);
+    top: 350px;
 }
 #signinButton:hover {
     cursor: pointer;
@@ -25,7 +28,7 @@ span.label {
     font-weight: normal;
 }
 span.icon {
-    background: url('../assets/google/signin-normal.png') transparent 5px 50% no-repeat;
+    background: url('../assets/signin/signin-normal.png') transparent 5px 50% no-repeat;
     display: inline-block;
     vertical-align: middle;
     width: 42px;
@@ -34,7 +37,7 @@ span.icon {
 span.buttonText {
     display: inline-block;
     vertical-align: middle;
-    padding-left: 42px;
+    padding-left: 20px;
     padding-right: 42px;
     font-size: 14px;
     font-weight: bold;
