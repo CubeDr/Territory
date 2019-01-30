@@ -14,6 +14,9 @@ var territory = null;
 var tweens = null;
 
 var territoryScene = null;
+const TERRITORY_USING_SPRITE = [
+    "grass", "house", "landmark"
+];
 
 var edit = {
     object: null,
@@ -34,7 +37,7 @@ function preload() {
 
     this.engine = this.scene.get('engine');
 
-    loadTileSprites(this);
+    loadTileSprites(this, TERRITORY_USING_SPRITE);
     this.load.image(Building.BARRACK.type, 'assets/tile_barrack.jpg');
     this.load.image(Building.POST.type, 'assets/tile_post.png');
     this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
@@ -50,7 +53,7 @@ function preload() {
 }
 
 function create() {
-    createAnimations(this);
+    createAnimations(this, TERRITORY_USING_SPRITE);
 
     tweens = this.tweens;
 
@@ -240,22 +243,10 @@ function createNewMapChild(type, x, y, mx, my) {
 
     let e = null;
     switch(type) {
-        case 'grass':
-            e = territoryScene.add.sprite(x, y, 'grassSprite');
-            e.anims.load('grassAnim');
-            e.anims.play('grassAnim');
-            map.add(e);
-            break;
-        case 'house':
-            e = territoryScene.add.sprite(x, y, 'houseSprite');
-            e.anims.load('houseAnim');
-            e.anims.play('houseAnim');
-            map.add(e);
-            break;
-        case 'landmark':
-            e = territoryScene.add.sprite(x, y, 'landmarkSprite');
-            e.anims.load('landmarkAnim');
-            e.anims.play('landmarkAnim');
+        case 'grass': case 'house': case 'landmark':
+            e = territoryScene.add.sprite(x, y, type + 'Sprite');
+            e.anims.load(type + 'Anim');
+            e.anims.play(type + 'Anim');
             map.add(e);
             break;
         default:

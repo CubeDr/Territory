@@ -2,6 +2,9 @@ class WorldScene extends Phaser.Scene {
     constructor() {
         super({key: 'world'});
         this._registeredEvents = [];
+        this.USING_SPRITES = [
+            "grass"
+        ];
     }
 
     init(data) {
@@ -17,7 +20,7 @@ class WorldScene extends Phaser.Scene {
         this.scene.launch('worldUi', this.player);
         if(!this.scene.isActive('info')) this.scene.launch('info', this.player);
 
-        loadTileSprites(this);
+        loadTileSprites(this, this.USING_SPRITES);
         this.load.image('post', 'assets/tile_post.png');
         this.load.image('rectangle', 'assets/background_dialog.png');
         this.load.image('territory', 'assets/world/tile_territory.png');
@@ -34,7 +37,7 @@ class WorldScene extends Phaser.Scene {
 
     create() {
         // load animations
-        createAnimations(this);
+        createAnimations(this, this.USING_SPRITES);
 
         this.map = [];
         for(let y=-parseInt(WORLD_HEIGHT/2); y<=parseInt(WORLD_HEIGHT/2); y++) {
