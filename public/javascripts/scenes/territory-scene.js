@@ -38,7 +38,6 @@ function preload() {
     this.load.image(Building.BARRACK.type, 'assets/tile_barrack.jpg');
     this.load.image(Building.POST.type, 'assets/tile_post.png');
     this.load.image(Building.TRAIN.type, 'assets/tile_train.jpg');
-    this.load.image(Building.HOUSE.type, 'assets/tile_house.png');
     this.load.image(Building.PRODUCT.type, 'assets/tile_product.jpg');
     this.load.image(Building.SAVE.type, 'assets/tile_save.jpg');
     this.load.image(Building.LANDMARK.type, 'assets/tile_landmark.jpg');
@@ -245,6 +244,12 @@ function createNewMapChild(type, x, y, mx, my) {
             e = territoryScene.add.sprite(x, y, 'grassSprite');
             e.anims.load('grassAnim');
             e.anims.play('grassAnim');
+            map.add(e);
+            break;
+        case 'house':
+            e = territoryScene.add.sprite(x, y, 'houseSprite');
+            e.anims.load('houseAnim');
+            e.anims.play('houseAnim');
             map.add(e);
             break;
         default:
