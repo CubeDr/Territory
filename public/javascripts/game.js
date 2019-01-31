@@ -12,7 +12,5 @@ var config = {
     parent: 'gameCanvas'
 };
 
-var player = new Player(1);
-
 var game = new Phaser.Game(config);
-game.scene.start('engine', player);
+game.scene.start('engine');

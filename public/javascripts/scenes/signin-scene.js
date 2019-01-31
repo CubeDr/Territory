@@ -18,7 +18,13 @@ class SigninScene extends Phaser.Scene {
         }).setOrigin(1, 1);
 
         gameEngine.on('sign in', (id_token) => {
-            console.log('sign in ' + id_token);
+            gameEngine.userId = id_token;
+
+            // TODO load player
+            let player = new Player(id_token);
+
+            gameEngine.setPlayer(player);
+            this.scene.start('territory', player.territories[0]);
         });
     }
 }

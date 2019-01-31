@@ -7,19 +7,25 @@ class Engine extends Phaser.Scene {
         // propery to handle events
         this._events = {};
         this._lastUpdate = -1000;
+        this.userId = null;
+        this.player = null;
     }
 
-    init(player) {
-        this.player = player;
+    init() {
         gameEngine = this;
     }
 
     create() {
-        this.scene.launch('signin', this.player.territories[0]);
+        this.scene.launch('signin');
+    }
+
+    setPlayer(player) {
+        this.player = player;
         this.player.attachListeners(this);
     }
 
     update(time) {
+        if(!this.player) return;
         while(time >= this._lastUpdate + UPDATE_CYCLE) {
             this.player.update(time, UPDATE_CYCLE / 1000, this);
             this._lastUpdate += UPDATE_CYCLE;
