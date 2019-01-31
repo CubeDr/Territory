@@ -17,10 +17,8 @@ class SigninScene extends Phaser.Scene {
             color: '#999999'
         }).setOrigin(1, 1);
 
-        gameEngine.on('sign in', () => {
-            console.log('sign in');
-        }).on('sign up', () => {
-            console.log('sign up');
+        gameEngine.on('sign in', (id_token) => {
+            console.log('sign in ' + id_token);
         });
     }
 }

@@ -9,9 +9,7 @@ function start() {
 function signInCallback(authResult) {
     if (authResult['code']) {
 
-        // Hide the sign-in button now that the user is authorized, for example:
-        $('#signinButton').attr('style', 'display: none');
-
+        // Send sign in request to server
         $.ajax({
             type: 'POST',
             url: 'https://localhost:8080/signin',
@@ -24,10 +22,14 @@ function signInCallback(authResult) {
             success: function(result) {
                 if(result === 0) {
                     // signed in
-                    gameEngine.emit('sign in');
-                } else if(result === 1) {
-                    // needs sign up
-                    gameEngine.emit('sign up');
+                    $('#signinButton').attr('style', 'display: none');
+
+                    let id_token = gapi.auth2.getAuthInstance()
+                        .currentUser.get().getAuthResponse().id_token;
+                    gameEngine.emit('sign in', id_token);
+                } else {
+                    // error
+                    alert("로그인 오류가 발생했습니다. code:" + result)
                 }
             },
             processData: false,
