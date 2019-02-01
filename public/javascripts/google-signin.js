@@ -20,13 +20,10 @@ function signInCallback(authResult) {
             },
             contentType: 'application/octet-stream; charset=utf-8',
             success: function(result) {
-                if(result === 0) {
+                if(result !== "") {
                     // signed in
                     $('#signinButton').attr('style', 'display: none');
-
-                    let id_token = gapi.auth2.getAuthInstance()
-                        .currentUser.get().getAuthResponse().id_token;
-                    gameEngine.emit('sign in', id_token);
+                    gameEngine.emit('sign in', JSON.parse(result));
                 } else {
                     // error
                     alert("로그인 오류가 발생했습니다. code:" + result)
