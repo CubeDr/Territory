@@ -8,7 +8,6 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         let buildings = this._createBuildingLists(scene, menu);
         menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'world', '월드맵', function() {
             scene.scene.start('world', {
-                player: player,
                 centerX: territory.x,
                 centerY: territory.y
             });

@@ -8,7 +8,7 @@ class WorldScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.player = data.player;
+        this.player = gameEngine.player;
 
         this.events.on('shutdown', this._shutdown, this);
 
@@ -49,7 +49,7 @@ class WorldScene extends Phaser.Scene {
         this.cameras.main.setPosition(0, 100);
         this.centerCamera(this.centerX, this.centerY);
 
-        player.territories.forEach((t) => {
+        this.player.territories.forEach((t) => {
             this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
             this.map[t.y][t.x].over.territory = t;
 
