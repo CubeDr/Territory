@@ -26,6 +26,7 @@ const UPDATE_CYCLE = 50; // ms
 
 var Building = {
     BARRACK: {
+        ID: 4,
         type: 'barrack',
         name: '병영',
         cost: 1000,
@@ -33,6 +34,7 @@ var Building = {
         maintain: 30
     },
     POST: {
+        ID: 5,
         type: 'post',
         name: '주둔지',
         cost: 1000,
@@ -40,6 +42,7 @@ var Building = {
         maintain: 20
     },
     TRAIN: {
+        ID: 6,
         type: 'train',
         name: '훈련장',
         cost: 1000,
@@ -47,6 +50,7 @@ var Building = {
         maintain: 50
     },
     HOUSE: {
+        ID: 0,
         type: 'house',
         name: '집',
         cost: 100,
@@ -54,6 +58,7 @@ var Building = {
         maintain: 5
     },
     PRODUCT: {
+        ID: 2,
         type: 'product',
         name: '생산소',
         cost: 200,
@@ -61,6 +66,7 @@ var Building = {
         maintain: 7
     },
     SAVE: {
+        ID: 3,
         type: 'save',
         name: '저장고',
         cost: 1000,
@@ -68,6 +74,7 @@ var Building = {
         maintain: 50
     },
     LANDMARK: {
+        ID: 1,
         type: 'landmark',
         name: '랜드마크',
         cost: 1000,
@@ -75,6 +82,7 @@ var Building = {
         maintain: 18
     },
     MUSEUM: {
+        ID: 7,
         type: 'museum',
         name: '전시장',
         cost: 1000,
@@ -82,3 +90,13 @@ var Building = {
         maintain: 50
     }
 };
+const BUILDING_TYPE = [
+    Building.HOUSE.type,
+    Building.LANDMARK.type,
+    Building.PRODUCT.type,
+    Building.SAVE.type,
+    Building.BARRACK.type,
+    Building.POST.type,
+    Building.TRAIN.type,
+    Building.MUSEUM.type
+];

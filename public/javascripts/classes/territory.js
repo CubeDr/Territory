@@ -1,30 +1,27 @@
 class Territory {
     constructor(player, config={}) {
         this._player = player;
-        this._army = getValue(config.army, {
-            quantity: 0,
-            quality: 70
-        });
+        this._army = {
+            quantity: config.quantity,
+            quality: config.quality
+        };
+        this.id = config.id;
         this._x = getValue(config.x, 0);
         this._y = getValue(config.y, 0);
-        this._map = getValue(config.map, [
-            ['house', 'house', 'house', 'house', 'product', 'product', 'post', 'barrack'],
-            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-            ['product', 'house', 'house', 'house', 'product', 'product', 'grass', 'grass'],
-            ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
-            ['product', 'house', 'landmark', 'house', 'grass', 'grass', 'grass', 'grass'],
-            ['product', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'house', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            // ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']
-        ]);
+        this._map = [
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
+            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']];
+
+        config.buildings.forEach((b) => {
+            this._map[b.y][b.x] = BUILDING_TYPE[b.type];
+        });
+
         this._updateAttributes();
 
         // gameObject handling this territory from WorldScene

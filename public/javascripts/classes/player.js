@@ -1,7 +1,7 @@
 class Player {
-    constructor(id) {
-        this.id = id;
-        this.__loadPlayer();
+    constructor(playerData) {
+        this.id = playerData.id;
+        this.__loadPlayer(playerData);
     }
 
     attachListeners(eventBus) {
@@ -143,10 +143,10 @@ class Player {
     get foodDecreaseRate() { return this._foodDecreaseRate; }
     get populationIncreaseRate() { return this._populationIncreaseRate; }
 
-    __loadPlayer() {
-        this._money = 2000;
-        this._food = 0;
-        this._population = 1800;
+    __loadPlayer(playerData) {
+        this._money = playerData.money;
+        this._food = playerData.food;
+        this._population = playerData.population;
         this._dt = 0;
         this.enemies = [];
         // list of armies currently attacking bandits
@@ -157,22 +157,16 @@ class Player {
         // quantity, quality: info of army
         this.runningArmies = [];
         this.fightingArmies = [];
-        this.__loadTerritories();
+        this.__loadTerritories(playerData.territories);
 
         this._initializeAttributes();
     }
 
-    __loadTerritories() {
-        this.territories = [ new Territory(this),
-            new Territory(this, {x:1, y:0}),
-            new Territory(this, {x:2, y:0}),
-            new Territory(this, {x:3, y:0}),
-            new Territory(this, {x:4, y:0}),
-            new Territory(this, {x:5, y:0}),
-            new Territory(this, {x:6, y:0}),
-            new Territory(this, {x:7, y:0}),
-            new Territory(this, {x:8, y:0}),
-            new Territory(this, {x:9, y:0}) ];
+    __loadTerritories(territories) {
+        this.territories = [];
+        territories.forEach((t) => {
+            this.territories.push(new Territory(this, t));
+        });
     }
 
     getRandomEnemySpec() {

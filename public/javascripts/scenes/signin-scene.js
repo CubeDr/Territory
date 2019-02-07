@@ -23,7 +23,7 @@ class SigninScene extends Phaser.Scene {
             console.log(playerInfo.id);
 
             // TODO load player
-            let player = new Player(playerInfo.id);
+            let player = new Player(playerInfo);
 
             gameEngine.setPlayer(player);
             this.scene.start('territory', player.territories[0]);
