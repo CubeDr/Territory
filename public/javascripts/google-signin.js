@@ -23,7 +23,10 @@ function signInCallback(authResult) {
                 if(result !== "") {
                     // signed in
                     $('#signinButton').attr('style', 'display: none');
-                    gameEngine.emit('sign in', JSON.parse(result));
+                    gameEngine.emit('sign in', {
+                        idToken: gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token,
+                        playerData: JSON.parse(result)
+                    });
                 } else {
                     // error
                     alert("로그인 오류가 발생했습니다. code:" + result)

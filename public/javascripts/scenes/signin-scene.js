@@ -17,10 +17,10 @@ class SigninScene extends Phaser.Scene {
             color: '#999999'
         }).setOrigin(1, 1);
 
-        gameEngine.on('sign in', (playerInfo) => {
-            console.log(playerInfo);
+        gameEngine.on('sign in', (data) => {
+            gameEngine.idToken = data.idToken;
+            let playerInfo = data.playerData;
             gameEngine.userId = playerInfo.id;
-            console.log(playerInfo.id);
 
             // TODO load player
             let player = new Player(playerInfo);
