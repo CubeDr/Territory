@@ -222,18 +222,33 @@ class WorldScene extends Phaser.Scene {
                             let x = Math.round(gameObject.x / IMAGE_WIDTH);
                             let y = Math.round(gameObject.y / IMAGE_HEIGHT);
                             console.log(x, y);
-                            let t = new Territory(this.player, {
-                                x: x, y: y
-                            });
-                            this.player.territories.push(t);
 
-                            this.map[t.y][t.x].over = this.createTile(t.x, t.y, 'territory');
-                            this.map[t.y][t.x].over.territory = t;
+                            let self = this;
+                            doAjax(
+                                'POST',
+                                'exploit',
+                                JSON.stringify({
+                                    idTokenString: gameEngine.idToken,
+                                    x: x,
+                                    y: y
+                                }),
+                                function(id) {
+                                    let t = new Territory(gameEngine.player, {
+                                        id: id, x: x, y: y
+                                    });
+                                    gameEngine.player.territories.push(t);
+                                    console.log(gameEngine.player.territories);
 
-                            // saves its gameObject to parameter to easily track gameObject from another scene
-                            t.gameObject = this.map[t.y][t.x].over;
+                                    self.map[t.y][t.x].over = self.createTile(t.x, t.y, 'territory');
+                                    self.map[t.y][t.x].over.territory = t;
 
-                            this.unselect();
+                                    // saves its gameObject to parameter to easily track gameObject from another scene
+                                    t.gameObject = self.map[t.y][t.x].over;
+
+                                    self.unselect();
+                                }
+                            );
+
                         }
                     }).setOrigin(0.5);
                     this.add.existing(this.buildButton);

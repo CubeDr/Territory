@@ -2,8 +2,8 @@ class Territory {
     constructor(player, config={}) {
         this._player = player;
         this._army = {
-            quantity: config.quantity,
-            quality: config.quality
+            quantity: getValue(config.quantity, 0),
+            quality: getValue(config.quality, 0)
         };
         this.id = config.id;
         this._x = getValue(config.x, 0);
@@ -19,7 +19,7 @@ class Territory {
             ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']];
         this._buildings = [];
 
-        config.buildings.forEach((b) => {
+        if(config.buildings) config.buildings.forEach((b) => {
             this._map[b.y][b.x] = BUILDING_TYPE[b.type];
             this._buildings.push(b);
         });
