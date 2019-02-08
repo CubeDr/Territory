@@ -155,55 +155,55 @@ function confirmEditing() {
     if(!edit.object) return;
     if(!edit.placable) return;
     if(!edit.over) return;
-    if(edit.isRemoving) {
-        territory.remove(edit.object.mapX, edit.object.mapY, this.engine);
 
-        // 원래 있던 건물 제거
-        edit.over.over.destroy();
-        edit.over.over = null;
-        // 제거 효과 표시 제거
-        edit.object.destroy();
-    } else {
-        // 애니메이션 제거
-        edit.tween.stop();
-        edit.tween = null;
-        edit.object.setScale(1);
+    // 건물 삭제 요청이면 type을 -1로 요청
+    let data = {
+        idTokenString: gameEngine.idToken,
+        territoryId: territory.id,
+        x: edit.object.mapX,
+        y: edit.object.mapY,
+        type: edit.isRemoving? -1 : BUILDING_ID[edit.object.type]
+    };
 
-        // 풀 위에 건물 짓기
-        // Send build request to server
-        let data = {
-            idTokenString: gameEngine.idToken,
-            territoryId: territory.id,
-            x: edit.object.mapX,
-            y: edit.object.mapY,
-            type: BUILDING_ID[edit.object.type]
-        };
-        console.log(data);
+    $.ajax({
+        type: 'POST',
+        url: 'https://localhost:8080/build',
+        // Always include an `X-Requested-With` header in every AJAX request,
+        // to protect against CSRF attacks.
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(id) {
+            if(data.type === -1) {
+                // 삭제 요청 성공
+                territory.remove(data.x, data.y, gameEngine);
 
-        $.ajax({
-            type: 'POST',
-            url: 'https://localhost:8080/build',
-            // Always include an `X-Requested-With` header in every AJAX request,
-            // to protect against CSRF attacks.
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            contentType: 'application/octet-stream; charset=utf-8',
-            success: function(id) {
+                // 원래 있던 건물 제거
+                edit.over.over.destroy();
+                edit.over.over = null;
+                // 제거 효과 표시 제거
+                edit.object.destroy();
+            } else {
+                // 건축 요청 성공
                 console.log(id);
                 territory.build(id, data.x, data.y, BUILDING_TYPE[data.type], gameEngine);
-            },
-            data: JSON.stringify(data)
-        });
 
-        edit.over.over = edit.object;
-        edit.object.setOrigin(0);
-        edit.object.setPosition(edit.over.x, edit.over.y);
-    }
+                // 애니메이션 제거
+                edit.tween.stop();
+                edit.tween = null;
+                edit.object.setScale(1);
 
-    territory._player.deltaMoney(-edit.cost);
+                edit.over.over = edit.object;
+                edit.object.setOrigin(0);
+                edit.object.setPosition(edit.over.x, edit.over.y);
+            }
 
-    edit.object = null;
+            territory._player.deltaMoney(-edit.cost);
+            edit.object = null;
+        },
+        data: JSON.stringify(data)
+    });
 }
 
 function startEditing(buildingType, cost) {
