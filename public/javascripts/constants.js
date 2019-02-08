@@ -23,6 +23,7 @@ const WORLD_WIDTH = 51;
 const WORLD_HEIGHT = 51;
 
 const UPDATE_CYCLE = 50; // ms
+const UPLOAD_CYCLE = 10000; // 10s
 
 var Building = {
     BARRACK: {

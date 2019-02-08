@@ -7,6 +7,7 @@ class Engine extends Phaser.Scene {
         // propery to handle events
         this._events = {};
         this._lastUpdate = -1000;
+        this._lastUpload = -10000;
         this.userId = null;
         this.player = null;
     }
@@ -29,6 +30,10 @@ class Engine extends Phaser.Scene {
         while(time >= this._lastUpdate + UPDATE_CYCLE) {
             this.player.update(time, UPDATE_CYCLE / 1000, this);
             this._lastUpdate += UPDATE_CYCLE;
+        }
+        if(time >= this._lastUpload + UPLOAD_CYCLE) {
+            this.uploadUser();
+            this._lastUpload = time;
         }
     }
 
@@ -79,4 +84,21 @@ class Engine extends Phaser.Scene {
         return this;
     }
     /* =================================== */
+
+    uploadUser() {
+        doAjax(
+            'POST',
+            "player/set",
+            JSON.stringify({
+                idTokenString: this.idToken,
+                money: Math.floor(this.player.money),
+                food: Math.floor(this.player.food),
+                population: Math.floor(this.player.population),
+                time: new Date().toISOString()
+            }),
+            (result) => {
+
+            }
+        )
+    }
 }
