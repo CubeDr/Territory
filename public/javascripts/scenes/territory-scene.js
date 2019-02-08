@@ -156,6 +156,9 @@ function confirmEditing() {
     if(!edit.placable) return;
     if(!edit.over) return;
 
+    // 삭제하려는 건물이 없는 경우
+    if(edit.isRemoving && !edit.over.over) return;
+
     // 건물 삭제 요청이면 type을 -1로 요청
     let data = {
         idTokenString: gameEngine.idToken,
