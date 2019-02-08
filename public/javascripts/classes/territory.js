@@ -172,7 +172,9 @@ class Territory {
     }
 
     remove(x, y, engine) {
+        this._buildings = this._buildings.filter(b => !(b.x === x && b.y === y));
         let what = this._map[y][x];
+        this._map[y][x] = 'grass';
         /* Update Attributes
          * 1. foodMax
          * 2. populationMax
