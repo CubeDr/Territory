@@ -91,12 +91,21 @@ function create() {
 
     this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT,
         'menu_remove_territory', '영지 삭제', () => {
-        gameEngine.player.deleteTerritory(territory);
-        this.scene.start('world', {
-            player: gameEngine.player,
-            centerX: territory.x,
-            centerY: territory.y
-        });
+        doAjax(
+            'POST',
+            'destroy',
+            JSON.stringify({'idTokenString': gameEngine.idToken, 'territoryId': territory.id}),
+            (result) => {
+                if(result === 0) {
+                    gameEngine.player.deleteTerritory(territory);
+                    territoryScene.scene.start('world', {
+                        player: gameEngine.player,
+                        centerX: territory.x,
+                        centerY: territory.y
+                    });
+                } else console.log(result);
+            }
+        );
     }, null, 'purple_button');
     this.add.existing(this.exitButton);
 
