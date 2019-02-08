@@ -10,16 +10,11 @@ function signInCallback(authResult) {
     if (authResult['code']) {
 
         // Send sign in request to server
-        $.ajax({
-            type: 'POST',
-            url: 'https://localhost:8080/signin',
-            // Always include an `X-Requested-With` header in every AJAX request,
-            // to protect against CSRF attacks.
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            contentType: 'application/octet-stream; charset=utf-8',
-            success: function(result) {
+        doAjax(
+            'POST',
+            'signin',
+            authResult['code'],
+            function(result) {
                 if(result !== "") {
                     // signed in
                     $('#signinButton').attr('style', 'display: none');
@@ -31,10 +26,8 @@ function signInCallback(authResult) {
                     // error
                     alert("로그인 오류가 발생했습니다. code:" + result)
                 }
-            },
-            processData: false,
-            data: authResult['code']
-        });
+            }
+        );
     } else {
         // There was an error.
     }
