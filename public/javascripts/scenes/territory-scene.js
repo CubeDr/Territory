@@ -193,7 +193,6 @@ function confirmEditing() {
                 edit.object.destroy();
             } else {
                 // 건축 요청 성공
-                console.log(id);
                 territory.build(id, data.x, data.y, BUILDING_TYPE[data.type], gameEngine);
 
                 // 애니메이션 제거
