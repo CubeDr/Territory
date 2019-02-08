@@ -165,16 +165,11 @@ function confirmEditing() {
         type: edit.isRemoving? -1 : BUILDING_ID[edit.object.type]
     };
 
-    $.ajax({
-        type: 'POST',
-        url: 'https://localhost:8080/build',
-        // Always include an `X-Requested-With` header in every AJAX request,
-        // to protect against CSRF attacks.
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(id) {
+    doAjax(
+        'POST',
+        'build',
+        JSON.stringify(data),
+        function(id) {
             if(data.type === -1) {
                 // 삭제 요청 성공
                 territory.remove(data.x, data.y, gameEngine);
@@ -201,9 +196,8 @@ function confirmEditing() {
 
             territory._player.deltaMoney(-edit.cost);
             edit.object = null;
-        },
-        data: JSON.stringify(data)
-    });
+        }
+    );
 }
 
 function startEditing(buildingType, cost) {

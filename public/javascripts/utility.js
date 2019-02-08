@@ -59,3 +59,18 @@ function getDecimal(number, precision) {
         div *= 10;
     return Math.round(number * div) / div;
 }
+
+function doAjax(type, url, data, onSuccess) {
+    $.ajax({
+        type: type,
+        url: 'https://localhost:8080/' + url,
+        // Always include an `X-Requested-With` header in every AJAX request,
+        // to protect against CSRF attacks.
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: onSuccess,
+        data: data
+    });
+}
