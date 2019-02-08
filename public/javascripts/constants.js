@@ -53,7 +53,7 @@ var Building = {
         ID: 0,
         type: 'house',
         name: '집',
-        cost: 100,
+        cost: 10,
         cost_increment: 100,
         maintain: 5
     },
@@ -100,3 +100,14 @@ const BUILDING_TYPE = [
     Building.TRAIN.type,
     Building.MUSEUM.type
 ];
+
+const BUILDING_ID = {
+    "house": 0,
+    "landmark": 1,
+    "product": 2,
+    "save": 3,
+    "barrack": 4,
+    "post": 5,
+    "train": 6,
+    "musuem": 7
+};

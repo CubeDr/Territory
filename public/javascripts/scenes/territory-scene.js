@@ -91,9 +91,9 @@ function create() {
 
     this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT,
         'menu_remove_territory', '영지 삭제', () => {
-        player.deleteTerritory(territory);
+        gameEngine.player.deleteTerritory(territory);
         this.scene.start('world', {
-            player: player,
+            player: gameEngine.player,
             centerX: territory.x,
             centerY: territory.y
         });
@@ -170,7 +170,32 @@ function confirmEditing() {
         edit.object.setScale(1);
 
         // 풀 위에 건물 짓기
-        territory.build(edit.object.mapX, edit.object.mapY, edit.object.type, this.engine);
+        // Send build request to server
+        let data = {
+            idTokenString: gameEngine.idToken,
+            territoryId: territory.id,
+            x: edit.object.mapX,
+            y: edit.object.mapY,
+            type: BUILDING_ID[edit.object.type]
+        };
+        console.log(data);
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://localhost:8080/build',
+            // Always include an `X-Requested-With` header in every AJAX request,
+            // to protect against CSRF attacks.
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(id) {
+                console.log(id);
+                territory.build(id, data.x, data.y, BUILDING_TYPE[data.type], gameEngine);
+            },
+            data: JSON.stringify(data)
+        });
+
         edit.over.over = edit.object;
         edit.object.setOrigin(0);
         edit.object.setPosition(edit.over.x, edit.over.y);

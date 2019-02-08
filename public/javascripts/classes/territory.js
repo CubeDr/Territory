@@ -17,9 +17,11 @@ class Territory {
             ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
             ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
             ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']];
+        this._buildings = [];
 
         config.buildings.forEach((b) => {
             this._map[b.y][b.x] = BUILDING_TYPE[b.type];
+            this._buildings.push(b);
         });
 
         this._updateAttributes();
@@ -38,7 +40,13 @@ class Territory {
         }
     }
 
-    build(x, y, what, engine) {
+    build(id, x, y, what, engine) {
+        this._buildings.push({
+            id: id,
+            x: x,
+            y: y,
+            type: what
+        });
         this._map[y][x] = what;
         /* Update Attributes
          * 1. foodMax
