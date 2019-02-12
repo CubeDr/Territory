@@ -91,21 +91,19 @@ function create() {
 
     this.exitButton = new ImageButton(this, CAMERA_WIDTH, GAME_HEIGHT - IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT,
         'menu_remove_territory', '영지 삭제', () => {
-        doAjax(
-            'POST',
-            'destroy',
+        postRemoveTerritory(
             JSON.stringify({'idTokenString': gameEngine.idToken, 'territoryId': territory.id}),
             (result) => {
-                if(result === 0) {
+                if (result === 0) {
                     gameEngine.player.deleteTerritory(territory);
                     territoryScene.scene.start('world', {
                         player: gameEngine.player,
                         centerX: territory.x,
                         centerY: territory.y
                     });
+                    gameEngine.uploadUser();
                 } else console.log(result);
-            }
-        );
+            });
     }, null, 'purple_button');
     this.add.existing(this.exitButton);
 
@@ -177,11 +175,7 @@ function confirmEditing() {
         type: edit.isRemoving? -1 : BUILDING_ID[edit.object.type]
     };
 
-    gameEngine.uploadUser();
-    doAjax(
-        'POST',
-        'build',
-        JSON.stringify(data),
+    postBuild(JSON.stringify(data),
         function(id) {
             if(data.type === -1) {
                 // 삭제 요청 성공
@@ -208,6 +202,8 @@ function confirmEditing() {
 
             territory._player.deltaMoney(-edit.cost);
             edit.object = null;
+
+            gameEngine.uploadUser();
         }
     );
 }

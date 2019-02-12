@@ -89,19 +89,13 @@ class Engine extends Phaser.Scene {
 
     uploadUser(callback) {
         this._lastUpload = this.time;
-        doAjax(
-            'POST',
-            "player/set",
+        postUserResource(
             JSON.stringify({
-                idTokenString: this.idToken,
-                money: Math.floor(this.player.money),
-                food: Math.floor(this.player.food),
-                population: Math.floor(this.player.population),
-                time: new Date().toISOString()
-            }),
-            (result) => {
-                if(callback != null) callback(result);
-            }
-        )
+            idTokenString: this.idToken,
+            money: Math.floor(this.player.money),
+            food: Math.floor(this.player.food),
+            population: Math.floor(this.player.population),
+            time: new Date().toISOString()
+        }), callback);
     }
 }

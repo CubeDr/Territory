@@ -224,9 +224,7 @@ class WorldScene extends Phaser.Scene {
                             console.log(x, y);
 
                             let self = this;
-                            doAjax(
-                                'POST',
-                                'exploit',
+                            postExploitTerritory(
                                 JSON.stringify({
                                     idTokenString: gameEngine.idToken,
                                     x: x,
@@ -246,9 +244,10 @@ class WorldScene extends Phaser.Scene {
                                     t.gameObject = self.map[t.y][t.x].over;
 
                                     self.unselect();
+
+                                    gameEngine.uploadUser();
                                 }
                             );
-
                         }
                     }).setOrigin(0.5);
                     this.add.existing(this.buildButton);
