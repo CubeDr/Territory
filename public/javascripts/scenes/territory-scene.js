@@ -177,6 +177,7 @@ function confirmEditing() {
         type: edit.isRemoving? -1 : BUILDING_ID[edit.object.type]
     };
 
+    gameEngine.uploadUser();
     doAjax(
         'POST',
         'build',
