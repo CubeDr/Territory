@@ -87,18 +87,26 @@ class Player {
     deltaPopulation(populationDelta) {
         if(this._food <= 0) populationDelta = 0;
         let newPopulation = this._population + populationDelta;
-        if(newPopulation < 0) return false;
         newPopulation = clipToRange(newPopulation, 0, this.populationMax);
+
         if(newPopulation !== this._population)
             this.eventBus.emit('changePopulation', newPopulation);
         let delta = newPopulation - this._population;
+
+        let originalInt = Math.floor(this._population);
+        let newInt = Math.floor(newPopulation);
+
         this._population = newPopulation;
 
-        this._moneyIncreaseRate += delta * DEFAULT_MONEY_INCREASE_FACTOR;
-        this.eventBus.emit('changeMoneyIncreaseRate', this._moneyIncreaseRate);
+        if(newInt !== originalInt) {
+            delta = newInt - originalInt;
 
-        this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
-        this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
+            this._moneyIncreaseRate += delta * DEFAULT_MONEY_INCREASE_FACTOR;
+            this.eventBus.emit('changeMoneyIncreaseRate', this._moneyIncreaseRate);
+
+            this._foodDecreaseRate += delta * DEFAULT_FOOD_DECREASE_FACTOR;
+            this.eventBus.emit('changeFoodDecreaseRate', this._foodDecreaseRate);
+        }
         return true;
     }
 

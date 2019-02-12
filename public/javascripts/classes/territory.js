@@ -400,7 +400,8 @@ class Territory {
              * moneyDecreaseRate = quantity * (quality / 100) * ARMY_MONEY_DECREASE_FACTOR
              * foodDecreaseRate = quantity * (quality / 100) * ARMY_FOOD_DECREASE_FACTOR
              */
-            this.player.deltaPopulation(-t);
+            if(t !== 0)
+                this.player.deltaPopulation(-t);
             armyFactor = this._army.quantity * (this._army.quality / 100);
 
             eventBus.emit('deltaMoneyDecreaseRate', {
