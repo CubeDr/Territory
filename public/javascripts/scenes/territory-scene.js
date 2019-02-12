@@ -215,7 +215,12 @@ function startEditing(buildingType, cost) {
     if(edit.over) {
         edit.object = createNewMapChild(buildingType, edit.over.x + IMAGE_WIDTH/2, edit.over.y + IMAGE_HEIGHT/2);
         if(edit.over.type !== 'grass') edit.object.setTint(0xff0000);
-    } else edit.object = createNewMapChild(buildingType, 0, IMAGE_HEIGHT);
+    } else {
+        let pos = firstPosition(true);
+        edit.object = createNewMapChild(buildingType,
+            pos.x + IMAGE_WIDTH/2,
+            pos.y + IMAGE_HEIGHT/2);
+    }
     edit.cost = cost;
     edit.object.setAlpha(1);
 
@@ -269,7 +274,11 @@ function startRemoving() {
     edit.isRemoving = true;
     if(edit.over) {
         edit.object = createNewMapChild('grass', edit.over.x, edit.over.y);
-    } else edit.object = createNewMapChild('grass');
+    } else {
+        let pos = firstPosition(false);
+        edit.object = createNewMapChild('grass',
+            pos.x, pos.y);
+    }
     edit.object.setAlpha(0.5);
     edit.cost = 0;
 }
@@ -296,4 +305,25 @@ function createNewMapChild(type, x, y, mx, my, randomStart=false) {
     e.mapX = mx;
     e.mapY = my;
     return e;
+}
+
+function firstPosition(empty) {
+    let firstPosition = null;
+    map.getChildren().forEach((c) => {
+        if(firstPosition != null) return;
+        if(empty) {
+            if(c.type === 'grass' && c.over == null) firstPosition = {
+                x: c.x, y: c.y
+            };
+        } else {
+            if(c.type !== 'grass') firstPosition = {
+                x: c.x, y: c.y
+            };
+        }
+
+    });
+    if(firstPosition == null) firstPosition = {
+        x: 0, y: 0
+    };
+    return firstPosition;
 }
