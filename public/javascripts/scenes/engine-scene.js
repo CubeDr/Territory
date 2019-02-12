@@ -97,5 +97,15 @@ class Engine extends Phaser.Scene {
             population: Math.floor(this.player.population),
             time: new Date().toISOString()
         }), callback);
+
+        this.player.territories.forEach( (t) => {
+            let data = {
+                idTokenString: this.idToken,
+                territoryId: t.id,
+                quantity: t.army.quantity,
+                quality: t.army.quality
+            };
+            postTerritoryResource(JSON.stringify(data));
+        });
     }
 }

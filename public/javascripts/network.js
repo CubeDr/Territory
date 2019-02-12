@@ -13,3 +13,7 @@ function postRemoveTerritory(data, success) {
 function postExploitTerritory(data, success) {
     doAjax('POST', 'territory/exploit', data, success);
 }
+
+function postTerritoryResource(data, success) {
+    doAjax('POST', 'territory/set', data, success);
+}
