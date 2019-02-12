@@ -16,9 +16,6 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
             menu.close();
             buildings.main.open();
         }));
-        menu.addChild(new ImageButton(scene, 0, 0, 100, 100, 'menu_remove_build', '건물 삭제', function() {
-            startRemoving();
-        }));
     }
 
     _createBuildingLists(scene, menu) {
@@ -136,6 +133,10 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
                 buildings.main.close();
                 buildings.army.open();
             }));
+        buildings.main.addChild(new ImageButton(scene, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+            'menu_remove_build', '건물 삭제', () => {
+            startRemoving();
+        }));
         buildings.main.close();
 
         return buildings;
