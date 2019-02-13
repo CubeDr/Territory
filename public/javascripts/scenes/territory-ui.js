@@ -2,7 +2,7 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
     constructor(scene) {
         super(scene);
 
-        let menu = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        let menu = new List(scene, mapWidth * IMAGE_WIDTH, IMAGE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
             'vertical', 10);
         let buildings = this._createBuildingLists(scene, menu);
