@@ -204,6 +204,7 @@ class _MenuButton extends ImageButton {
         d.add(maintainText);
 
         d.visible = false;
+        d.setDepth(1);
         return d;
     }
 }
