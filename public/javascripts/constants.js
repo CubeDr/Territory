@@ -32,7 +32,8 @@ var Building = {
         name: '병영',
         cost: 1000,
         cost_increment: 500,
-        maintain: 30
+        maintain: 30,
+        description: '인구를 병력으로 4초에 1명씩 전환한다.'
     },
     POST: {
         ID: 5,
@@ -40,7 +41,8 @@ var Building = {
         name: '주둔지',
         cost: 1000,
         cost_increment: 500,
-        maintain: 20
+        maintain: 20,
+        description: '병력 수용량을 10만큼 증가시킨다.'
     },
     TRAIN: {
         ID: 6,
@@ -48,7 +50,8 @@ var Building = {
         name: '훈련장',
         cost: 1000,
         cost_increment: 500,
-        maintain: 50
+        maintain: 50,
+        description: '전환되는 병사의 병질을 10만큼 증가시킨다.'
     },
     HOUSE: {
         ID: 0,
@@ -56,7 +59,8 @@ var Building = {
         name: '집',
         cost: 10,
         cost_increment: 100,
-        maintain: 5
+        maintain: 5,
+        description: '인구 수용량을 10만큼 증가시킨다.'
     },
     PRODUCT: {
         ID: 2,
@@ -64,7 +68,8 @@ var Building = {
         name: '생산소',
         cost: 200,
         cost_increment: 100,
-        maintain: 7
+        maintain: 7,
+        description: '초당 식량 생산량을 25만큼 증가시킨다.'
     },
     SAVE: {
         ID: 3,
@@ -72,7 +77,8 @@ var Building = {
         name: '저장고',
         cost: 1000,
         cost_increment: 500,
-        maintain: 50
+        maintain: 50,
+        description: '식량 수용량을 100만큼 증가시킨다.'
     },
     LANDMARK: {
         ID: 1,
@@ -80,7 +86,8 @@ var Building = {
         name: '랜드마크',
         cost: 1000,
         cost_increment: 500,
-        maintain: 18
+        maintain: 18,
+        description: '초당 인구 증가량을 1만큼 증가시킨다.'
     },
     MUSEUM: {
         ID: 7,
@@ -88,7 +95,8 @@ var Building = {
         name: '전시장',
         cost: 1000,
         cost_increment: 500,
-        maintain: 50
+        maintain: 50,
+        description: ''
     }
 };
 const BUILDING_TYPE = [

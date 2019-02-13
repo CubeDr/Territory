@@ -158,7 +158,7 @@ class _MenuButton extends ImageButton {
             let dialog = this.buildDialog(scene, hoverData);
 
             this.onHover = () => {
-                dialog.setPosition(CAMERA_WIDTH, this.y);
+                dialog.setPosition(CAMERA_WIDTH, this.y + this.height/2);
                 dialog.visible = true;
             };
 
@@ -171,10 +171,37 @@ class _MenuButton extends ImageButton {
     buildDialog(scene, data) {
         let d = scene.add.container();
 
+        let left = -280;
+        let top = -67;
+
         let back = scene.add.nineslice(
-            0, 0, this.width, this.height, 'background_dialog', 30, 10
-        ).setOrigin(1, 0);
+            0, 0, 300, 135, 'background_dialog', 30, 10
+        ).setOrigin(1, 0.5);
         d.add(back);
+
+        let title = scene.add.text(left, top + 20, data.name, { fontSize: 20 });
+        d.add(title);
+
+        let desc = scene.add.text(left, top + 50, data.description, { fontSize: 13 });
+        d.add(desc);
+
+        let buildCostTitle = scene.add.text(left, top + 75, '건축비', { fontSize: 15 });
+        d.add(buildCostTitle);
+
+        let buildCostIcon = scene.add.image(left + 50, top + 75, 'coin').setScale(0.5).setOrigin(0);
+        d.add(buildCostIcon);
+
+        let buildCostText = scene.add.text(left + 67, top + 75, data.cost, { fontSize: 15 });
+        d.add(buildCostText);
+
+        let maintainTitle = scene.add.text(left, top + 98, '유지비', { fontSize: 15 });
+        d.add(maintainTitle);
+
+        let maintainIcon = scene.add.image(left + 50, top + 98, 'coin').setScale(0.5).setOrigin(0);
+        d.add(maintainIcon);
+
+        let maintainText = scene.add.text(left + 67, top + 98, data.maintain + '/초', { fontSize: 15 });
+        d.add(maintainText);
 
         d.visible = false;
         return d;
