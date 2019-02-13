@@ -8,7 +8,8 @@ function preloadUiElements(self) {
 
 /* ====== ImageButton definition ===== */
 // Constructor
-function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClickListener, backgroundKey='button') {
+function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClickListener, backgroundKey='button',
+                     onHover, onOut) {
     Phaser.GameObjects.GameObject.call(this, scene, 'imageButton');
 
     var self = this;
@@ -20,6 +21,8 @@ function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClick
     self.state = 'idle';
     self.clickListener = clickListener;
     self.longClickListener = longClickListener;
+    self.onHover = onHover;
+    self.onOut = onOut;
 
     var background = scene.add.image(0, 0, backgroundKey);
     background.setOrigin(0, 0);
@@ -62,9 +65,11 @@ function ImageButton(scene, x, y, w, h, imageKey, text, clickListener, longClick
         }).on('pointerover', function() {
             if(self.state === 'disabled') return;
             self.setState('hover');
+            if(self.onHover) self.onHover();
         }).on('pointerout', function() {
             if(self.state === 'disabled') return;
             self.setState('idle');
+            if(self.onOut) self.onOut();
     });
     self.button.parent = self;
     self.setState('idle');
@@ -75,6 +80,8 @@ ImageButton.prototype.constructor = ImageButton;
 
 // Member Methods
 ImageButton.prototype.setPosition = function(x, y) {
+    this.x = x;
+    this.y = y;
     this.button.setPosition(x, y);
 };
 

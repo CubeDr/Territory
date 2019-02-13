@@ -56,6 +56,7 @@ function preload() {
 
     this.load.image('back', 'assets/menu_back.png');
     this.load.image('world', 'assets/tile_world.png');
+    this.load.image('background_dialog', 'assets/background_dialog.png');
 
     preloadUiElements(this);
 }
