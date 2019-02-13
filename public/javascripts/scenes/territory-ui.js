@@ -30,7 +30,7 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         };
 
         // 인구 관련 건물
-        buildings.population = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        buildings.population = new List(scene, mapWidth * IMAGE_WIDTH, IMAGE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
             'vertical', 10);
         buildings. population.addChild(new _MenuButton(scene, 'back', '뒤로',
@@ -50,7 +50,7 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         buildings.population.close();
 
         // 식량 관련 건물
-        buildings.food = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        buildings.food = new List(scene, mapWidth * IMAGE_WIDTH, IMAGE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
             'vertical', 10);
         buildings.food.addChild(new _MenuButton(scene, 'back', '뒤로',
@@ -70,7 +70,7 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         buildings.food.close();
 
         // 병력 관련 건물
-        buildings.army = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        buildings.army = new List(scene, mapWidth * IMAGE_WIDTH, IMAGE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
             'vertical', 10);
         buildings.army.addChild(new _MenuButton(scene, 'back', '뒤로',
@@ -110,7 +110,7 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         // buildings.extra.close();
 
 
-        buildings.main = new List(scene, mapWidth * IMAGE_WIDTH, 0,
+        buildings.main = new List(scene, mapWidth * IMAGE_WIDTH, IMAGE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT * mapHeight,
             'vertical', 10);
         buildings.main.addChild(new _MenuButton(scene,
@@ -158,7 +158,7 @@ class _MenuButton extends ImageButton {
             let dialog = this.buildDialog(scene, hoverData);
 
             this.onHover = () => {
-                dialog.setPosition(CAMERA_WIDTH, this.y + this.height/2);
+                dialog.setPosition(CAMERA_WIDTH, this.y + this.height/2 + IMAGE_HEIGHT);
                 dialog.visible = true;
             };
 
