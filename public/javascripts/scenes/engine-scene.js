@@ -10,7 +10,7 @@ class Engine extends Phaser.Scene {
         this._lastUpload = -10000;
         this.userId = null;
         this.player = null;
-        this.time = 0;
+        this.currentTime = 0;
     }
 
     init() {
@@ -27,7 +27,7 @@ class Engine extends Phaser.Scene {
     }
 
     update(time) {
-        this.time = time;
+        this.currentTime = time;
 
         if(!this.player) return;
         while(time >= this._lastUpdate + UPDATE_CYCLE) {
@@ -48,6 +48,7 @@ class Engine extends Phaser.Scene {
         b = army.to.quantity * army.to.quality;
         army.result = a > b;
 
+        console.log(this);
         this.time.delayedCall(fightDuration, () => {
             this.emit('fightEnd', army);
 
@@ -88,7 +89,7 @@ class Engine extends Phaser.Scene {
     /* =================================== */
 
     uploadUser(callback) {
-        this._lastUpload = this.time;
+        this._lastUpload = this.currentTime;
         postUserResource(
             JSON.stringify({
             idTokenString: this.idToken,
