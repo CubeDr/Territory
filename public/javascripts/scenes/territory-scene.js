@@ -108,12 +108,52 @@ function create() {
     }, null, 'purple_button');
     this.add.existing(this.exitButton);
 
+    this.buildingInfoDialog = buildBuildingInfoDialog();
 }
 
 function update(up, delta) {
     updateEnoughMoney();
     updatePlacable();
     territory._updateAttributes();
+}
+
+function buildBuildingInfoDialog() {
+    let d = territoryScene.add.container(100, 200);
+
+    d.background = territoryScene.add.nineslice(
+        0, 0, 200, 200, 'background_dialog', 30, 10
+    );
+    d.add(d.background);
+    d.background.setInteractive();
+
+    // name
+    d.name = territoryScene.add.text(10, 10, '집', { fontSize: 20 });
+    d.add(d.name);
+
+    // maintain
+    d.add(territoryScene.add.text(10, 40, '유지비', { fontSize: 15 }));
+    d.add(territoryScene.add.image(60, 40, 'coin').setScale(0.5).setOrigin(0));
+    d.maintain = territoryScene.add.text(77, 40, '100', { fontSize: 15 });
+    d.add(d.maintain);
+
+    // knowhow
+    d.add(territoryScene.add.text(10, 65, '노하우', { fontSize: 15 }));
+    d.knowhow = territoryScene.add.text(10, 83, '적용된 노하우 없음', { fontSize: 13 });
+    d.add(d.knowhow);
+
+    // close button
+    d.button = new TextButton(territoryScene, 100, 195, '확인', { onClick: ()=>{
+        d.show();
+    }}).setOrigin(0.5, 1);
+    territoryScene.add.existing(d.button);
+    d.add(d.button);
+
+    d.show = () => {
+        // d.background.resize(200, 120);
+        // d.button.setPosition(100, 115);
+    };
+
+    return d;
 }
 
 function createMap(scene) {
@@ -132,6 +172,7 @@ function attachListeners(scene) {
     scene.input.on('gameobjectover', hoverListener, scene);
     scene.input.on('gameobjectout', outListener, scene);
     scene.input.on('pointerdown', confirmEditing, scene);
+    scene.input.on('gameobjectup', click, scene);
 }
 
 function hoverListener(pointer, gameObject) {
@@ -282,6 +323,14 @@ function startRemoving() {
     }
     edit.object.setAlpha(0.5);
     edit.cost = 0;
+}
+
+function click(p, go) {
+    if(go.type !== 'grass') return;
+    if(go.over == null) return;
+
+    let building = go.over;
+    console.log(building);
 }
 
 function createNewMapChild(type, x, y, mx, my, randomStart=false) {
