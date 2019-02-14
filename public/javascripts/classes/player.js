@@ -165,6 +165,7 @@ class Player {
         // quantity, quality: info of army
         this.runningArmies = [];
         this.fightingArmies = [];
+        this.knowhows = playerData.knowhows;
         this.__loadTerritories(playerData.territories);
 
         this._initializeAttributes();

@@ -22,7 +22,6 @@ class SigninScene extends Phaser.Scene {
             let playerInfo = data.playerData;
             gameEngine.userId = playerInfo.id;
 
-            // TODO load player
             let player = new Player(playerInfo);
 
             gameEngine.setPlayer(player);
