@@ -120,3 +120,11 @@ const BUILDING_ID = {
     "train": 6,
     "musuem": 7
 };
+
+const KNOWHOW = [ {},
+    {
+        id: 1,
+        name: '소형 주택 단지',
+        description: '인접한 집 하나당 1의 최대 인구를 추가로 얻는다.'
+    }
+];
