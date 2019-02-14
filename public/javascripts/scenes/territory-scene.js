@@ -149,6 +149,11 @@ function buildBuildingInfoDialog() {
     d.add(territoryScene.add.text(10, 65, '노하우', { fontSize: 15 }));
     d.knowhow = territoryScene.add.text(10, 83, '적용된 노하우 없음', { fontSize: 13 });
     d.add(d.knowhow);
+    d.knowhowButton = new TextButton(territoryScene, 50, 65, '[적용]', {
+        fontSize: 12,
+        onClick:() => {}
+    });
+    d.add(d.knowhowButton);
 
     // close button
     d.button = new TextButton(territoryScene, 100, 195, '확인', { onClick: ()=>{
@@ -167,11 +172,14 @@ function buildBuildingInfoDialog() {
         if(building.knowhow == null) {
             d.backgroundL.visible = false;
             d.backgroundS.visible = true;
+            d.knowhowButton.setText("[적용]");
             d.button.setPosition(100, 115);
             d.height = 120;
         } else {
             d.backgroundL.visible = true;
             d.backgroundS.visible = false;
+            d.knowhowButton.visible = false;
+            d.knowhowButton.setText("[변경]");
             d.button.setPosition(100, 195);
             d.height = 200;
         }
