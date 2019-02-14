@@ -120,11 +120,18 @@ function update(up, delta) {
 function buildBuildingInfoDialog() {
     let d = territoryScene.add.container(100, 200);
 
-    d.background = territoryScene.add.nineslice(
+    d.backgroundL = territoryScene.add.nineslice(
         0, 0, 200, 200, 'background_dialog', 30, 10
     );
-    d.add(d.background);
-    d.background.setInteractive();
+    d.add(d.backgroundL);
+    d.backgroundL.setInteractive();
+
+    d.backgroundS = territoryScene.add.nineslice(
+        0, 0, 200, 120, 'background_dialog', 30, 10
+    );
+    d.add(d.backgroundS);
+    d.backgroundS.setInteractive();
+    d.backgroundS.visible = false;
 
     // name
     d.name = territoryScene.add.text(10, 10, '집', { fontSize: 20 });
@@ -143,14 +150,27 @@ function buildBuildingInfoDialog() {
 
     // close button
     d.button = new TextButton(territoryScene, 100, 195, '확인', { onClick: ()=>{
-        d.show();
+        d.close();
     }}).setOrigin(0.5, 1);
     territoryScene.add.existing(d.button);
     d.add(d.button);
 
-    d.show = () => {
-        // d.background.resize(200, 120);
-        // d.button.setPosition(100, 115);
+    d.show = (building) => {
+        d.visible = true;
+
+        if(building.knowhow == null) {
+            d.backgroundL.visible = false;
+            d.backgroundS.visible = true;
+            d.button.setPosition(100, 115);
+        } else {
+            d.backgroundL.visible = true;
+            d.backgroundS.visible = false;
+            d.button.setPosition(100, 195);
+        }
+    };
+
+    d.close = () => {
+        d.visible = false;
     };
 
     return d;
