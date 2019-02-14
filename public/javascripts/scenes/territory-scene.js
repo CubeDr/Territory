@@ -160,6 +160,10 @@ function buildBuildingInfoDialog() {
     d.show = (building) => {
         d.visible = true;
 
+        let blueprint = Building[BUILDING_TYPE[building.type].toUpperCase()];
+        d.name.setText(blueprint.name);
+        d.maintain.setText(blueprint.maintain);
+
         if(building.knowhow == null) {
             d.backgroundL.visible = false;
             d.backgroundS.visible = true;
@@ -176,6 +180,8 @@ function buildBuildingInfoDialog() {
     d.close = () => {
         d.visible = false;
     };
+
+    d.visible = false;
 
     return d;
 }
