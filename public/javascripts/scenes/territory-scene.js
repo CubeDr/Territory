@@ -276,6 +276,7 @@ function confirmEditing() {
 
             territory._player.deltaMoney(-edit.cost);
             edit.object = null;
+            edit.justDone = true;
 
             gameEngine.uploadUser();
         }
@@ -360,6 +361,10 @@ function startRemoving() {
 function click(p, go) {
     if(go.type !== 'grass') return;
     if(go.over == null) return;
+    if(edit.justDone) {
+        edit.justDone = false;
+        return;
+    }
 
     this.buildingInfoDialog.show(territory._buildings[go.mapY][go.mapX]);
     if(go.mapX < 4) {
