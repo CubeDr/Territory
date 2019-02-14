@@ -180,10 +180,12 @@ function createMap(scene) {
     map = scene.add.group();
     for(var y=0; y<mapHeight; y++) {
         for (var x = 0; x < mapWidth; x++) {
-            let grass = createNewMapChild('grass', x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true)
+            let grass = createNewMapChild('grass',
+                x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true)
                 .setInteractive(new Phaser.Geom.Rectangle(0, 0, 100, 100), Phaser.Geom.Rectangle.Contains);
-            if(territory.map[y][x] !== 'grass')
-                grass.over = createNewMapChild(territory.map[y][x], x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true);
+            if(territory._buildings[y][x] != null)
+                grass.over = createNewMapChild(BUILDING_TYPE[territory._buildings[y][x].type],
+                    x * IMAGE_WIDTH, IMAGE_HEIGHT + y * IMAGE_HEIGHT, x, y, true);
         }
     }
 }

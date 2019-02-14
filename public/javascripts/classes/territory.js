@@ -8,20 +8,11 @@ class Territory {
         this.id = config.id;
         this._x = getValue(config.x, 0);
         this._y = getValue(config.y, 0);
-        this._map = [
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass'],
-            ['grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass', 'grass']];
         this._buildings = [];
+        for(let i=0; i<8; i++) this._buildings.push([]);
 
         if(config.buildings) config.buildings.forEach((b) => {
-            this._map[b.y][b.x] = BUILDING_TYPE[b.type];
-            this._buildings.push(b);
+            this._buildings[b.y][b.x] = b;
         });
 
         this._updateAttributes();
@@ -41,13 +32,12 @@ class Territory {
     }
 
     build(id, x, y, what, engine) {
-        this._buildings.push({
+        this._buildings[y][x] = {
             id: id,
             x: x,
             y: y,
-            type: what
-        });
-        this._map[y][x] = what;
+            type: BUILDING_ID[what]
+        };
         /* Update Attributes
          * 1. foodMax
          * 2. populationMax
@@ -172,9 +162,8 @@ class Territory {
     }
 
     remove(x, y, engine) {
-        this._buildings = this._buildings.filter(b => !(b.x === x && b.y === y));
-        let what = this._map[y][x];
-        this._map[y][x] = 'grass';
+        let what = BUILDING_TYPE[this._buildings[y][x].type];
+        this._buildings[y][x] = null;
         /* Update Attributes
          * 1. foodMax
          * 2. populationMax
@@ -299,8 +288,8 @@ class Territory {
     }
 
     delete(engine) {
-        for(let y=0; y<this._map.length; y++) {
-            for(let x=0; x<this._map[y].length; x++) {
+        for(let y=0; y<8; y++) {
+            for(let x=0; x<8; x++) {
                 this.remove(x, y, engine);
             }
         }
@@ -313,15 +302,15 @@ class Territory {
     }
 
     _updateAttributes() {
-        this._foodMax = Territory.__foodMaxFrom(this.map);
-        this._populationMax = Territory.__populationMaxFrom(this.map);
-        this._armyQuantityMax = Territory.__armyQuantityMaxFrom(this.map);
-        this._moneyDecreaseRate = Territory.__moneyDecreaseRateFrom(this.map);
-        this._foodIncreaseRate = Territory.__foodIncreaseRateFrom(this.map);
+        this._foodMax = Territory.__foodMaxFrom(this._buildings);
+        this._populationMax = Territory.__populationMaxFrom(this._buildings);
+        this._armyQuantityMax = Territory.__armyQuantityMaxFrom(this._buildings);
+        this._moneyDecreaseRate = Territory.__moneyDecreaseRateFrom(this._buildings);
+        this._foodIncreaseRate = Territory.__foodIncreaseRateFrom(this._buildings);
         this._moneyIncreaseRate = Territory.__moneyIncreaseRateFrom(this.player.population);
         this._foodDecreaseRate = Territory.__foodDecreaseRateFrom(this.player.population, this.army);
-        this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this.map);
-        this._qualityIncrement = Territory.__qualityIncrementFrom(this.map);
+        this._populationIncreaseRate = Territory.__populationIncreaseRateFrom(this.player.food, this._buildings);
+        this._qualityIncrement = Territory.__qualityIncrementFrom(this._buildings);
 
     }
 
@@ -329,7 +318,7 @@ class Territory {
     get y() { return this._y; }
     get player() { return this._player; }
     get army() { return this._army; }
-    get map() { return this._map; }
+    // get map() { return this._map; }
     get foodMax() { return this._foodMax; }
     get populationMax() { return this._populationMax; }
     get armyQuantityMax() { return this._armyQuantityMax; }
@@ -378,9 +367,9 @@ class Territory {
 
         // 2. Transfer army from population to army
         let factor = 0;
-        this.map.forEach( (row) => {
+        this._buildings.forEach( (row) => {
             row.forEach((b) => {
-                if(b === Building.BARRACK.type) factor += 1;
+                if(b != null && BUILDING_TYPE[b.type] === Building.BARRACK.type) factor += 1;
             })
         });
 
@@ -422,31 +411,31 @@ class Territory {
         return false;
     }
 
-    static __foodMaxFrom(map) {
+    static __foodMaxFrom(buildings) {
         let count = 10;
-        map.forEach((row) => {
+        buildings.forEach((row) => {
             row.forEach((b) => {
-                if(b === 'save') count += 100;
+                if(b != null && BUILDING_TYPE[b.type] === 'save') count += 100;
             })
         });
         return count;
     }
 
-    static __populationMaxFrom(map) {
+    static __populationMaxFrom(buildings) {
         let count = 0;
-        map.forEach((row) => {
+        buildings.forEach((row) => {
             row.forEach((b) => {
-                if(b === 'house') count += 10;
+                if(b != null && BUILDING_TYPE[b.type] === 'house') count += 10;
             })
         });
         return count;
     }
 
-    static __armyQuantityMaxFrom(map) {
+    static __armyQuantityMaxFrom(buildings) {
         let count = 0;
-        map.forEach(function(row) {
+        buildings.forEach(function(row) {
             row.forEach(function(b) {
-                if(b === Building.POST.type) count += 10;
+                if(b != null && BUILDING_TYPE[b.type] === Building.POST.type) count += 10;
             })
         });
         return count;
@@ -456,22 +445,22 @@ class Territory {
         return 0;
     }
 
-    static __moneyDecreaseRateFrom(map) {
+    static __moneyDecreaseRateFrom(buildings) {
         let maintain = 0;
-        map.forEach(function(row) {
+        buildings.forEach(function(row) {
             row.forEach(function(b) {
-                if(b === 'grass') return;
-                maintain += Building[b.toUpperCase()].maintain;
+                if(b == null) return;
+                maintain += Building[BUILDING_TYPE[b.type].toUpperCase()].maintain;
             })
         });
         return maintain;
     }
 
-    static __foodIncreaseRateFrom(map) {
+    static __foodIncreaseRateFrom(buildings) {
         let count = 0;
-        map.forEach(function(row) {
+        buildings.forEach(function(row) {
             row.forEach(function(b) {
-                if(b === 'product') count+=25;
+                if(b != null && BUILDING_TYPE[b.type] === 'product') count+=25;
             })
         });
         return count;
@@ -481,21 +470,21 @@ class Territory {
         return parseInt(army.quantity) * ARMY_FOOD_DECREASE_FACTOR * army.quality / 100;
     }
 
-    static __populationIncreaseRateFrom(food, map) {
+    static __populationIncreaseRateFrom(food, buildings) {
         let count = DEFAULT_POPULATION_INCREASE_FACTOR;
-        map.forEach((row) => {
+        buildings.forEach((row) => {
             row.forEach((b) => {
-                if(b === 'landmark') count += 1;
+                if(b != null && BUILDING_TYPE[b.type] === 'landmark') count += 1;
             })
         });
         return count;
     }
 
-    static __qualityIncrementFrom(map) {
+    static __qualityIncrementFrom(buildings) {
         let count = 0;
-        map.forEach((r) => {
+        buildings.forEach((r) => {
             r.forEach((b) => {
-                if(b === Building.TRAIN.type) count += 10;
+                if(b != null && BUILDING_TYPE[b.type] === Building.TRAIN.type) count += 10;
             })
         });
         return count;
