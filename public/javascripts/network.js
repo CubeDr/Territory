@@ -17,3 +17,7 @@ function postExploitTerritory(data, success) {
 function postTerritoryResource(data, success) {
     doAjax('POST', 'territory/set', data, success);
 }
+
+function postLearn(data, success) {
+    doAjax('POST', 'player/learn', data, success);
+}

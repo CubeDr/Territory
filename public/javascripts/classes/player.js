@@ -204,4 +204,17 @@ class Player {
             state: 'idle'
         };
     }
+
+    learn(knowhow) {
+        if(this.knowhows.includes(knowhow)) return;
+
+        postLearn(JSON.stringify({
+            idTokenString: gameEngine.idToken,
+            knowhow: knowhow
+        }), (result) => {
+            if(result === 0) console.log("success");
+            else console.log("duplicate");
+            this.knowhows.push(knowhow);
+        })
+    }
 }

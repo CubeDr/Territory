@@ -187,8 +187,9 @@ function buildBuildingInfoDialog() {
         d.knowhowButton.onClick = () => {
             territoryScene.scene.add(KnowhowSelectDialogScene.KEY,
                 KnowhowSelectDialogScene);
-            territoryScene.scene.launch(KnowhowSelectDialogScene.KEY, () => {
-                console.log("callback");
+            territoryScene.scene.launch(KnowhowSelectDialogScene.KEY, (result) => {
+                if(result == null) console.log("cancel");
+                else gameEngine.player.learn(result);
             });
         }
     };
