@@ -183,6 +183,14 @@ function buildBuildingInfoDialog() {
             d.button.setPosition(100, 195);
             d.height = 200;
         }
+
+        d.knowhowButton.onClick = () => {
+            territoryScene.scene.add(KnowhowSelectDialogScene.KEY,
+                KnowhowSelectDialogScene);
+            territoryScene.scene.launch(KnowhowSelectDialogScene.KEY, () => {
+                console.log("callback");
+            });
+        }
     };
 
     d.close = () => {
