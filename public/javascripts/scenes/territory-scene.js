@@ -119,6 +119,8 @@ function update(up, delta) {
 
 function buildBuildingInfoDialog() {
     let d = territoryScene.add.container(100, 200);
+    d.width = 200;
+    d.height = 200;
 
     d.backgroundL = territoryScene.add.nineslice(
         0, 0, 200, 200, 'background_dialog', 30, 10
@@ -162,10 +164,12 @@ function buildBuildingInfoDialog() {
             d.backgroundL.visible = false;
             d.backgroundS.visible = true;
             d.button.setPosition(100, 115);
+            d.height = 120;
         } else {
             d.backgroundL.visible = true;
             d.backgroundS.visible = false;
             d.button.setPosition(100, 195);
+            d.height = 200;
         }
     };
 
@@ -351,8 +355,20 @@ function click(p, go) {
     if(go.type !== 'grass') return;
     if(go.over == null) return;
 
-    let building = go.over;
-    console.log(building);
+    this.buildingInfoDialog.show(territory._buildings[go.mapY][go.mapX]);
+    if(go.mapX < 4) {
+        // show right
+        this.buildingInfoDialog.setPosition(go.x + IMAGE_WIDTH);
+    } else {
+        // show left
+        this.buildingInfoDialog.setPosition(go.x - this.buildingInfoDialog.width);
+    }
+    if(go.mapY < 7) {
+        this.buildingInfoDialog.setPosition(this.buildingInfoDialog.x, go.y);
+    } else {
+        this.buildingInfoDialog.setPosition(this.buildingInfoDialog.x,
+            go.y + IMAGE_HEIGHT - this.buildingInfoDialog.height);
+    }
 }
 
 function createNewMapChild(type, x, y, mx, my, randomStart=false) {
