@@ -72,7 +72,6 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
 
         this.add.existing(new Phaser.GameObjects.GameObject(this))
             .setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), (ha, x, y, go) => {
-                console.log(ha, x, y, go, !Phaser.Geom.Rectangle.Contains(ha, x, y, go));
                 return !Phaser.Geom.Rectangle.Contains(ha, x, y, go);
             })
             .on('pointerdown', () => {console.log("DOWN")});
@@ -105,15 +104,12 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
             }, this)
             .on('pointerup', (p) => {
                 if(!this.isScrolling) {
-                    console.log('click');
                     if(this.selected === item) {
-                        console.log("unselect");
                         // unselect
                         this.selected = null;
                         item.back.visible = true;
                         item.backSel.visible = false;
                     } else if(this.selected != null) {
-                        console.log("other");
                         // unselect
                         this.selected.back.visible = true;
                         this.selected.backSel.visible = false;
@@ -122,7 +118,6 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
                         this.selected.back.visible = false;
                         this.selected.backSel.visible = true;
                     } else {
-                        console.log("select");
                         // select
                         this.selected = item;
                         item.back.visible = false;
