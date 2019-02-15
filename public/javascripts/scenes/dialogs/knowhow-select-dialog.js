@@ -70,12 +70,6 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
             .on('pointerup', this.pointerUp, this)
             .on('pointermove', this.pointerMove, this);
 
-        this.add.existing(new Phaser.GameObjects.GameObject(this))
-            .setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), (ha, x, y, go) => {
-                return !Phaser.Geom.Rectangle.Contains(ha, x, y, go);
-            })
-            .on('pointerdown', () => {console.log("DOWN")});
-
         return list;
     }
 
@@ -104,6 +98,7 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
             }, this)
             .on('pointerup', (p) => {
                 if(!this.isScrolling) {
+                    if(!this._isInBody(p.x, p.y) || this.pointer.down==null) return;
                     if(this.selected === item) {
                         // unselect
                         this.selected = null;
@@ -131,8 +126,12 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         return item;
     }
 
+    _isInBody(x, y) {
+        return !(x < 210 || x > 590 || y < 310 || y > 700);
+    }
+
     pointerDown(p) {
-        if(p.x < 210 || p.x > 590 || p.y < 310 || p.y > 700) return;
+        if(!this._isInBody(p.x, p.y)) return;
         this.pointer.down = {
             x: p.x, y: p.y
         };
