@@ -31,7 +31,9 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                this.callback(1);
+                // 취소
+                if(this.selected == null) this.callback(0);
+                else this.callback(this.selected.id);
                 this.scene.remove(KnowhowSelectDialogScene.KEY);
             }
         }));

@@ -189,7 +189,9 @@ function buildBuildingInfoDialog() {
                 KnowhowSelectDialogScene);
             territoryScene.scene.launch(KnowhowSelectDialogScene.KEY, (result) => {
                 if(result == null) console.log("cancel");
-                else gameEngine.player.learn(result);
+                else {
+                    console.log(result);
+                }
             });
         }
     };
