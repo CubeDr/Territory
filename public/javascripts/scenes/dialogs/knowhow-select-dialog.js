@@ -52,6 +52,7 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         g.fillRect(210, 310, 380, 390);
 
         let list = this.add.container(215, 310);
+        list.mask = g.createGeometryMask();
 
         let y = 5;
 
