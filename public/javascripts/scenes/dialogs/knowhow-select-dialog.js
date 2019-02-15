@@ -7,6 +7,7 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
 
     init(callback) {
         this.callback = callback;
+        this.pointer = {};
     }
 
     preload() {
@@ -42,7 +43,7 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
             }
         }));
 
-        this.createKnowhowList();
+        this.list = this.createKnowhowList();
     }
 
     createKnowhowList() {
@@ -61,6 +62,18 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
             y += 80;
         });
 
+        g.setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), Phaser.Geom.Rectangle.Contains)
+            .on('pointerdown', this.pointerDown, this)
+            .on('pointerup', this.pointerUp, this)
+            .on('pointermove', this.pointerMove, this);
+
+        this.add.existing(new Phaser.GameObjects.GameObject(this))
+            .setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), (ha, x, y, go) => {
+                console.log(ha, x, y, go, !Phaser.Geom.Rectangle.Contains(ha, x, y, go));
+                return !Phaser.Geom.Rectangle.Contains(ha, x, y, go);
+            })
+            .on('pointerdown', () => {console.log("DOWN")});
+
         return list;
     }
 
@@ -78,6 +91,49 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         let description = this.add.text(12, 45, knowhow.description, {fontSize: 15});
         item.add(description);
 
+        back.setInteractive()
+            .on('pointerdown', (p) => {
+                this.pointerDown(p);
+            }, this)
+            .on('pointerup', (p) => {
+                this.pointerUp(p);
+            }, this)
+            .on('pointermove', this.pointerMove, this);
+
         return item;
+    }
+
+    pointerDown(p) {
+        if(p.x < 210 || p.x > 590 || p.y < 310 || p.y > 700) return;
+        this.pointer.down = {
+            x: p.x, y: p.y
+        };
+        this.pointer.last = {
+            x: p.x, y: p.y
+        };
+    }
+
+    pointerUp(p) {
+        this.pointer.down = null;
+        this.isScrolling = false;
+    }
+
+    pointerMove(p) {
+        if(this.pointer.down == null) return;
+
+        let delta = p.y - this.pointer.last.y;
+        this.pointer.last = {
+            x: p.x, y: p.y
+        };
+        if(!this.isScrolling) {
+            if(sqDistance(this.pointer.down, this.pointer.last) >= 25) {
+                this.isScrolling = true;
+                delta = this.pointer.last.y - this.pointer.down.y;
+            }
+        }
+
+        if(this.isScrolling) {
+            this.list.setPosition(this.list.x, this.list.y + delta);
+        }
     }
 }
