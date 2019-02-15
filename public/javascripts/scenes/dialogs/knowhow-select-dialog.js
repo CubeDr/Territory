@@ -11,6 +11,8 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
 
     preload() {
         this.load.image('background_dialog', 'assets/background_dialog.png');
+        this.load.image('item_back', 'assets/ui/list_item.png');
+        this.load.image('item_selected', 'assets/ui/list_item_selected.png');
     }
 
     create() {
@@ -39,5 +41,43 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
                 this.scene.remove(KnowhowSelectDialogScene.KEY);
             }
         }));
+
+        this.createKnowhowList();
+    }
+
+    createKnowhowList() {
+        let g = this.add.graphics();
+        g.fillStyle(0x777777);
+        g.fillRect(210, 310, 380, 390);
+
+        let list = this.add.container(215, 310);
+
+        let y = 5;
+
+        gameEngine.player.knowhows.forEach((knowhowId) => {
+            let item = this.createKnowhowItem(knowhowId);
+            list.add(item);
+            item.setPosition(item.x, y);
+            y += 80;
+        });
+
+        return list;
+    }
+
+    createKnowhowItem(id) {
+        let knowhow = KNOWHOW[id];
+
+        let item = this.add.container();
+
+        let back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
+        item.add(back);
+
+        let name = this.add.text(12, 15, knowhow.name, {fontSize: 18});
+        item.add(name);
+
+        let description = this.add.text(12, 45, knowhow.description, {fontSize: 15});
+        item.add(description);
+
+        return item;
     }
 }
