@@ -82,9 +82,14 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         let knowhow = KNOWHOW[id];
 
         let item = this.add.container();
+        item.id = id;
 
-        let back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
-        item.add(back);
+        item.back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
+        item.add(item.back);
+
+        item.backSel = this.add.nineslice(0, 0, 370, 75, 'item_selected', 30, 10).setOrigin(0);
+        item.add(item.backSel);
+        item.backSel.visible = false;
 
         let name = this.add.text(12, 15, knowhow.name, {fontSize: 18});
         item.add(name);
@@ -92,11 +97,36 @@ class KnowhowSelectDialogScene extends Phaser.Scene {
         let description = this.add.text(12, 45, knowhow.description, {fontSize: 15});
         item.add(description);
 
-        back.setInteractive()
+        item.setInteractive(new Phaser.Geom.Rectangle(0, 0, 370, 75), Phaser.Geom.Rectangle.Contains)
             .on('pointerdown', (p) => {
                 this.pointerDown(p);
             }, this)
             .on('pointerup', (p) => {
+                if(!this.isScrolling) {
+                    console.log('click');
+                    if(this.selected === item) {
+                        console.log("unselect");
+                        // unselect
+                        this.selected = null;
+                        item.back.visible = true;
+                        item.backSel.visible = false;
+                    } else if(this.selected != null) {
+                        console.log("other");
+                        // unselect
+                        this.selected.back.visible = true;
+                        this.selected.backSel.visible = false;
+                        // select
+                        this.selected = item;
+                        this.selected.back.visible = false;
+                        this.selected.backSel.visible = true;
+                    } else {
+                        console.log("select");
+                        // select
+                        this.selected = item;
+                        item.back.visible = false;
+                        item.backSel.visible = true;
+                    }
+                }
                 this.pointerUp(p);
             }, this)
             .on('pointermove', this.pointerMove, this);
