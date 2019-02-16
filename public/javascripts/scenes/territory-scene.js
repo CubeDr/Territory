@@ -121,6 +121,7 @@ function buildBuildingInfoDialog() {
     let d = territoryScene.add.container(100, 200);
     d.width = 200;
     d.height = 200;
+    d.setDepth(1);
 
     d.backgroundL = territoryScene.add.nineslice(
         0, 0, 200, 200, 'background_dialog', 30, 10
