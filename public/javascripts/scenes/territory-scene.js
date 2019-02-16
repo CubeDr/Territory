@@ -156,6 +156,10 @@ function buildBuildingInfoDialog() {
     });
     d.add(d.knowhowButton);
 
+    d.knowhowDescription = territoryScene.add.text(10, 100, '노하우 설명', { fontSize: 10 });
+    d.add(d.knowhowDescription);
+    d.knowhowDescription.visible = false;
+
     // close button
     d.button = new TextButton(territoryScene, 100, 195, '확인', { onClick: ()=>{
         d.close();
@@ -173,16 +177,20 @@ function buildBuildingInfoDialog() {
         if(building.knowhow == null) {
             d.backgroundL.visible = false;
             d.backgroundS.visible = true;
+            d.knowhowDescription.visible = false;
             d.knowhowButton.setText("[적용]");
             d.button.setPosition(100, 115);
             d.height = 120;
         } else {
             d.backgroundL.visible = true;
             d.backgroundS.visible = false;
-            d.knowhowButton.visible = false;
+            d.knowhowDescription.visible = true;
             d.knowhowButton.setText("[변경]");
             d.button.setPosition(100, 195);
             d.height = 200;
+
+            d.knowhow.setText(KNOWHOW[building.knowhow].name);
+            d.knowhowDescription.setText(KNOWHOW[building.knowhow].mdescription);
         }
 
         d.knowhowButton.onClick = () => {
