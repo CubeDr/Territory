@@ -191,6 +191,14 @@ function buildBuildingInfoDialog() {
             territoryScene.scene.launch(KnowhowSelectDialogScene.KEY, (result) => {
                 if(result == null) console.log("cancel");
                 else {
+                    if(result === 0) {
+                        // 해제
+                        building.knowhow = null;
+                    } else {
+                        // 적용
+                        building.knowhow = result;
+                        d.show(building);
+                    }
                     console.log(result);
                 }
             });
