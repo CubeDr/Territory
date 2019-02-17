@@ -217,8 +217,16 @@ class Territory {
     }
 
     setKnowhow(x, y, knowhow) {
-        this._buildings[y][x].knowhow = knowhow;
-        this.updateResourceEffects();
+        let data = {
+            'idTokenString': gameEngine.idToken,
+            'buildingId': this._buildings[y][x].id,
+            'knowhow': knowhow
+        };
+        let self = this;
+        postBuildingKnowhow(JSON.stringify(data), () => {
+            self._buildings[y][x].knowhow = knowhow;
+            self.updateResourceEffects();
+        });
     }
 
     static __foodMaxFrom(buildings) {

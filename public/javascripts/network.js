@@ -21,3 +21,7 @@ function postTerritoryResource(data, success) {
 function postLearn(data, success) {
     doAjax('POST', 'player/learn', data, success);
 }
+
+function postBuildingKnowhow(data, success) {
+    doAjax('POST', 'building/knowhow', data, success);
+}
