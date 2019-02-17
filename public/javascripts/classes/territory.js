@@ -216,6 +216,11 @@ class Territory {
         return false;
     }
 
+    setKnowhow(x, y, knowhow) {
+        this._buildings[y][x].knowhow = knowhow;
+        this.updateResourceEffects();
+    }
+
     static __foodMaxFrom(buildings) {
         let count = 10;
         buildings.forEach((row) => {
@@ -233,6 +238,7 @@ class Territory {
                 if(b != null && BUILDING_TYPE[b.type] === 'house') count += 10;
             })
         });
+        count += calculateKnowhowPopulationMax(buildings);
         return count;
     }
 
