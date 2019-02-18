@@ -27,8 +27,10 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                console.log("공격");
                 this.scene.remove(ComponentSelectDialogScene.KEY);
+                if(this.selected == null) return;
+                let targetId = this.selected.id;
+                console.log(targetId);
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {
