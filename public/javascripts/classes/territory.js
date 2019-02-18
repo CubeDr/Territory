@@ -50,11 +50,6 @@ class Territory {
     delete(engine) {
         this.clearResourceEffects();
         this.deltaArmy(engine, this._army.quantity);
-        // 기본 인구 증가량 삭제
-        engine.emit('deltaPopulationIncreaseRate', {
-            territory: this,
-            delta: -DEFAULT_POPULATION_INCREASE_FACTOR
-        });
     }
 
     emitDeltaEvent(event, delta) {
