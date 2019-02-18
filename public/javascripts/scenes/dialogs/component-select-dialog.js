@@ -51,16 +51,31 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         let list = this.add.container(215, 310);
         list.mask = g.createGeometryMask();
 
+        let dialog = new MinimapDialog(this, 250, 250, 10, 10);
+        this.add.existing(dialog);
+        dialog.visible = false;
+
+        let y = 5;
         getPlayerList((listString) => {
             JSON.parse(listString)
                 .map((it) => { return this.createComponentItem(it); })
                 .forEach((item) => {
+                    let curY = y;
+
                     list.add(item);
-                    item.setPosition(item.x, y);
+                    item.setPosition(item.x, curY);
+
+                    item.on('pointerover', () => {
+                        dialog.visible = true;
+                    }).on('pointerout', () => {
+                        dialog.visible = false;
+                    }).on('pointermove', () => {
+                        dialog.setPosition(list.x + 375, list.y + curY - dialog.height/3);
+                    });
+
                     y += 80;
                 });
         });
-        let y = 5;
 
         g.setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), Phaser.Geom.Rectangle.Contains)
             .on('pointerdown', this.pointerDown, this)
