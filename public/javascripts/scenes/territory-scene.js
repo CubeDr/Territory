@@ -124,7 +124,7 @@ function buildBuildingInfoDialog() {
     d.setDepth(1);
 
     d.backgroundL = territoryScene.add.nineslice(
-        0, 0, 200, 200, 'background_dialog', 30, 10
+        0, 0, 200, 150, 'background_dialog', 30, 10
     );
     d.add(d.backgroundL);
     d.backgroundL.setInteractive();
@@ -161,7 +161,7 @@ function buildBuildingInfoDialog() {
     d.knowhowDescription.visible = false;
 
     // close button
-    d.button = new TextButton(territoryScene, 100, 195, '확인', { onClick: ()=>{
+    d.button = new TextButton(territoryScene, 100, 145, '확인', { onClick: ()=>{
         d.close();
     }}).setOrigin(0.5, 1);
     territoryScene.add.existing(d.button);
@@ -186,8 +186,8 @@ function buildBuildingInfoDialog() {
             d.backgroundS.visible = false;
             d.knowhowDescription.visible = true;
             d.knowhowButton.setText("[변경]");
-            d.button.setPosition(100, 195);
-            d.height = 200;
+            d.button.setPosition(100, 145);
+            d.height = 150;
 
             d.knowhow.setText(KNOWHOW[building.knowhow].name);
             d.knowhowDescription.setText(KNOWHOW[building.knowhow].mdescription);
