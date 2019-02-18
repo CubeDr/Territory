@@ -11,6 +11,8 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         this.load.image('green', 'assets/green.png');
         this.load.image('item_back', 'assets/ui/list_item.png');
         this.load.image('item_selected', 'assets/ui/list_item_selected.png');
+        this.load.image('resource', 'assets/menu/menu_food.png');
+        this.load.image('army', 'assets/menu/menu_army.png');
     }
 
     create() {
