@@ -1,9 +1,13 @@
-class AttackArmyListDialogScene extends Phaser.Scene {
-    static get KEY() { return 'attackArmyListDialogScene'; }
+class AttackTerritorySelectDialog extends Phaser.Scene {
+    static get KEY() { return 'attackTerritorySelectDialog'; }
 
     constructor() {
-        super({KEY: AttackArmyListDialogScene.KEY});
+        super({KEY: AttackTerritorySelectDialog.KEY});
         this.pointer = {};
+    }
+
+    init(callback) {
+        this.callback = callback;
     }
 
     preload() {
@@ -21,32 +25,25 @@ class AttackArmyListDialogScene extends Phaser.Scene {
             200, 250, 400, 500, 'background_dialog', 30, 10
         );
 
-        this.add.text(220, 270, '출진 병력 리스트', { fontSize: 35 });
+        this.add.text(220, 270, '출진 영지 선택', { fontSize: 35 });
 
-        this.add.existing(new TextButton(this, 250, 710, '추가', {
-            fontSize: 20,
-            onClick: () => {
-                this.scene.add(AttackTerritorySelectDialog.KEY, AttackTerritorySelectDialog);
-                this.scene.launch(AttackTerritorySelectDialog.KEY);
-            }
-        }));
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(AttackArmyListDialogScene.KEY);
+                this.scene.remove(AttackTerritorySelectDialog.KEY);
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(AttackArmyListDialogScene.KEY);
+                this.scene.remove(AttackTerritorySelectDialog.KEY);
             }
         }));
 
-        this.list = this.createArmyList();
+        this.list = this.createTerritoryList();
     }
 
-    createArmyList() {
+    createTerritoryList() {
         let g = this.add.graphics();
         g.fillStyle(0x777777);
         g.fillRect(210, 310, 380, 390);
@@ -99,4 +96,5 @@ class AttackArmyListDialogScene extends Phaser.Scene {
             this.list.setPosition(this.list.x, this.list.y + delta);
         }
     }
+
 }
