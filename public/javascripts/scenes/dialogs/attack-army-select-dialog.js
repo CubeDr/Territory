@@ -5,8 +5,9 @@ class AttackArmySelectDialog extends Phaser.Scene {
         super({KEY: AttackArmySelectDialog.KEY});
     }
 
-    init(territory) {
-        this.territory = territory;
+    init(data) {
+        this.territory = data.territory;
+        this.callback = data.callback;
     }
 
     preload() {
@@ -34,8 +35,7 @@ class AttackArmySelectDialog extends Phaser.Scene {
             fontSize: 20,
             onClick: () => {
                 this.scene.remove(AttackArmySelectDialog.KEY);
-
-                console.log(this.card.value);
+                this.callback(this.card.value);
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {

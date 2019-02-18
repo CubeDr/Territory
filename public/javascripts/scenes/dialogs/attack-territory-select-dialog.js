@@ -36,7 +36,13 @@ class AttackTerritorySelectDialog extends Phaser.Scene {
             onClick: () => {
                 if(this.selected == null) return;
                 this.scene.add(AttackArmySelectDialog.KEY, AttackArmySelectDialog);
-                this.scene.launch(AttackArmySelectDialog.KEY, this.selected.territory);
+                this.scene.launch(AttackArmySelectDialog.KEY, {
+                    territory: this.selected.territory,
+                    callback: (count) => {
+                        this.callback(count, this.selected.territory);
+                        this.close();
+                    }
+                });
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {

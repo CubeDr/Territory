@@ -27,7 +27,9 @@ class AttackArmyListDialogScene extends Phaser.Scene {
             fontSize: 20,
             onClick: () => {
                 this.scene.add(AttackTerritorySelectDialog.KEY, AttackTerritorySelectDialog);
-                this.scene.launch(AttackTerritorySelectDialog.KEY);
+                this.scene.launch(AttackTerritorySelectDialog.KEY, (count, territory) => {
+                    console.log(count, territory);
+                });
             }
         }));
         this.add.existing(new TextButton(this, 420, 710, '확인', {
