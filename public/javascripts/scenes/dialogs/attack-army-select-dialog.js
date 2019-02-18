@@ -87,15 +87,13 @@ class AttackArmySelectDialog extends Phaser.Scene {
         card.add(countText);
         countText.setPosition(190, 165);
 
-        let slider = new HorizontalSlider(this, 0, 0, this.bodyWidth, {
+        let slider = new HorizontalSlider(this, 190, 210, 330, {
             min: 1,
+            max: this.territory.quantity,
             isDiscrete: true
         });
         this.add.existing(slider);
         card.add(slider);
-        slider.setPosition(190, 210);
-
-
 
         let consumeTitle = this.add.text(10, 260, "소모 자원").setOrigin(0);
         card.add(consumeTitle);
