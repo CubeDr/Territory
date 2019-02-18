@@ -20,7 +20,9 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
         }));
         menu.addChild(new _MenuButton(scene, 'menu_fight', '침략',
             function() {
-            console.log("침략");
+                territoryScene.scene.add(ComponentSelectDialogScene.KEY,
+                    ComponentSelectDialogScene);
+                territoryScene.scene.launch(ComponentSelectDialogScene.KEY);
         }));
     }
 
