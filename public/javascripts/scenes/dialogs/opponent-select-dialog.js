@@ -30,10 +30,11 @@ class OpponentSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(OpponentSelectDialogScene.KEY);
                 if(this.selected == null) return;
                 let targetId = this.selected.id;
                 console.log(targetId);
+                this.scene.add(AttackArmyListDialogScene.KEY, AttackArmyListDialogScene);
+                this.scene.launch(AttackArmyListDialogScene.KEY);
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {
