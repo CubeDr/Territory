@@ -52,6 +52,7 @@ function preload() {
     this.load.image('menu_product', 'assets/menu/menu_product.png');
     this.load.image('menu_save', 'assets/menu/menu_save.png');
     this.load.image('menu_train', 'assets/menu/menu_train.png');
+    this.load.image('menu_fight', 'assets/menu/menu_fight.png');
     this.load.image('menu_remove_territory', 'assets/menu/menu_remove_territory.png');
 
     this.load.image('back', 'assets/menu_back.png');

@@ -18,6 +18,10 @@ class TerritoryUI extends Phaser.GameObjects.GameObject {
             menu.close();
             buildings.main.open();
         }));
+        menu.addChild(new _MenuButton(scene, 'menu_fight', '침략',
+            function() {
+            console.log("침략");
+        }));
     }
 
     _createBuildingLists(scene, menu) {
