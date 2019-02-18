@@ -34,7 +34,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 500, 710, '취소', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(KnowhowSelectDialogScene.KEY);
+                this.scene.remove(ComponentSelectDialogScene.KEY);
             }
         }));
 
