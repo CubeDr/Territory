@@ -1,6 +1,7 @@
 class Player {
     constructor(playerData) {
         this.id = playerData.id;
+        this.attachListeners(gameEngine);
         this.__loadPlayer(playerData);
     }
 
@@ -119,16 +120,6 @@ class Player {
         this._populationIncreaseRate = 0;
         this._populationMax = 0;
 
-        this.territories.forEach((t) => {
-            this._moneyIncreaseRate += t.moneyIncreaseRate;
-            this._moneyDecreaseRate += t.moneyDecreaseRate;
-            this._foodIncreaseRate += t.foodIncreaseRate;
-            this._foodDecreaseRate += t.foodDecreaseRate;
-            this._foodMax += t.foodMax;
-            this._populationIncreaseRate += t.populationIncreaseRate;
-            this._populationMax += t.populationMax;
-        });
-
         this._foodDecreaseRate += parseInt(this._population) * DEFAULT_FOOD_DECREASE_FACTOR;
         this._moneyIncreaseRate += parseInt(this._population) * DEFAULT_MONEY_INCREASE_FACTOR;
     }
@@ -166,9 +157,8 @@ class Player {
         this.runningArmies = [];
         this.fightingArmies = [];
         this.knowhows = playerData.knowhows;
-        this.__loadTerritories(playerData.territories);
-
         this._initializeAttributes();
+        this.__loadTerritories(playerData.territories);
     }
 
     __loadTerritories(territories) {

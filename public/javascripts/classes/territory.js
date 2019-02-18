@@ -15,13 +15,13 @@ class Territory {
             this._buildings[b.y][b.x] = b;
         });
 
-        this._updateAttributes();
-
         // gameObject handling this territory from WorldScene
         // this property is to easily track gameObject from WorldUIScene.
         // can be null when WorldScene is not active.
         this.gameObject = null;
         this.lastTransfer = 0;
+
+        this.setResourceEffects();
     }
 
     update(time, eventBus) {

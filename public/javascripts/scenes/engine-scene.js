@@ -23,7 +23,6 @@ class Engine extends Phaser.Scene {
 
     setPlayer(player) {
         this.player = player;
-        this.player.attachListeners(this);
     }
 
     update(time) {

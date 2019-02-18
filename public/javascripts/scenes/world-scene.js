@@ -221,7 +221,6 @@ class WorldScene extends Phaser.Scene {
                             // 나누어 떨어지지만 혹시 몰라 반올림
                             let x = Math.round(gameObject.x / IMAGE_WIDTH);
                             let y = Math.round(gameObject.y / IMAGE_HEIGHT);
-                            console.log(x, y);
 
                             let self = this;
                             postExploitTerritory(
@@ -235,7 +234,6 @@ class WorldScene extends Phaser.Scene {
                                         id: id, x: x, y: y
                                     });
                                     gameEngine.player.territories.push(t);
-                                    console.log(gameEngine.player.territories);
 
                                     self.map[t.y][t.x].over = self.createTile(t.x, t.y, 'territory');
                                     self.map[t.y][t.x].over.territory = t;
