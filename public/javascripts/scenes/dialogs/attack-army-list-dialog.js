@@ -23,6 +23,12 @@ class AttackArmyListDialogScene extends Phaser.Scene {
 
         this.add.text(220, 270, '출진 병력 리스트', { fontSize: 35 });
 
+        this.add.existing(new TextButton(this, 250, 710, '추가', {
+            fontSize: 20,
+            onClick: () => {
+                console.log("추가");
+            }
+        }));
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
