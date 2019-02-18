@@ -49,6 +49,15 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         let list = this.add.container(215, 310);
         list.mask = g.createGeometryMask();
 
+        getPlayerList((listString) => {
+            JSON.parse(listString)
+                .map((it) => { return this.createComponentItem(it); })
+                .forEach((item) => {
+                    list.add(item);
+                    item.setPosition(item.x, y);
+                    y += 80;
+                });
+        });
         let y = 5;
 
         g.setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), Phaser.Geom.Rectangle.Contains)
@@ -70,7 +79,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         item.add(item.backSel);
         item.backSel.visible = false;
 
-        let name = this.add.text(12, 15, component.name, {fontSize: 18});
+        let name = this.add.text(15, 20, component.name, {fontSize: 25});
         item.add(name);
 
         item.setInteractive(new Phaser.Geom.Rectangle(0, 0, 370, 75), Phaser.Geom.Rectangle.Contains)

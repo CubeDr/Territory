@@ -25,3 +25,8 @@ function postLearn(data, success) {
 function postBuildingKnowhow(data, success) {
     doAjax('POST', 'building/knowhow', data, success);
 }
+
+function getPlayerList(success) {
+    doAjax('GET', 'player/list',
+        "idTokenString=" + gameEngine.idToken, success);
+}
