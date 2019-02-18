@@ -1,8 +1,8 @@
-class ComponentSelectDialogScene extends Phaser.Scene {
-    static get KEY() { return 'componentSelectDialog'; }
+class OpponentSelectDialogScene extends Phaser.Scene {
+    static get KEY() { return 'opponentSelectDialog'; }
 
     constructor() {
-        super({KEY: ComponentSelectDialogScene.KEY});
+        super({KEY: OpponentSelectDialogScene.KEY});
         this.pointer = {};
     }
 
@@ -30,7 +30,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(ComponentSelectDialogScene.KEY);
+                this.scene.remove(OpponentSelectDialogScene.KEY);
                 if(this.selected == null) return;
                 let targetId = this.selected.id;
                 console.log(targetId);
@@ -39,7 +39,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 500, 710, '취소', {
             fontSize: 20,
             onClick: () => {
-                this.scene.remove(ComponentSelectDialogScene.KEY);
+                this.scene.remove(OpponentSelectDialogScene.KEY);
             }
         }));
 
