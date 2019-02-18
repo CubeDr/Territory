@@ -69,7 +69,7 @@ class HorizontalSlider extends Phaser.GameObjects.Container {
         this.value = 0;
         this.valueChangeListener = null;
 
-        this.bar = scene.add.rectangle(0, 0, width, 3, 0x777777).setOrigin(0.5);
+        this.bar = scene.add.rectangle(0, 0, width, 3, 0x444444).setOrigin(0.5);
         this.add(this.bar);
 
         this.thumb = scene.add.circle(0, 0, this.thumbRadius, 0xffff00);
