@@ -4,6 +4,7 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     constructor() {
         super({KEY: AttackArmyListDialogScene.KEY});
         this.pointer = {};
+        this.index = 0;
     }
 
     preload() {
@@ -29,6 +30,9 @@ class AttackArmyListDialogScene extends Phaser.Scene {
                 this.scene.add(AttackTerritorySelectDialog.KEY, AttackTerritorySelectDialog);
                 this.scene.launch(AttackTerritorySelectDialog.KEY, (count, territory) => {
                     console.log(count, territory);
+                    // territory에서 count명을 출진
+                    let item = this.createArmyItem(count, territory);
+                    this.addItemToList(item);
                 });
             }
         }));
@@ -62,6 +66,24 @@ class AttackArmyListDialogScene extends Phaser.Scene {
             .on('pointermove', this.pointerMove, this);
 
         return list;
+    }
+
+    createArmyItem(count, territory) {
+        let item = this.add.container();
+        item.index = ++this.index;
+
+        let back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
+        item.add(back);
+
+        item.indexText = this.add.text(15, 20, item.index + ".", {fontSize: 25});
+        item.add(item.indexText);
+
+        return item;
+    }
+
+    addItemToList(item) {
+        this.list.add(item);
+        item.setPosition(item.x, 5 + (item.index-1) * 80);
     }
 
     _isInBody(x, y) {
