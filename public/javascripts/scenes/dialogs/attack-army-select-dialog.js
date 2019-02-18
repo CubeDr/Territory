@@ -33,14 +33,14 @@ class AttackArmySelectDialog extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
-                this.card.hide();
                 this.scene.remove(AttackArmySelectDialog.KEY);
+
+                console.log(this.card.value);
             }
         }));
         this.add.existing(new TextButton(this, 500, 710, '취소', {
             fontSize: 20,
             onClick: () => {
-                this.card.hide();
                 this.scene.remove(AttackArmySelectDialog.KEY);
             }
         }));
@@ -131,22 +131,6 @@ class AttackArmySelectDialog extends Phaser.Scene {
 
         let player = gameEngine.player;
 
-        card.checkResourcesEnough = function() {
-            let valid = true;
-            if(card.foodConsume > player.food) {
-                valid = false;
-                foodText.setColor("#ff0000");
-            }
-            else foodText.setColor("#ffffff");
-
-            if(card.moneyConsume > player.money) {
-                valid = false;
-                moneyText.setColor("#ff0000");
-            }
-            else moneyText.setColor("#ffffff");
-            card.valid = valid;
-        };
-
         card.calculateResources = function(usingQuantity) {
             let armyFactor = usingQuantity * card.territory.army.quality / 100;
 
@@ -160,11 +144,8 @@ class AttackArmySelectDialog extends Phaser.Scene {
 
             card.foodConsume = foodConsume;
             card.moneyConsume = moneyConsume;
-
-            card.checkResourcesEnough();
         };
 
-        let engine = gameEngine;
         card.show = function(territory) {
             card.territory = territory;
             // set value of widgets to selected territory
@@ -175,17 +156,7 @@ class AttackArmySelectDialog extends Phaser.Scene {
             slider.max = territory.army.quantity;
             onValueChange(territory.army.quantity);
 
-            engine.on('changeMoney', card.checkResourcesEnough)
-                .on('changeFood', card.checkResourcesEnough);
-
             card.setVisible(true);
-        };
-
-        card.hide = function() {
-            engine.off('changeMoney', card.checkResourcesEnough)
-                .off('changeFood', card.checkResourcesEnough);
-
-            card.setVisible(false);
         };
 
         return card;
