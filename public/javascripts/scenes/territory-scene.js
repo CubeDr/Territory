@@ -204,8 +204,9 @@ function buildBuildingInfoDialog() {
                         building.knowhow = null;
                     } else {
                         // 적용
-                        territory.setKnowhow(building.x, building.y, result);
-                        d.show(building);
+                        territory.setKnowhow(building.x, building.y, result, () => {
+                            d.show(building);
+                        });
                     }
                     console.log(result);
                 }
