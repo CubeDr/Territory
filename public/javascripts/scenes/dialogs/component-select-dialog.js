@@ -8,6 +8,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
 
     preload() {
         this.load.image('background_dialog', 'assets/background_dialog.png');
+        this.load.image('green', 'assets/green.png');
         this.load.image('item_back', 'assets/ui/list_item.png');
         this.load.image('item_selected', 'assets/ui/list_item_selected.png');
     }
@@ -66,6 +67,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
                     item.setPosition(item.x, curY);
 
                     item.on('pointerover', () => {
+                        dialog.setMap(item.territories);
                         dialog.visible = true;
                     }).on('pointerout', () => {
                         dialog.visible = false;
@@ -88,6 +90,7 @@ class ComponentSelectDialogScene extends Phaser.Scene {
     createComponentItem(component) {
         let item = this.add.container();
         item.id = component.id;
+        item.territories = component.territories;
 
         item.back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
         item.add(item.back);

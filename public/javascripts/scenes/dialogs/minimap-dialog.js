@@ -6,13 +6,17 @@ class MinimapDialog extends Phaser.GameObjects.Container {
         this.height = height;
         this.hMargin = hMargin;
         this.vMargin = vMargin;
-        
+
         this.add(this.scene.add.nineslice(0, 0, width, height, 'background_dialog', 30, 10));
+        this.add(this.scene.add.nineslice(hMargin, vMargin,
+            width - hMargin * 2,
+            height - vMargin * 2,
+            'green', 0, 0));
     }
 
     setMap(territories) {
         let boundary = MinimapDialog._getTerritoryBoundary(territories);
-
+        console.log(boundary);
         territories.forEach((t) => {
 
         });
