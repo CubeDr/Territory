@@ -10,6 +10,11 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     preload() {
         this.load.image('background_dialog', 'assets/background_dialog.png');
         this.load.image('item_back', 'assets/ui/list_item.png');
+        this.load.image('territory_image', 'assets/world/tile_territory.png');
+        this.load.image('quantity_icon', 'assets/ui/resources/icon_quantity.png');
+        this.load.image('quality_icon', 'assets/ui/resources/icon_quality.png');
+        this.load.image('money_icon', 'assets/ui/resources/icon_coin.png');
+        this.load.image('food_icon', 'assets/ui/resources/icon_food.png');
     }
 
     create () {
@@ -71,12 +76,32 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     createArmyItem(count, territory) {
         let item = this.add.container();
         item.index = ++this.index;
+        item.count = count;
+        item.territory = territory;
 
         let back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
         item.add(back);
 
         item.indexText = this.add.text(15, 20, item.index + ".", {fontSize: 25});
         item.add(item.indexText);
+
+        let territoryText = this.add.text(70, 15, '영지(' + territory.x + ', ' + territory.y + ')');
+        item.add(territoryText);
+
+        let quantityIcon = this.add.image(200, 25, 'quantity_icon').setScale(0.8);
+        item.add(quantityIcon);
+
+        let quantityText = this.add.text(230, 18, count.toString());
+        item.add(quantityText);
+
+        let qualityIcon = this.add.image(285, 25, 'quality_icon').setScale(0.8);
+        item.add(qualityIcon);
+
+        let qualityText = this.add.text(315, 18, territory.army.quality.toString());
+        item.add(qualityText);
+
+        let consumeText = this.add.text(80, 45, '소모자원', {fontSize: 13});
+        item.add(consumeText);
 
         return item;
     }
