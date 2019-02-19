@@ -29,6 +29,13 @@ class AttackArmyListDialogScene extends Phaser.Scene {
 
         this.add.text(220, 270, '출진 병력 리스트', { fontSize: 35 });
 
+        this.add.text(220, 620, '소모 자원', {fontSize: 20});
+        this.add.image(260, 670, 'money_icon');
+        this.add.image(420, 670, 'food_icon');
+
+        this.moneyText = this.add.text(290, 660, '0', {fontSize: 18});
+        this.foodText = this.add.text(450, 660, '0', {fontSize: 18});
+
         this.add.existing(new TextButton(this, 250, 710, '추가', {
             fontSize: 20,
             onClick: () => {
@@ -60,12 +67,12 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     createArmyList() {
         let g = this.add.graphics();
         g.fillStyle(0x777777);
-        g.fillRect(210, 310, 380, 390);
+        g.fillRect(210, 310, 380, 300);
 
         let list = this.add.container(215, 310);
         list.mask = g.createGeometryMask();
 
-        g.setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 390), Phaser.Geom.Rectangle.Contains)
+        g.setInteractive(new Phaser.Geom.Rectangle(210, 310, 380, 300), Phaser.Geom.Rectangle.Contains)
             .on('pointerdown', this.pointerDown, this)
             .on('pointerup', this.pointerUp, this)
             .on('pointermove', this.pointerMove, this);
@@ -126,7 +133,7 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     }
 
     _isInBody(x, y) {
-        return !(x < 210 || x > 590 || y < 310 || y > 700);
+        return !(x < 210 || x > 590 || y < 310 || y > 610);
     }
 
     pointerDown(p) {
