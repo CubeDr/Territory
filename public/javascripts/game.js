@@ -4,7 +4,7 @@ var config = {
     height: GAME_HEIGHT,
     scene: [ Engine, SigninScene,
         TerritoryScene, WorldScene, InfoScene,
-        WorldUIScene
+        WorldUIScene, FightScene
     ],
     plugins: {
         global: [ NineSlice.Plugin.DefaultCfg ]
