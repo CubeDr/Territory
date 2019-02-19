@@ -7,6 +7,10 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.index = 0;
     }
 
+    init(callback) {
+        this.callback = callback;
+    }
+
     preload() {
         this.load.image('background_dialog', 'assets/background_dialog.png');
         this.load.image('item_back', 'assets/ui/list_item.png');
@@ -51,6 +55,14 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
+                let armies = [];
+                this.list.iterate((child) => {
+                    armies.push({
+                        count: child.count,
+                        territory: child.territory
+                    });
+                });
+                if(this.callback != null) this.callback(armies);
                 this.scene.remove(AttackArmyListDialogScene.KEY);
             }
         }));
