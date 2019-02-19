@@ -43,12 +43,19 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 250, 710, '추가', {
             fontSize: 20,
             onClick: () => {
+                let except = [];
+                this.list.iterate((child) => {
+                    except.push(child.territory);
+                });
                 this.scene.add(AttackTerritorySelectDialog.KEY, AttackTerritorySelectDialog);
-                this.scene.launch(AttackTerritorySelectDialog.KEY, (count, territory) => {
-                    console.log(count, territory);
-                    // territory에서 count명을 출진
-                    let item = this.createArmyItem(count, territory);
-                    this.addItemToList(item);
+                this.scene.launch(AttackTerritorySelectDialog.KEY, {
+                    except: except,
+                    callback: (count, territory) => {
+                        console.log(count, territory);
+                        // territory에서 count명을 출진
+                        let item = this.createArmyItem(count, territory);
+                        this.addItemToList(item);
+                    }
                 });
             }
         }));

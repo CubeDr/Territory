@@ -6,8 +6,12 @@ class AttackTerritorySelectDialog extends Phaser.Scene {
         this.pointer = {};
     }
 
-    init(callback) {
-        this.callback = callback;
+    init(config) {
+        this.except = [];
+        if(config == null) return;
+        this.except = config.except;
+        this.callback = config.callback;
+        if(this.except == null) this.except = [];
     }
 
     preload() {
@@ -74,6 +78,8 @@ class AttackTerritorySelectDialog extends Phaser.Scene {
 
         let y = 5;
         gameEngine.player.territories.forEach((t) => {
+            if(this.except.includes(t)) return;
+
             let item = this.createTerritoryItem(t);
             item.setPosition(item.x, y);
             list.add(item);
