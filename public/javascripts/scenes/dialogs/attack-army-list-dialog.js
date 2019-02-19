@@ -79,6 +79,8 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         item.count = count;
         item.territory = territory;
 
+        let consume = Engine.calculateCost(count, territory.army.quality, 10);
+
         let back = this.add.nineslice(0, 0, 370, 75, 'item_back', 30, 10).setOrigin(0);
         item.add(back);
 
@@ -102,6 +104,18 @@ class AttackArmyListDialogScene extends Phaser.Scene {
 
         let consumeText = this.add.text(80, 45, '소모자원', {fontSize: 13});
         item.add(consumeText);
+
+        let moneyIcon = this.add.image(160, 50, 'money_icon').setScale(0.5);
+        item.add(moneyIcon);
+
+        let moneyText = this.add.text(175, 42, consume.moneyConsume.toString());
+        item.add(moneyText);
+
+        let foodIcon = this.add.image(250, 50, 'food_icon').setScale(0.5);
+        item.add(foodIcon);
+
+        let foodText = this.add.text(265, 42, consume.foodConsume.toString());
+        item.add(foodText);
 
         return item;
     }
