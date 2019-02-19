@@ -62,6 +62,7 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         }));
 
         this.list = this.createArmyList();
+        this.updateResourceConsume();
     }
 
     createArmyList() {
@@ -130,6 +131,7 @@ class AttackArmyListDialogScene extends Phaser.Scene {
     addItemToList(item) {
         this.list.add(item);
         item.setPosition(item.x, 5 + (item.index-1) * 80);
+        this.updateResourceConsume();
     }
 
     _isInBody(x, y) {
@@ -168,5 +170,26 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         if(this.isScrolling) {
             this.list.setPosition(this.list.x, this.list.y + delta);
         }
+    }
+
+    updateResourceConsume() {
+        let total = {
+            money: 0,
+            food: 0
+        };
+
+        this.list.iterate((child) => {
+            let count = child.count;
+            let quality = child.territory._army.quality;
+            let consume = Engine.calculateCost(count, quality, 10);
+            total.money += consume.moneyConsume;
+            total.food += consume.foodConsume;
+        });
+
+        this.moneyText.setText(total.money.toString());
+        this.foodText.setText(total.food.toString());
+
+        this.moneyText.setColor(gameEngine.player.money>=total.money?'#ffffff':'#ff0000');
+        this.foodText.setColor(gameEngine.player.food>=total.food?'#ffffff':'#ff0000');
     }
 }
