@@ -7,8 +7,8 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.index = 0;
     }
 
-    init(callback) {
-        this.callback = callback;
+    init(config) {
+        this.callback = config.callback;
     }
 
     preload() {
