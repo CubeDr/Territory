@@ -36,11 +36,12 @@ class OpponentSelectDialogScene extends Phaser.Scene {
                 this.scene.launch(AttackArmyListDialogScene.KEY, {
                     callback: (armies) => {
                         // Start fighting scene
-                        this.scene.remove(OpponentSelectDialogScene.KEY);
+                        this.scene.add(FightScene.KEY, FightScene);
                         this.scene.start(FightScene.KEY, {
                             opponentId: targetId,
                             armies: armies
                         });
+                        this.scene.remove(OpponentSelectDialogScene.KEY);
                     }
                 });
             }

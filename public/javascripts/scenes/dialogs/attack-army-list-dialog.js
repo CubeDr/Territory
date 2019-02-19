@@ -51,7 +51,6 @@ class AttackArmyListDialogScene extends Phaser.Scene {
                 this.scene.launch(AttackTerritorySelectDialog.KEY, {
                     except: except,
                     callback: (count, territory) => {
-                        console.log(count, territory);
                         // territory에서 count명을 출진
                         let item = this.createArmyItem(count, territory);
                         this.addItemToList(item);
