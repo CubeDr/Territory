@@ -128,16 +128,10 @@ class AttackArmySelectDialog extends Phaser.Scene {
         card.foodText = foodText;
         card.slider = slider;
 
-
-        let player = gameEngine.player;
-
         card.calculateResources = function(usingQuantity) {
-            let armyFactor = usingQuantity * card.territory.army.quality / 100;
-
-            let d = 10;
-
-            let foodConsume = Math.ceil(d * armyFactor * FIGHT_ARMY_FOOD);
-            let moneyConsume = Math.ceil(d * armyFactor * FIGHT_ARMY_MONEY);
+            let consume = Engine.calculateCost(usingQuantity, card.territory.army.quality, 10);
+            let foodConsume = consume.foodConsume;
+            let moneyConsume = consume.moneyConsume;
 
             foodText.setText(foodConsume);
             moneyText.setText(moneyConsume);

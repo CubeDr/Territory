@@ -108,4 +108,15 @@ class Engine extends Phaser.Scene {
             postTerritoryResource(JSON.stringify(data));
         });
     }
+
+    static calculateCost(quantity, quality, factor) {
+        let armyFactor = quantity * quality / 100;
+
+        let foodConsume = Math.ceil(factor * armyFactor * FIGHT_ARMY_FOOD);
+        let moneyConsume = Math.ceil(factor * armyFactor * FIGHT_ARMY_MONEY);
+        return {
+            foodConsume: foodConsume,
+            moneyConsume: moneyConsume
+        }
+    }
 }
