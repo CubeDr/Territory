@@ -13,7 +13,7 @@ class FightScene extends Phaser.Scene {
     preload() {
         loadTileSprites(this, ["grass"]);
         this.load.image('territory', 'assets/world/tile_territory.png');
-        this.load.image('food', 'assets/menu/menu_food.png');
+        this.load.image('tile_food', 'assets/menu/menu_food.png');
     }
 
     init(config) {
@@ -27,6 +27,8 @@ class FightScene extends Phaser.Scene {
             opponentId: this.opponentId
         }), (defenceString) => {
             let defenceInfo = JSON.parse(defenceString);
+            this.territories = defenceInfo;
+
             let boundary = MinimapDialog._getTerritoryBoundary(defenceInfo);
             // extend boundary to fill map
             while(boundary.maxX - boundary.minX + 1 < 8) {
@@ -65,6 +67,15 @@ class FightScene extends Phaser.Scene {
         let cx = this.boundary.minX + this.boundary.maxX;
         let cy = this.boundary.minY + this.boundary.maxY;
         this.centerOn(cx * 100 ,cy * 100);
+
+        this.territories.forEach((t) => {
+            let x = t.x * 100;
+            let y = t.y * 100;
+
+            let tile = this.add.image(x, y, t.quantity>0?'territory':'tile_food');
+            t.tile = tile;
+            tile.territory = t;
+        });
     }
 
     centerOn(x, y) {
