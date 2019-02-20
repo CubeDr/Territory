@@ -149,12 +149,7 @@ class FightScene extends Phaser.Scene {
             armies: this.armies
         });
 
-        this.infoText = this.add.text(this.cameraCenter.x, this.cameraCenter.y - 300,
-            '병력을 배치시킬 곳을 선택해주세요.', {fontSize: 20})
-            .setOrigin(0.5, 0);
-        this.hold = this.add.sprite(0, 0, 'armySprite');
-        this.hold.setAlpha(0.5);
-        this.hold.visible = false;
+        this.placeArmy();
     }
 
     centerOn(x, y) {
@@ -163,11 +158,25 @@ class FightScene extends Phaser.Scene {
         this.cameras.main.centerOn(x, y);
     }
 
+    placeArmy(index=0) {
+        if(this.infoText != null) this.infoText.destroy();
+        this.infoText = this.add.text(this.cameraCenter.x, this.cameraCenter.y - 300,
+            '병력을 배치시킬 곳을 선택해주세요.', {fontSize: 20})
+            .setOrigin(0.5, 0);
+        this.hold = this.add.sprite(0, 0, 'armySprite');
+        this.hold.setAlpha(0.5);
+        this.hold.visible = false;
+        this.holdingArmy = index;
+    }
+
     gameObjectOver(p, go) {
         switch(this.state) {
             case 0:
                 if(go.tileType !== 'grass') break;
-                if(go.over != null) break;
+                if(go.over != null) {
+                    this.hold.visible = false;
+                    break;
+                }
                 this.hold.visible = true;
                 this.hold.setPosition(go.x, go.y);
                 break;
@@ -179,6 +188,19 @@ class FightScene extends Phaser.Scene {
     }
 
     gameObjectDown(p, go) {
+        switch(this.state) {
+            case 0:
+                if(go.tileType !== 'grass') break;
+                if(go.over != null) break;
+                this.hold.visible = false;
+                this.armies[this.holdingArmy].sprite = this.add.sprite(go.x, go.y, 'armySprite');
+                if(this.holdingArmy < this.armies.length - 1) this.placeArmy(this.holdingArmy + 1);
+                else this.startGame();
+        }
+    }
 
+    startGame() {
+        console.log("Switch to next state");
+        this.state = 1;
     }
 }
