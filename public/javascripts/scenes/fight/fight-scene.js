@@ -243,6 +243,7 @@ class FightScene extends Phaser.Scene {
     startGame() {
         this.cameras.main.setZoom(1);
         this.state = 1;
+        this.infoText.setText("");
         this.select(0);
     }
 
