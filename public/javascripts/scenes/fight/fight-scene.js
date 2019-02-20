@@ -133,8 +133,8 @@ class FightScene extends Phaser.Scene {
         }
 
         // set camera to see whole map
-        let cx = this.boundary.minX + this.boundary.maxX;
-        let cy = this.boundary.minY + this.boundary.maxY;
+        let cx = (this.boundary.minX + this.boundary.maxX)/2;
+        let cy = (this.boundary.minY + this.boundary.maxY)/2;
         this.centerOn(cx * 100 ,cy * 100);
         // Zoom out to match boundary
         let width = this.boundary.maxX - this.boundary.minX + 1;
