@@ -80,19 +80,29 @@ class FightScene extends Phaser.Scene {
         }
 
         this.doCreate();
+
+        this.input
+            .on('gameobjectover', this.gameObjectOver, this)
+            .on('gameobjectout', this.gameObjectOut, this)
+            .on('gameobjectdown', this.gameObjectDown, this);
     }
 
     doCreate() {
         if(++this.state < 0) return;
 
         // create grass
+        this.map = {};
         for(let ty=this.boundary.minY; ty<=this.boundary.maxY; ty++) {
+            this.map[ty] = {};
             for(let tx=this.boundary.minX; tx<=this.boundary.maxX; tx++) {
                 let x = tx * 100;
                 let y = ty * 100;
                 let t = this.add.sprite(x, y, 'grassSprite');
                 t.anims.load('grassAnim');
                 t.anims.play('grassAnim');
+                t.back = true;
+                this.map[ty][tx] = t;
+                t.setInteractive();
             }
         }
 
@@ -116,6 +126,8 @@ class FightScene extends Phaser.Scene {
             t.tile = tile;
             tile.territory = t;
 
+            this.map[t.y][t.x].over = tile;
+
             tile.setInteractive()
                 .on('pointerover', () => {
                     this.territoryDialog.visible = true;
@@ -135,11 +147,37 @@ class FightScene extends Phaser.Scene {
         this.scene.launch(FightArmyUIScene.KEY, {
             armies: this.armies
         });
+
+        this.infoText = this.add.text(this.cameraCenter.x, this.cameraCenter.y - 300,
+            '병력을 배치시킬 곳을 선택해주세요.', {fontSize: 20})
+            .setOrigin(0.5, 0);
+        this.hold = this.add.sprite(0, 0, 'armySprite');
+        this.hold.setAlpha(0.5);
+        this.hold.visible = false;
     }
 
     centerOn(x, y) {
         this.cameraCenter.x = x;
         this.cameraCenter.y = y;
         this.cameras.main.centerOn(x, y);
+    }
+
+    gameObjectOver(p, go) {
+        switch(this.state) {
+            case 0:
+                if(!go.back) break;
+                if(go.over != null) break;
+                this.hold.visible = true;
+                this.hold.setPosition(go.x, go.y);
+                break;
+        }
+    }
+
+    gameObjectOut(p, go) {
+
+    }
+
+    gameObjectDown(p, go) {
+
     }
 }
