@@ -203,6 +203,7 @@ class FightScene extends Phaser.Scene {
                 this.armies[this.holdingArmy].sprite = sprite;
                 if(this.holdingArmy < this.armies.length - 1) this.placeArmy(this.holdingArmy + 1);
                 else this.startGame();
+                break;
             case 1:
                 if(go.tileType === 'army') {
                     this.select(go.index);
