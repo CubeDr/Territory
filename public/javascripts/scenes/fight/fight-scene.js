@@ -15,6 +15,10 @@ class FightScene extends Phaser.Scene {
         this.load.image('territory', 'assets/world/tile_territory.png');
         this.load.image('tile_food', 'assets/menu/menu_food.png');
         this.load.image('dialog', 'assets/background_dialog.png');
+        this.load.image('money', 'assets/ui/resources/icon_coin.png');
+        this.load.image('food', 'assets/ui/resources/icon_food.png');
+        this.load.image('quality', 'assets/ui/resources/icon_quality.png');
+        this.load.image('quantity', 'assets/ui/resources/icon_quantity.png');
 
         this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
     }
@@ -63,14 +67,10 @@ class FightScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#225500');
 
         // territory dialog
-        let d = this.add.container();
-        d.setDepth(1);
-
-        let back = this.add.nineslice(0, 0, 200, 100, 'dialog', 10, 10);
-        d.add(back);
-        d.visible = false;
-
-        this.territoryDialog = d;
+        this.territoryDialog = new FightTerritoryInfoDialog(this);
+        this.territoryDialog.setDepth(1);
+        this.territoryDialog.visible = false;
+        this.add.existing(this.territoryDialog);
 
         // Army walking animation
         let config = {
@@ -148,13 +148,13 @@ class FightScene extends Phaser.Scene {
             this.map[t.y][t.x].over = tile;
 
             tile.setInteractive()
-                .on('pointerover', () => {
-                    this.territoryDialog.visible = true;
-                })
                 .on('pointermove', (p, lx, ly) => {
                     let x = tile.x + lx - tile.width/2;
                     let y = tile.y + ly - tile.height/2;
                     this.territoryDialog.setPosition(x, y);
+                    if(tile.tileType === 'defence')
+                        this.territoryDialog.showDefenceInfo(t.quantity, t.quality);
+                    else this.territoryDialog.showResourceInfo(t.money, t.food);
                 })
                 .on('pointerout', () => {
                     this.territoryDialog.visible = false;
