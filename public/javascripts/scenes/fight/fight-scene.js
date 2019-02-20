@@ -499,7 +499,8 @@ class FightScene extends Phaser.Scene {
                 console.log('전투 종료');
             },
             money: this.gain.money,
-            food: this.gain.food
+            food: this.gain.food,
+            knowhows: this.gain.knowhows
         });
     }
 }

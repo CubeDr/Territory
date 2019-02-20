@@ -9,6 +9,7 @@ class FightEndDialogScene extends Phaser.Scene {
         this.callback = config.callback;
         this.money = config.money;
         this.food = config.food;
+        this.knowhows = config.knowhows;
     }
 
     preload() {
@@ -34,6 +35,16 @@ class FightEndDialogScene extends Phaser.Scene {
         this.add.text(320, 338, this.money);
         this.add.image(300, 400, 'food_icon').setScale(0.8);
         this.add.text(320, 388, this.food);
+
+        this.add.text(300, 430, '획득 노하우');
+        let knowhowText = this.add.text(285, 460, '없음');
+        if(this.knowhows.length > 0) {
+            let text = '';
+            this.knowhows.forEach((id) => {
+                text += '[' + KNOWHOW[id].name + '] '
+            });
+            knowhowText.setText(text);
+        }
 
         this.add.existing(new TextButton(this, 400, 540, '확인', {
             onClick: () => { this.callback(); }
