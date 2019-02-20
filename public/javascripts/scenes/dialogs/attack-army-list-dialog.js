@@ -61,6 +61,7 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.add.existing(new TextButton(this, 420, 710, '확인', {
             fontSize: 20,
             onClick: () => {
+                if(!this.valid) return;
                 let armies = [];
                 this.list.iterate((child) => {
                     armies.push({
@@ -207,7 +208,20 @@ class AttackArmyListDialogScene extends Phaser.Scene {
         this.moneyText.setText(total.money.toString());
         this.foodText.setText(total.food.toString());
 
-        this.moneyText.setColor(gameEngine.player.money>=total.money?'#ffffff':'#ff0000');
-        this.foodText.setColor(gameEngine.player.food>=total.food?'#ffffff':'#ff0000');
+        if(gameEngine.player.money >= total.money) {
+            this.moneyText.setColor('#ffffff');
+            this.valid = true;
+        } else {
+            this.moneyText.setColor('#ff0000');
+            this.valid = false;
+        }
+
+        if(gameEngine.player.food >= total.food) {
+            this.foodText.setColor('#ffffff');
+            this.valid &= true;
+        } else {
+            this.foodText.setColor('#ff0000');
+            this.valid = false;
+        }
     }
 }
