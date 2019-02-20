@@ -140,9 +140,9 @@ class FightScene extends Phaser.Scene {
             let x = t.x * 100;
             let y = t.y * 100;
 
-            t.tileType = t.quantity>0?'defence':'resource';
             let tile = this.add.image(x, y, t.quantity>0?'territory':'tile_food');
             t.tile = tile;
+            tile.tileType = t.quantity>0?'defence':'resource';
             tile.territory = t;
 
             this.map[t.y][t.x].over = tile;
@@ -225,6 +225,10 @@ class FightScene extends Phaser.Scene {
                 switch(go.tileType) {
                     case 'army': this.select(go.index); break;
                     case 'grass': this.move(this.selectedArmyIndex, go.x, go.y); break;
+                    case 'defence':
+                        this.move(this.selectedArmyIndex, go.x, go.y, false); break;
+                        break;
+                    case 'resource': break;
                 }
                 break;
         }
@@ -249,7 +253,7 @@ class FightScene extends Phaser.Scene {
         this.cameras.main.pan(army.sprite.x, army.sprite.y, 80);
     }
 
-    move(armyIndex, x, y) {
+    move(armyIndex, x, y, containLast=true) {
         let army = this.armies[armyIndex];
         // calculate path
         let start = {
@@ -260,20 +264,23 @@ class FightScene extends Phaser.Scene {
             x: Math.round(x / 100) - this.boundary.minX,
             y: Math.round(y / 100) - this.boundary.minY
         };
-        let path = this.getPath(start, end).map((n) => {
+        let path = this.getPath(start, end, containLast).map((n) => {
             return {
                 x: (n.x + this.boundary.minX) * 100,
                 y: (n.y + this.boundary.minY) * 100
             }
         });
+        if(!containLast && path.length > 0) path.splice(path.length-1, 1);
 
         // move
         army.path = path;
         army.duration = 0;
     }
 
-    getPath(start, end) {
-        let graph = new Graph(this.getMapGrid(), { diagonal: true });
+    getPath(start, end, containLast) {
+        let mapGrid = this.getMapGrid();
+        if(!containLast) mapGrid[end.y][end.x] = 1;
+        let graph = new Graph(mapGrid, { diagonal: true });
         start = graph.grid[start.y][start.x];
         end = graph.grid[end.y][end.x];
         let nodes = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
