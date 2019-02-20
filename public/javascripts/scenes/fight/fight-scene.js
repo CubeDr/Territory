@@ -249,17 +249,26 @@ class FightScene extends Phaser.Scene {
     select(armyIndex) {
         if(this.selectedArmyIndex != null)
             this.armies[this.selectedArmyIndex].sprite.clearTint();
-        this.selectedArmyIndex = armyIndex;
 
-        this.armyUi.indicate(armyIndex);
+        if(armyIndex == null) {
+            this.armyUi.indicate(null);
+            this.selectedArmyIndex = null;
+            return;
+        }
 
         let army = this.armies[armyIndex];
+
+        if(army.dead) return;
+        this.selectedArmyIndex = armyIndex;
+
         army.sprite.setTint(0x99ff99);
+        this.armyUi.indicate(armyIndex);
 
         this.cameras.main.pan(army.sprite.x, army.sprite.y, 80);
     }
 
     move(armyIndex, x, y, containLast=true, doneListener=()=>{}, diagonal=true) {
+        if(armyIndex == null) return;
         this.stopFight(armyIndex);
 
         let army = this.armies[armyIndex];
@@ -374,6 +383,44 @@ class FightScene extends Phaser.Scene {
             else if(a.duration < 1000) this.clearFightEffect(a);
             else {
                 // fight logic
+                let qp = a.territory._army.quality / a.target.quality;
+
+                // 병력 감소량 계산
+                let aDec = 1;
+                let tDec = 1;
+                if(qp <= 1) {
+                    // 플레이어가 더 병질이 높은 경우
+                    aDec = qp;
+                    tDec = 1;
+                } else {
+                    // 상대방이 더 병질이 높은 경우
+                    aDec = 1;
+                    tDec = qp;
+                }
+
+                a.count -= aDec;
+                a.uitext.setText(Math.ceil(a.count) + " / " + a.territory._army.quality);
+                a.target.quantity -= tDec;
+
+                console.log(a.count, a.target.quantity);
+                if(a.target.quantity <= 0) {
+                    // Destroy target
+                    let g = this.map[a.target.y][a.target.x];
+                    g.over = null;
+                    a.target.tile.destroy();
+                }
+                if(a.count <= 0) {
+                    // Destroy army
+                    if(a === this.armies[this.selectedArmyIndex]) {
+                        this.select(null);
+                    }
+                    a.sprite.destroy();
+                    a.target = null;
+                    a.dead = true;
+                    a.uitext.setText("");
+                    a.uisprite.setAlpha(0.5);
+                }
+
                 a.duration = 0;
             }
         });
@@ -388,7 +435,7 @@ class FightScene extends Phaser.Scene {
         if(a === this.armies[this.selectedArmyIndex])
             a.sprite.setTint(0x99ff99);
         else a.sprite.clearTint();
-        a.target.tile.clearTint();
+        if(a.target) a.target.tile.clearTint();
     }
 
     startFight(armyIndex, defence) {

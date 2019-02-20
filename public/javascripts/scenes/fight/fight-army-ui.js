@@ -29,8 +29,8 @@ class FightArmyUIScene extends Phaser.Scene {
         for(let i=0; i<this.armies.length; i++) {
             let army = this.armies[i];
             let x = 50 + i * 100;
-            army.sprite = this.add.sprite(x, 50, 'armySprite').setScale(1.6).setOrigin(0.5);
-            army.text = this.add.text(x, 90, army.count.toString() + " / " + army.territory._army.quality)
+            army.uisprite = this.add.sprite(x, 50, 'armySprite').setScale(1.6).setOrigin(0.5);
+            army.uitext = this.add.text(x, 90, army.count.toString() + " / " + army.territory._army.quality)
                 .setOrigin(0.5, 0.5);
         }
     }
