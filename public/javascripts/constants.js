@@ -77,7 +77,7 @@ var Building = {
         name: '저장고',
         cost: 1000,
         cost_increment: 500,
-        maintain: 50,
+        maintain: 10,
         description: '식량 수용량을 100만큼 증가시킨다.'
     },
     LANDMARK: {
