@@ -34,7 +34,9 @@ class FightScene extends Phaser.Scene {
     }
 
     create() {
-        console.log("CREATE");
+        this.cameras.main.setPosition(0, 100);
+        this.cameras.main.setSize(800, 800);
+        this.cameras.main.setBackgroundColor('#000000');
         this.add.text(100, 100, "ASDFASDFASDFSADF");
     }
 }
