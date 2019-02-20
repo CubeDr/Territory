@@ -62,6 +62,7 @@ class FightScene extends Phaser.Scene {
 
         let back = this.add.nineslice(0, 0, 200, 100, 'dialog', 10, 10);
         d.add(back);
+        d.visible = false;
 
         this.territoryDialog = d;
 
