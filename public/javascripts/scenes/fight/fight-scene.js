@@ -100,7 +100,7 @@ class FightScene extends Phaser.Scene {
                 let t = this.add.sprite(x, y, 'grassSprite');
                 t.anims.load('grassAnim');
                 t.anims.play('grassAnim');
-                t.back = true;
+                t.tileType = 'grass';
                 this.map[ty][tx] = t;
                 t.setInteractive();
             }
@@ -122,6 +122,7 @@ class FightScene extends Phaser.Scene {
             let x = t.x * 100;
             let y = t.y * 100;
 
+            t.tileType = t.quantity>0?'defence':'resource';
             let tile = this.add.image(x, y, t.quantity>0?'territory':'tile_food');
             t.tile = tile;
             tile.territory = t;
@@ -165,7 +166,7 @@ class FightScene extends Phaser.Scene {
     gameObjectOver(p, go) {
         switch(this.state) {
             case 0:
-                if(!go.back) break;
+                if(go.tileType !== 'grass') break;
                 if(go.over != null) break;
                 this.hold.visible = true;
                 this.hold.setPosition(go.x, go.y);
