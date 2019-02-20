@@ -18,9 +18,18 @@ class FightScene extends Phaser.Scene {
             idTokenString: gameEngine.idToken,
             opponentId: this.opponentId
         }), (defenceString) => {
-            console.log(defenceString);
             let defenceInfo = JSON.parse(defenceString);
-            console.log(defenceInfo);
+            let boundary = MinimapDialog._getTerritoryBoundary(defenceInfo);
+            // extend boundary to fill map
+            while(boundary.maxX - boundary.minX + 1 < 8) {
+                boundary.maxX++;
+                boundary.minX--;
+            }
+            while(boundary.maxY - boundary.minY + 1 < 8) {
+                boundary.maxY++;
+                boundary.minY--;
+            }
+            console.log(boundary);
         });
     }
 
