@@ -214,8 +214,9 @@ class FightScene extends Phaser.Scene {
                 else this.startGame();
                 break;
             case 1:
-                if(go.tileType === 'army') {
-                    this.select(go.index);
+                switch(go.tileType) {
+                    case 'army': this.select(go.index); break;
+                    case 'grass': this.move(this.selectedArmyIndex, go.x, go.y); break;
                 }
                 break;
         }
@@ -238,5 +239,9 @@ class FightScene extends Phaser.Scene {
         army.sprite.setTint(0x99ff99);
 
         this.cameras.main.pan(army.sprite.x, army.sprite.y, 80);
+    }
+
+    move(armyIndex, x, y) {
+        this.armies[armyIndex].sprite.setPosition(x, y);
     }
 }
