@@ -80,6 +80,12 @@ class FightScene extends Phaser.Scene {
         let cx = this.boundary.minX + this.boundary.maxX;
         let cy = this.boundary.minY + this.boundary.maxY;
         this.centerOn(cx * 100 ,cy * 100);
+        // Zoom out to match boundary
+        let width = this.boundary.maxX - this.boundary.minX + 1;
+        let height = this.boundary.maxY - this.boundary.minY + 1;
+        let scale = width > height? width : height;
+        scale = 8 / scale;
+        this.cameras.main.setZoom(scale);
 
         this.territories.forEach((t) => {
             let x = t.x * 100;
