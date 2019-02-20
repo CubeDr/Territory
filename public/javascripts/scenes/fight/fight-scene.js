@@ -406,9 +406,11 @@ class FightScene extends Phaser.Scene {
                 console.log(a.count, a.target.quantity);
                 if(a.target.quantity <= 0) {
                     // Destroy target
-                    let g = this.map[a.target.y][a.target.x];
-                    g.over = null;
-                    a.target.tile.destroy();
+                    let tile = a.target.tile;
+                    tile.setTexture("tile_food");
+                    tile.tileType = "resource";
+
+                    a.target = null;
                 }
                 if(a.count <= 0) {
                     // Destroy army
