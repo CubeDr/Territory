@@ -166,6 +166,7 @@ class FightScene extends Phaser.Scene {
 
     update(time, dt) {
         this.moveArmies(dt);
+        this.fightArmies(dt);
     }
 
     centerOn(x, y, pan=false) {
@@ -259,7 +260,10 @@ class FightScene extends Phaser.Scene {
     }
 
     move(armyIndex, x, y, containLast=true, doneListener=()=>{}, diagonal=true) {
+        this.stopFight(armyIndex);
+
         let army = this.armies[armyIndex];
+
         // calculate path
         let start = {
             x: Math.round(army.sprite.x / 100) - this.boundary.minX,
@@ -279,7 +283,6 @@ class FightScene extends Phaser.Scene {
 
         // move
         army.path = path;
-        army.duration = 0;
         army.doneListener = doneListener;
     }
 
@@ -311,7 +314,7 @@ class FightScene extends Phaser.Scene {
         return grid;
     }
 
-    moveArmies(dt) {
+    moveArmies() {
         let speed = 0.5;
 
         this.armies.forEach((a) => {
@@ -350,7 +353,6 @@ class FightScene extends Phaser.Scene {
                 // 이동중
                 sprite.setPosition(sprite.x + d.x, sprite.y + d.y);
             }
-            a.duration += dt;
 
             // move animation
             let directionName = getDirectionName(d.x, d.y);
@@ -363,13 +365,47 @@ class FightScene extends Phaser.Scene {
         })
     }
 
-    startFight(armyIndex, defence) {
-        console.log("fight", armyIndex, defence);
+    fightArmies(dt) {
+        this.armies.filter((a) => { return a.target != null; }).forEach((a) => {
+            a.duration += dt;
+            if(a.duration < 125) this.setFightEffect(a);
+            else if(a.duration < 250) this.clearFightEffect(a);
+            else if(a.duration < 375) this.setFightEffect(a);
+            else if(a.duration < 1000) this.clearFightEffect(a);
+            else {
+                // fight logic
+                a.duration = 0;
+            }
+        });
+    }
 
+    setFightEffect(a) {
+        a.sprite.setTint(0xff0000);
+        a.target.tile.setTint(0xff0000);
+    }
+
+    clearFightEffect(a) {
+        if(a === this.armies[this.selectedArmyIndex])
+            a.sprite.setTint(0x99ff99);
+        else a.sprite.clearTint();
+        a.target.tile.clearTint();
+    }
+
+    startFight(armyIndex, defence) {
         let army = this.armies[armyIndex];
         let direction = getDirectionName(defence.x - army.sprite.x, defence.y - army.sprite.y);
         army.sprite.anims.load('armyWalk' + direction);
         army.sprite.anims.play('armyWalk' + direction);
         army.sprite.anims.stop();
+
+        army.target = defence;
+        army.duration = 0;
+    }
+
+    stopFight(armyIndex) {
+        let army = this.armies[armyIndex];
+        this.clearFightEffect(army);
+        army.target = null;
+        army.duration = 0;
     }
 }
