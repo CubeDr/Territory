@@ -493,6 +493,13 @@ class FightScene extends Phaser.Scene {
     }
 
     endGame() {
-        console.log('게임 종료');
+        this.scene.add(FightEndDialogScene.KEY, FightEndDialogScene);
+        this.scene.launch(FightEndDialogScene.KEY, {
+            callback: () => {
+                console.log('전투 종료');
+            },
+            money: this.gain.money,
+            food: this.gain.food
+        });
     }
 }
