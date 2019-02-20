@@ -332,6 +332,7 @@ class FightScene extends Phaser.Scene {
                 if(a.doneListener) {
                     a.direction = null;
                     a.sprite.anims.stop();
+                    a.uisprite.anims.stop();
                     let listener = a.doneListener;
                     a.doneListener = null;
                     listener();
@@ -371,6 +372,8 @@ class FightScene extends Phaser.Scene {
                 // start animation
                 sprite.anims.load('armyWalk' + directionName);
                 sprite.anims.play('armyWalk' + directionName);
+                a.uisprite.anims.load('armyWalk' + directionName);
+                a.uisprite.anims.play('armyWalk' + directionName);
             }
         })
     }
@@ -403,7 +406,6 @@ class FightScene extends Phaser.Scene {
                 a.uitext.setText(Math.ceil(a.count) + " / " + a.territory._army.quality);
                 a.target.quantity -= tDec;
 
-                console.log(a.count, a.target.quantity);
                 if(a.target.quantity <= 0) {
                     // Destroy target
                     let tile = a.target.tile;
@@ -447,6 +449,9 @@ class FightScene extends Phaser.Scene {
         army.sprite.anims.load('armyWalk' + direction);
         army.sprite.anims.play('armyWalk' + direction);
         army.sprite.anims.stop();
+        army.uisprite.anims.load('armyWalk' + direction);
+        army.uisprite.anims.play('armyWalk' + direction);
+        army.uisprite.anims.stop();
 
         army.target = defence;
         army.duration = 0;
