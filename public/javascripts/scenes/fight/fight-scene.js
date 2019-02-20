@@ -84,6 +84,8 @@ class FightScene extends Phaser.Scene {
 
     doCreate() {
         if(++this.state < 0) return;
+
+        // create grass
         for(let ty=this.boundary.minY; ty<=this.boundary.maxY; ty++) {
             for(let tx=this.boundary.minX; tx<=this.boundary.maxX; tx++) {
                 let x = tx * 100;
@@ -93,6 +95,8 @@ class FightScene extends Phaser.Scene {
                 t.anims.play('grassAnim');
             }
         }
+
+        // set camera to see whole map
         let cx = this.boundary.minX + this.boundary.maxX;
         let cy = this.boundary.minY + this.boundary.maxY;
         this.centerOn(cx * 100 ,cy * 100);
@@ -103,6 +107,7 @@ class FightScene extends Phaser.Scene {
         scale = 8 / scale;
         this.cameras.main.setZoom(scale);
 
+        // create territories
         this.territories.forEach((t) => {
             let x = t.x * 100;
             let y = t.y * 100;
