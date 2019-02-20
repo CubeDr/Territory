@@ -42,7 +42,7 @@ class FightScene extends Phaser.Scene {
             }
         });
         this.scene.add(FightResourceUIScene.KEY, FightResourceUIScene);
-        this.scene.launch(FightResourceUIScene.KEY);
+        this.scene.launch(FightResourceUIScene.KEY, {callback: () => { this.endGame(); }});
 
         doAjax("POST", "player/defence", JSON.stringify({
             idTokenString: gameEngine.idToken,
@@ -449,6 +449,9 @@ class FightScene extends Phaser.Scene {
                     a.dead = true;
                     a.uitext.setText("");
                     a.uisprite.setAlpha(0.5);
+
+                    if(this.armies.filter((a) => { return a.dead !== true; }).length === 0)
+                        this.endGame();
                 }
 
                 a.duration = 0;
@@ -487,5 +490,9 @@ class FightScene extends Phaser.Scene {
         this.clearFightEffect(army);
         army.target = null;
         army.duration = 0;
+    }
+
+    endGame() {
+        console.log('게임 종료');
     }
 }

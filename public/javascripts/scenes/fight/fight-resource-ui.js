@@ -5,6 +5,10 @@ class FightResourceUIScene extends Phaser.Scene {
         super({key: FightResourceUIScene.KEY });
     }
 
+    init(config) {
+        this.endCallback = config.callback;
+    }
+
     preload() {
         this.load.image('money', 'assets/ui/resources/icon_coin.png');
         this.load.image('food', 'assets/ui/resources/icon_food.png');
@@ -19,7 +23,7 @@ class FightResourceUIScene extends Phaser.Scene {
 
         this.add.existing(new TextButton(this, 50, 50, '[전투 종료]', {
             onClick: () => {
-                console.log('종료');
+                this.endCallback();
             },
             fontSize: 20
         }).setOrigin(0.5));
