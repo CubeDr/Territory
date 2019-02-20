@@ -226,7 +226,12 @@ class FightScene extends Phaser.Scene {
                     case 'army': this.select(go.index); break;
                     case 'grass': this.move(this.selectedArmyIndex, go.x, go.y); break;
                     case 'defence':
-                        this.move(this.selectedArmyIndex, go.x, go.y, false); break;
+                        let armyIdx = this.selectedArmyIndex;
+                        this.move(armyIdx, go.x, go.y, false, () => {
+                            this.move(armyIdx, go.x, go.y, false, () => {
+                                this.startFight(armyIdx, go.territory);
+                            }, false);
+                        }); break;
                         break;
                     case 'resource': break;
                 }
@@ -253,7 +258,7 @@ class FightScene extends Phaser.Scene {
         this.cameras.main.pan(army.sprite.x, army.sprite.y, 80);
     }
 
-    move(armyIndex, x, y, containLast=true) {
+    move(armyIndex, x, y, containLast=true, doneListener=()=>{}, diagonal=true) {
         let army = this.armies[armyIndex];
         // calculate path
         let start = {
@@ -264,7 +269,7 @@ class FightScene extends Phaser.Scene {
             x: Math.round(x / 100) - this.boundary.minX,
             y: Math.round(y / 100) - this.boundary.minY
         };
-        let path = this.getPath(start, end, containLast).map((n) => {
+        let path = this.getPath(start, end, containLast, diagonal).map((n) => {
             return {
                 x: (n.x + this.boundary.minX) * 100,
                 y: (n.y + this.boundary.minY) * 100
@@ -275,12 +280,13 @@ class FightScene extends Phaser.Scene {
         // move
         army.path = path;
         army.duration = 0;
+        army.doneListener = doneListener;
     }
 
-    getPath(start, end, containLast) {
+    getPath(start, end, containLast, diagonal) {
         let mapGrid = this.getMapGrid();
         if(!containLast) mapGrid[end.y][end.x] = 1;
-        let graph = new Graph(mapGrid, { diagonal: true });
+        let graph = new Graph(mapGrid, { diagonal: diagonal });
         start = graph.grid[start.y][start.x];
         end = graph.grid[end.y][end.x];
         let nodes = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
@@ -310,8 +316,13 @@ class FightScene extends Phaser.Scene {
 
         this.armies.forEach((a) => {
             if(a.path == null || a.path.length === 0) {
-                a.direction = null;
-                a.sprite.anims.stop();
+                if(a.doneListener) {
+                    a.direction = null;
+                    a.sprite.anims.stop();
+                    let listener = a.doneListener;
+                    a.doneListener = null;
+                    listener();
+                }
                 return;
             }
             let sprite = a.sprite;
@@ -350,5 +361,15 @@ class FightScene extends Phaser.Scene {
                 sprite.anims.play('armyWalk' + directionName);
             }
         })
+    }
+
+    startFight(armyIndex, defence) {
+        console.log("fight", armyIndex, defence);
+
+        let army = this.armies[armyIndex];
+        let direction = getDirectionName(defence.x - army.sprite.x, defence.y - army.sprite.y);
+        army.sprite.anims.load('armyWalk' + direction);
+        army.sprite.anims.play('armyWalk' + direction);
+        army.sprite.anims.stop();
     }
 }
