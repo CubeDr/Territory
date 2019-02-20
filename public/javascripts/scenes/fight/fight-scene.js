@@ -394,6 +394,8 @@ class FightScene extends Phaser.Scene {
                 if(tile.tileType === 'resource') {
                     this.gain.money += tile.territory.money;
                     this.gain.food += tile.territory.food;
+                    if(tile.territory.knowhow > 0)
+                        this.gain.knowhows.push(tile.territory.knowhow);
                     this.resourceUi.showResource(this.gain.money, this.gain.food);
 
                     this.map[y][x].over = null;
