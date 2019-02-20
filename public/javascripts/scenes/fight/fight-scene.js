@@ -242,6 +242,45 @@ class FightScene extends Phaser.Scene {
     }
 
     move(armyIndex, x, y) {
-        this.armies[armyIndex].sprite.setPosition(x, y);
+        let army = this.armies[armyIndex];
+        // calculate path
+        let start = {
+            x: Math.round(army.sprite.x / 100) - this.boundary.minX,
+            y: Math.round(army.sprite.y / 100) - this.boundary.minY
+        };
+        let end = {
+            x: Math.round(x / 100) - this.boundary.minX,
+            y: Math.round(y / 100) - this.boundary.minY
+        };
+        let path = this.getPath(start, end);
+
+        // move
+        army.sprite.setPosition(x, y);
+    }
+
+    getPath(start, end) {
+        let graph = new Graph(this.getMapGrid(), { diagonal: true });
+        start = graph.grid[start.y][start.x];
+        end = graph.grid[end.y][end.x];
+        let nodes = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+        return nodes.map((node) => {
+            return {
+                x: node.x,
+                y: node.y
+            };
+        });
+    }
+
+    getMapGrid() {
+        let grid = [];
+        for(let y=this.boundary.minY; y<=this.boundary.maxY; y++) {
+            let row = [];
+            for(let x=this.boundary.minX; x<=this.boundary.maxX; x++) {
+                if(this.map[y][x].over) row.push(0);
+                else row.push(1);
+            }
+            grid.push(row);
+        }
+        return grid;
     }
 }
