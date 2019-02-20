@@ -50,7 +50,6 @@ class FightScene extends Phaser.Scene {
                 boundary.maxY++;
                 boundary.minY--;
             }
-            console.log(boundary);
             this.boundary = boundary;
             this.doCreate();
         });
@@ -196,14 +195,36 @@ class FightScene extends Phaser.Scene {
                 if(go.tileType !== 'grass') break;
                 if(go.over != null) break;
                 this.hold.visible = false;
-                this.armies[this.holdingArmy].sprite = this.add.sprite(go.x, go.y, 'armySprite');
+
+                let sprite = this.add.sprite(go.x, go.y, 'armySprite');
+                sprite.tileType = 'army';
+                sprite.setInteractive();
+                sprite.index = this.holdingArmy;
+                this.armies[this.holdingArmy].sprite = sprite;
                 if(this.holdingArmy < this.armies.length - 1) this.placeArmy(this.holdingArmy + 1);
                 else this.startGame();
+            case 1:
+                if(go.tileType === 'army') {
+                    this.select(go.index);
+                }
+                break;
         }
     }
 
     startGame() {
         console.log("Switch to next state");
         this.state = 1;
+        this.select(0);
+    }
+
+    select(armyIndex) {
+        if(this.selectedArmyIndex != null)
+            this.armies[this.selectedArmyIndex].sprite.clearTint();
+        this.selectedArmyIndex = armyIndex;
+
+        this.armyUi.indicate(armyIndex);
+
+        let army = this.armies[armyIndex];
+        army.sprite.setTint(0x99ff99);
     }
 }
