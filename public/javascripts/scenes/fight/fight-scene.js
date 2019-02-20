@@ -8,6 +8,11 @@ class FightScene extends Phaser.Scene {
 
         // prepare
         this.state = -2;
+        this.gain = {
+            money: 0,
+            food: 0,
+            knowhows: []
+        };
     }
 
     preload() {
@@ -234,7 +239,9 @@ class FightScene extends Phaser.Scene {
                             }, false);
                         }); break;
                         break;
-                    case 'resource': break;
+                    case 'resource':
+                        this.move(this.selectedArmyIndex, go.x, go.y);
+                        break;
                 }
                 break;
         }
@@ -316,7 +323,7 @@ class FightScene extends Phaser.Scene {
         for(let y=this.boundary.minY; y<=this.boundary.maxY; y++) {
             let row = [];
             for(let x=this.boundary.minX; x<=this.boundary.maxX; x++) {
-                if(this.map[y][x].over) row.push(0);
+                if(this.map[y][x].over!= null && this.map[y][x].over.tileType==='defence') row.push(0);
                 else row.push(1);
             }
             grid.push(row);
@@ -374,6 +381,20 @@ class FightScene extends Phaser.Scene {
                 sprite.anims.play('armyWalk' + directionName);
                 a.uisprite.anims.load('armyWalk' + directionName);
                 a.uisprite.anims.play('armyWalk' + directionName);
+            }
+
+            // 해당 영지의 식량 획듯
+            let x = Math.round(sprite.x / 100);
+            let y = Math.round(sprite.y / 100);
+            if(this.map[y][x].over != null) {
+                let tile = this.map[y][x].over;
+                if(tile.tileType === 'resource') {
+                    this.gain.money += tile.territory.money;
+                    this.gain.food += tile.territory.food;
+                    console.log(this.gain);
+                    this.map[y][x].over = null;
+                    tile.destroy();
+                }
             }
         })
     }
