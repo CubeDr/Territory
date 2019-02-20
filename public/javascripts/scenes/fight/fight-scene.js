@@ -60,7 +60,7 @@ class FightScene extends Phaser.Scene {
 
         this.cameras.main.setPosition(0, 100);
         this.cameras.main.setSize(800, 800);
-        this.cameras.main.setBackgroundColor('#000000');
+        this.cameras.main.setBackgroundColor('#225500');
 
         // territory dialog
         let d = this.add.container();
