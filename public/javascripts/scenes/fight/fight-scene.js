@@ -152,10 +152,11 @@ class FightScene extends Phaser.Scene {
         this.placeArmy();
     }
 
-    centerOn(x, y) {
+    centerOn(x, y, pan=false) {
         this.cameraCenter.x = x;
         this.cameraCenter.y = y;
-        this.cameras.main.centerOn(x, y);
+        if(pan) this.cameras.main.pan(x, y, 80);
+        else this.cameras.main.centerOn(x, y);
     }
 
     placeArmy(index=0) {
@@ -213,7 +214,7 @@ class FightScene extends Phaser.Scene {
     }
 
     startGame() {
-        console.log("Switch to next state");
+        this.cameras.main.setZoom(1);
         this.state = 1;
         this.select(0);
     }
@@ -227,5 +228,7 @@ class FightScene extends Phaser.Scene {
 
         let army = this.armies[armyIndex];
         army.sprite.setTint(0x99ff99);
+
+        this.cameras.main.pan(army.sprite.x, army.sprite.y, 80);
     }
 }
