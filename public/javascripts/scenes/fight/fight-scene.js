@@ -160,6 +160,10 @@ class FightScene extends Phaser.Scene {
         this.placeArmy();
     }
 
+    update(time, dt) {
+        this.moveArmies(dt);
+    }
+
     centerOn(x, y, pan=false) {
         this.cameraCenter.x = x;
         this.cameraCenter.y = y;
@@ -252,10 +256,16 @@ class FightScene extends Phaser.Scene {
             x: Math.round(x / 100) - this.boundary.minX,
             y: Math.round(y / 100) - this.boundary.minY
         };
-        let path = this.getPath(start, end);
+        let path = this.getPath(start, end).map((n) => {
+            return {
+                x: (n.x + this.boundary.minX) * 100,
+                y: (n.y + this.boundary.minY) * 100
+            }
+        });
 
         // move
-        army.sprite.setPosition(x, y);
+        army.path = path;
+        army.duration = 0;
     }
 
     getPath(start, end) {
@@ -265,8 +275,8 @@ class FightScene extends Phaser.Scene {
         let nodes = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
         return nodes.map((node) => {
             return {
-                x: node.x,
-                y: node.y
+                x: node.y,
+                y: node.x
             };
         });
     }
@@ -282,5 +292,39 @@ class FightScene extends Phaser.Scene {
             grid.push(row);
         }
         return grid;
+    }
+
+    moveArmies(dt) {
+        let speed = 0.5;
+
+        this.armies.forEach((a) => {
+            if(a.path == null || a.path.length === 0) return;
+            let sprite = a.sprite;
+            let target = a.path[0];
+
+
+            let d = normalize(
+                target.x - sprite.x,
+                target.y - sprite.y
+            );
+            d.x *= speed;
+            d.y *= speed;
+
+
+            let n = normalize(
+                target.x - sprite.x - d.x,
+                target.y - sprite.y - d.y
+            );
+
+            if(d.x * n.x + d.y * n.y <= 0) {
+                // 경유지 도착
+                sprite.setPosition(target.x, target.y);
+                a.path.splice(0, 1);
+            } else {
+                // 이동중
+                sprite.setPosition(sprite.x + d.x, sprite.y + d.y);
+            }
+            a.duration += dt;
+        })
     }
 }
