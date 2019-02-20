@@ -47,7 +47,10 @@ class FightEndDialogScene extends Phaser.Scene {
         }
 
         this.add.existing(new TextButton(this, 400, 540, '확인', {
-            onClick: () => { this.callback(); }
+            onClick: () => {
+                this.scene.remove(FightEndDialogScene.KEY);
+                this.callback();
+            }
         }).setOrigin(0.5, 1));
     }
 }

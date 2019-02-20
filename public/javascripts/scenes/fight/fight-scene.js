@@ -493,10 +493,20 @@ class FightScene extends Phaser.Scene {
     }
 
     endGame() {
+        gameEngine.player.deltaMoney(this.gain.money);
+        gameEngine.player.deltaFood(this.gain.food);
+        gameEngine.uploadUser();
+
+        this.gain.knowhows.forEach((id) => {
+            gameEngine.player.learn(id);
+        });
+
         this.scene.add(FightEndDialogScene.KEY, FightEndDialogScene);
         this.scene.launch(FightEndDialogScene.KEY, {
             callback: () => {
-                console.log('전투 종료');
+                this.scene.remove(FightScene.KEY);
+                this.scene.remove(FightArmyUIScene.KEY);
+                this.scene.remove(FightResourceUIScene.KEY);
             },
             money: this.gain.money,
             food: this.gain.food,
