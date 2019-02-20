@@ -17,14 +17,21 @@ class FightScene extends Phaser.Scene {
         this.load.image('dialog', 'assets/background_dialog.png');
 
         this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
-
     }
 
     init(config) {
         this.opponentId = config.opponentId;
         this.armies = config.armies;
 
-        console.log(config);
+        // Launch FightArmyUi
+        this.scene.add(FightArmyUIScene.KEY, FightArmyUIScene);
+        this.scene.launch(FightArmyUIScene.KEY, {
+            armies: this.armies,
+            onLoad: (armyUi) => {
+                this.armyUi = armyUi;
+                this.armyUi.indicate(this.holdingArmy);
+            }
+        });
 
         doAjax("POST", "player/defence", JSON.stringify({
             idTokenString: gameEngine.idToken,
@@ -143,12 +150,6 @@ class FightScene extends Phaser.Scene {
                 });
         });
 
-        // Launch FightArmyUi
-        this.scene.add(FightArmyUIScene.KEY, FightArmyUIScene);
-        this.scene.launch(FightArmyUIScene.KEY, {
-            armies: this.armies
-        });
-
         this.placeArmy();
     }
 
@@ -167,6 +168,8 @@ class FightScene extends Phaser.Scene {
         this.hold.setAlpha(0.5);
         this.hold.visible = false;
         this.holdingArmy = index;
+
+        if(this.armyUi) this.armyUi.indicate(index);
     }
 
     gameObjectOver(p, go) {

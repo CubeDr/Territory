@@ -12,6 +12,7 @@ class FightArmyUIScene extends Phaser.Scene {
 
     init(config) {
         this.armies = config.armies;
+        this.onLoad = config.onLoad;
     }
 
     create() {
@@ -21,10 +22,10 @@ class FightArmyUIScene extends Phaser.Scene {
 
         this.indicator = this.add.triangle(0, 0, 0, 0, 10, 0, 5, 10, 0x00ff00);
         this.indicate(0);
+        this.onLoad(this);
     }
 
     createArmies() {
-        console.log(this.armies);
         for(let i=0; i<this.armies.length; i++) {
             let army = this.armies[i];
             let x = 50 + i * 100;
