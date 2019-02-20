@@ -73,6 +73,10 @@ class FightScene extends Phaser.Scene {
         this.territoryDialog = d;
 
         // Army walking animation
+        let config = {
+            frameRate: 6,
+            repeat: -1
+        };
         let direction = ["E", "N", "NE", "NW", "S", "SE", "SW", "W"];
         for(let d=0; d<8; d++) {
             config.key = "armyWalk" + direction[d];
@@ -298,7 +302,11 @@ class FightScene extends Phaser.Scene {
         let speed = 0.5;
 
         this.armies.forEach((a) => {
-            if(a.path == null || a.path.length === 0) return;
+            if(a.path == null || a.path.length === 0) {
+                a.direction = null;
+                a.sprite.anims.stop();
+                return;
+            }
             let sprite = a.sprite;
             let target = a.path[0];
 
@@ -325,6 +333,15 @@ class FightScene extends Phaser.Scene {
                 sprite.setPosition(sprite.x + d.x, sprite.y + d.y);
             }
             a.duration += dt;
+
+            // move animation
+            let directionName = getDirectionName(d.x, d.y);
+            if(directionName !== a.direction) {
+                a.direction = directionName;
+                // start animation
+                sprite.anims.load('armyWalk' + directionName);
+                sprite.anims.play('armyWalk' + directionName);
+            }
         })
     }
 }
