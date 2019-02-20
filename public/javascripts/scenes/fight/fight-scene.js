@@ -124,6 +124,12 @@ class FightScene extends Phaser.Scene {
                     this.territoryDialog.visible = false;
                 });
         });
+
+        // Launch FightArmyUi
+        this.scene.add(FightArmyUIScene.KEY, FightArmyUIScene);
+        this.scene.launch(FightArmyUIScene.KEY, {
+            armies: this.armies
+        });
     }
 
     centerOn(x, y) {
