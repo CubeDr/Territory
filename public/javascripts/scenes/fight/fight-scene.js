@@ -15,6 +15,9 @@ class FightScene extends Phaser.Scene {
         this.load.image('territory', 'assets/world/tile_territory.png');
         this.load.image('tile_food', 'assets/menu/menu_food.png');
         this.load.image('dialog', 'assets/background_dialog.png');
+
+        this.load.spritesheet('armySprite', 'assets/sprites/walk_spritesheet.png', { frameWidth: 48, frameHeight: 48});
+
     }
 
     init(config) {
@@ -62,6 +65,19 @@ class FightScene extends Phaser.Scene {
         d.add(back);
 
         this.territoryDialog = d;
+
+        // Army walking animation
+        let direction = ["E", "N", "NE", "NW", "S", "SE", "SW", "W"];
+        for(let d=0; d<8; d++) {
+            config.key = "armyWalk" + direction[d];
+            config.frames = [];
+            for(let i=0; i<8; i++)
+                config.frames.push({
+                    key: 'armySprite',
+                    frame: d*8 + i
+                });
+            this.anims.create(config);
+        }
 
         this.doCreate();
     }
