@@ -91,6 +91,14 @@ class FightScene extends Phaser.Scene {
             .on('gameobjectover', this.gameObjectOver, this)
             .on('gameobjectout', this.gameObjectOut, this)
             .on('gameobjectdown', this.gameObjectDown, this);
+        this.input.keyboard.on('keydown', (e) => {
+            try {
+                let i = parseInt(e.key) - 1;
+                if(i < this.armies.length) this.select(i);
+            } catch (e) {
+
+            }
+        });
     }
 
     doCreate() {
