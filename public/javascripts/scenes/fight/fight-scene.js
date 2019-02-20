@@ -41,6 +41,8 @@ class FightScene extends Phaser.Scene {
                 this.armyUi.indicate(this.holdingArmy);
             }
         });
+        this.scene.add(FightResourceUIScene.KEY, FightResourceUIScene);
+        this.scene.launch(FightResourceUIScene.KEY);
 
         doAjax("POST", "player/defence", JSON.stringify({
             idTokenString: gameEngine.idToken,
@@ -94,6 +96,7 @@ class FightScene extends Phaser.Scene {
             this.anims.create(config);
         }
 
+        this.resourceUi = this.scene.get(FightResourceUIScene.KEY);
         this.doCreate();
 
         this.input
@@ -391,7 +394,8 @@ class FightScene extends Phaser.Scene {
                 if(tile.tileType === 'resource') {
                     this.gain.money += tile.territory.money;
                     this.gain.food += tile.territory.food;
-                    console.log(this.gain);
+                    this.resourceUi.showResource(this.gain.money, this.gain.food);
+
                     this.map[y][x].over = null;
                     tile.destroy();
                 }
