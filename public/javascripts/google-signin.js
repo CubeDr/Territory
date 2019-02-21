@@ -18,9 +18,11 @@ function signInCallback(authResult) {
                 if(result !== "") {
                     // signed in
                     $('#signinButton').attr('style', 'display: none');
+                    let data = JSON.parse(result);
+                    console.log(data);
                     gameEngine.emit('sign in', {
-                        idToken: gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token,
-                        playerData: JSON.parse(result)
+                        idToken: data.idTokenString,
+                        playerData: data
                     });
                 } else {
                     // error
