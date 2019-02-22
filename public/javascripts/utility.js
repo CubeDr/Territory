@@ -64,7 +64,7 @@ function getDecimal(number, precision) {
 function doAjax(type, url, data, onSuccess) {
     $.ajax({
         type: type,
-        url: 'https://localhost:8080/' + url,
+        url: 'https://localhost:8003/' + url,
         // Always include an `X-Requested-With` header in every AJAX request,
         // to protect against CSRF attacks.
         headers: {
